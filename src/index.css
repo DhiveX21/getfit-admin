@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .MuiOutlinedInput-root {
+  padding: 10px;
+  font-size: 1.25rem;
+  position: relative;
+  display: flex;
+} */
+
+.MuiInputLabel-outlined {
+  transform: translate(12px, 14px) scale(1) !important;
+}
+
+.MuiInputLabel-outlined.MuiInputLabel-shrink {
+  transform: translate(12px, -6px) scale(0.75) !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #9bb2ff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0099ff;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
