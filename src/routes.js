@@ -55,6 +55,7 @@ import Order from "layouts/order";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import OrderDetail from "layouts/orderDetail";
+import RoutesValidation from "RoutesValidation";
 
 const routes = [
   {
@@ -63,7 +64,11 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: (
+      <RoutesValidation>
+        <Dashboard />
+      </RoutesValidation>
+    ),
   },
   {
     type: "collapse",
@@ -71,7 +76,11 @@ const routes = [
     key: "patient",
     icon: <Icon fontSize="small">Patient</Icon>,
     route: "/patient",
-    component: <Patient />,
+    component: (
+      <RoutesValidation>
+        <Patient />
+      </RoutesValidation>
+    ),
   },
   {
     type: "dynamic",
@@ -79,7 +88,11 @@ const routes = [
     key: "patientDetail",
     icon: "",
     route: "/patient/:id",
-    component: <PatientDetail />,
+    component: (
+      <RoutesValidation>
+        <PatientDetail />
+      </RoutesValidation>
+    ),
   },
   {
     type: "collapse",
@@ -87,7 +100,11 @@ const routes = [
     key: "appointment",
     icon: <Icon fontSize="small">Appointment</Icon>,
     route: "/appointment",
-    component: <Appointment />,
+    component: (
+      <RoutesValidation>
+        <Appointment />
+      </RoutesValidation>
+    ),
   },
   {
     type: "dynamic",
@@ -95,7 +112,11 @@ const routes = [
     key: "appointmentDetail",
     icon: "",
     route: "/appointment/:id",
-    component: <AppointmentDetail />,
+    component: (
+      <RoutesValidation>
+        <AppointmentDetail />
+      </RoutesValidation>
+    ),
   },
   {
     type: "collapse",
@@ -103,7 +124,11 @@ const routes = [
     key: "medicalRecord",
     icon: <Icon fontSize="small">Medical Record</Icon>,
     route: "/medical-record",
-    component: <MedicalRecord />,
+    component: (
+      <RoutesValidation>
+        <MedicalRecord />
+      </RoutesValidation>
+    ),
   },
   {
     type: "dynamic",
@@ -111,7 +136,11 @@ const routes = [
     key: "medicalRecordCreate",
     icon: <Icon fontSize="small">Medical Record</Icon>,
     route: "/medical-record/create",
-    component: <MedicalRecordCreate />,
+    component: (
+      <RoutesValidation>
+        <MedicalRecordCreate />
+      </RoutesValidation>
+    ),
   },
   {
     type: "dynamic",
@@ -119,7 +148,11 @@ const routes = [
     key: "medicalRecordDetail",
     icon: "",
     route: "/medical-record/:id",
-    component: <MedicalRecordDetail />,
+    component: (
+      <RoutesValidation>
+        <MedicalRecordDetail />
+      </RoutesValidation>
+    ),
   },
   {
     type: "collapse",
@@ -127,7 +160,11 @@ const routes = [
     key: "order",
     icon: <Icon fontSize="small">Order</Icon>,
     route: "/order",
-    component: <Order />,
+    component: (
+      <RoutesValidation>
+        <Order />
+      </RoutesValidation>
+    ),
   },
   {
     type: "dynamic",
@@ -135,7 +172,11 @@ const routes = [
     key: "orderDetail",
     icon: "",
     route: "/order/:id",
-    component: <OrderDetail />,
+    component: (
+      <RoutesValidation>
+        <OrderDetail />
+      </RoutesValidation>
+    ),
   },
   // {
   //   type: "collapse",
@@ -178,11 +219,11 @@ const routes = [
   //   component: <Profile />,
   // },
   {
-    type: "collapse",
+    type: "dynamic",
     name: "Sign In",
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
+    route: "/sign-in",
     component: <SignIn />,
   },
   // {

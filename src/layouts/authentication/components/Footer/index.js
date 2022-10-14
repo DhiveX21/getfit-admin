@@ -14,22 +14,23 @@ Coded by www.creative-tim.com
 */
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // @mui material components
 import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
-import Icon from "@mui/material/Icon";
+// import Link from "@mui/material/Link";
+// import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+// import MDTypography from "components/MDTypography";
 
 // Material Dashboard 2 React base styles
-import typography from "assets/theme/base/typography";
+// import typography from "assets/theme/base/typography";
 
-function Footer({ light }) {
-  const { size } = typography;
+function Footer() {
+  // { light }
+  // const { size } = typography;
 
   return (
     <MDBox position="absolute" width="100%" bottom={0} py={4}>
@@ -42,7 +43,7 @@ function Footer({ light }) {
           alignItems="center"
           px={1.5}
         >
-          <MDBox
+          {/* <MDBox
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -63,7 +64,7 @@ function Footer({ light }) {
               </MDTypography>
             </Link>
             for a better web.
-          </MDBox>
+          </MDBox> */}
           <MDBox
             component="ul"
             sx={({ breakpoints }) => ({
@@ -81,7 +82,7 @@ function Footer({ light }) {
               },
             })}
           >
-            <MDBox component="li" pr={2} lineHeight={1}>
+            {/* <MDBox component="li" pr={2} lineHeight={1}>
               <Link href="https://www.creative-tim.com/" target="_blank">
                 <MDTypography
                   variant="button"
@@ -124,7 +125,7 @@ function Footer({ light }) {
                   License
                 </MDTypography>
               </Link>
-            </MDBox>
+            </MDBox> */}
           </MDBox>
         </MDBox>
       </Container>
@@ -133,13 +134,13 @@ function Footer({ light }) {
 }
 
 // Setting default props for the Footer
-Footer.defaultProps = {
-  light: false,
-};
+// Footer.defaultProps = {
+//   light: false,
+// };
 
 // Typechecking props for the Footer
-Footer.propTypes = {
-  light: PropTypes.bool,
-};
+// Footer.propTypes = {
+//   light: PropTypes.bool,
+// };
 
 export default Footer;

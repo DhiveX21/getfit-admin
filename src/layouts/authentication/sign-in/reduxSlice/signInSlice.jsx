@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { setStorage, removeStorage } from "helpers/LocalStorageHelpers";
 
 export const signInSlice = createSlice({
   name: "Sign In",
@@ -18,12 +19,16 @@ export const signInSlice = createSlice({
         status: "verfied",
       }; // eslint-disable-line no-param-reassign
       /* eslint-enable no-param-reassign */
+
+      setStorage("credentials", JSON.stringify(state.user), 300);
       console.log(state);
     },
     signOut: (state) => {
       /* eslint-disable no-param-reassign */
       state.user = null; // eslint-disable-line no-param-reassign
       /* eslint-enable no-param-reassign */
+
+      removeStorage("credentials");
       console.log(state);
     },
     incrementByAmount: (state, action) => {
