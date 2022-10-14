@@ -13,10 +13,11 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -30,6 +31,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Dashboard 2 React components
+
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
@@ -39,12 +41,21 @@ import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
+
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import { signIn, signOut } from "./reduxSlice/signInSlice";
 
 function Basic() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.signIn.user);
   const [rememberMe, setRememberMe] = useState(false);
-
+  const navigate = useNavigate();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <BasicLayout image={bgImage}>
@@ -102,8 +113,21 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton
+                onClick={() => dispatch(signIn())}
+                variant="gradient"
+                color="info"
+                fullWidth
+              >
                 sign in
+              </MDButton>
+              <MDButton
+                onClick={() => dispatch(signOut())}
+                variant="gradient"
+                color="info"
+                fullWidth
+              >
+                sign iout
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">

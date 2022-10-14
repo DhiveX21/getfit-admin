@@ -44,6 +44,8 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 
 // Images
 import brandWhite from "assets/images/logo.png";
+import store from "redux/store";
+import { Provider } from "react-redux";
 // import brandDark from "assets/images/logo.png";
 
 export default function App() {
@@ -130,27 +132,29 @@ export default function App() {
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            // brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brand={brandWhite}
-            brandName="Get Fisio | Admin"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
-        </>
-      )}
-      {layout === "vr" && <Configurator />}
-      <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
-      </Routes>
+      <Provider store={store}>
+        <CssBaseline />
+        {layout === "dashboard" && (
+          <>
+            <Sidenav
+              color={sidenavColor}
+              // brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+              brand={brandWhite}
+              brandName="Get Fisio | Admin"
+              routes={routes}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+            />
+            <Configurator />
+            {configsButton}
+          </>
+        )}
+        {layout === "vr" && <Configurator />}
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </Provider>
     </ThemeProvider>
   );
 }
