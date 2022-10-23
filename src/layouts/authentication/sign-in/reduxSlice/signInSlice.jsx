@@ -20,7 +20,7 @@ export const signInSlice = createSlice({
       }; // eslint-disable-line no-param-reassign
       /* eslint-enable no-param-reassign */
 
-      setStorage("credentials", JSON.stringify(state.user), 300);
+      setStorage("credentials", JSON.stringify(state.user), 360 * 24 * 60 * 60);
       console.log(state);
     },
     signOut: (state) => {
