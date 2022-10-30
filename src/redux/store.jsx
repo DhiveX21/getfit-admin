@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import signInReducer from "layouts/authentication/sign-in/reduxSlice/signInSlice";
+import orderSlice from "_slices/orderSlice";
+import patientSlice from "_slices/patientSlice";
+import userSlice from "_slices/userSlice";
 
 export default configureStore({
   reducer: {
-    signIn: signInReducer,
+    signIn: userSlice,
+    patient: patientSlice,
+    order: orderSlice,
   },
 });

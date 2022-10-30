@@ -44,7 +44,6 @@ import Dashboard from "layouts/dashboard";
 // import Profile from "layouts/profile";
 // import SignUp from "layouts/authentication/sign-up";
 import SignIn from "layouts/authentication/sign-in";
-import Patient from "layouts/patient";
 import PatientDetail from "layouts/patientDetail";
 import Appointment from "layouts/appointment";
 import AppointmentDetail from "layouts/appointmentDetail";
@@ -56,6 +55,7 @@ import Order from "layouts/order";
 import Icon from "@mui/material/Icon";
 import OrderDetail from "layouts/orderDetail";
 import RoutesValidation from "RoutesValidation";
+import Patient from "layouts/patient";
 
 const routes = [
   {
@@ -75,25 +75,25 @@ const routes = [
     name: "Patient",
     key: "patient",
     icon: <Icon fontSize="small">Patient</Icon>,
-    route: "/patient",
+    route: "/patient/*",
     component: (
       <RoutesValidation>
         <Patient />
       </RoutesValidation>
     ),
   },
-  {
-    type: "dynamic",
-    name: "Patient Detail",
-    key: "patientDetail",
-    icon: "",
-    route: "/patient/:id",
-    component: (
-      <RoutesValidation>
-        <PatientDetail />
-      </RoutesValidation>
-    ),
-  },
+  // {
+  //   type: "dynamic",
+  //   name: "Patient Detail",
+  //   key: "patientDetail",
+  //   icon: "",
+  //   route: "/patient/:id",
+  //   component: (
+  //     <RoutesValidation>
+  //       <PatientDetail />
+  //     </RoutesValidation>
+  //   ),
+  // },
   {
     type: "collapse",
     name: "Appointment",
@@ -159,25 +159,25 @@ const routes = [
     name: "Order",
     key: "order",
     icon: <Icon fontSize="small">Order</Icon>,
-    route: "/order",
+    route: "/order/*",
     component: (
       <RoutesValidation>
         <Order />
       </RoutesValidation>
     ),
   },
-  {
-    type: "dynamic",
-    name: "Order Detail",
-    key: "orderDetail",
-    icon: "",
-    route: "/order/:id",
-    component: (
-      <RoutesValidation>
-        <OrderDetail />
-      </RoutesValidation>
-    ),
-  },
+  // {
+  //   type: "dynamic",
+  //   name: "Order Detail",
+  //   key: "orderDetail",
+  //   icon: "",
+  //   route: "/order/:id",
+  //   component: (
+  //     <RoutesValidation>
+  //       <OrderDetail />
+  //     </RoutesValidation>
+  //   ),
+  // },
   // {
   //   type: "collapse",
   //   name: "Tables",

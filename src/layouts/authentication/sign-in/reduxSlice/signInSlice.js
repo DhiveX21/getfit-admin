@@ -1,12 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setStorage, removeStorage } from "helpers/LocalStorageHelpers";
 
+const initialUserState = {
+  listLoading: false,
+  actionLoading: false,
+  error: null,
+};
+
+export const callTypes = {
+  list: "list",
+  action: "action",
+};
+
 export const signInSlice = createSlice({
   name: "Sign In",
-  initialState: {
-    user: null,
-  },
+  initialState: initialUserState,
   reducers: {
+    startCall: (state, action) => {
+      state.error = null;
+      if (action.payload.callType == callTypes.list) {
+        state.listLoading = true;
+      } else {
+        state.actionLoading = true;
+      }
+    },
     signIn: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
@@ -36,10 +53,18 @@ export const signInSlice = createSlice({
       console.log(state);
       console.log(action);
     },
+    catchError: (state, action) => {
+      state.error = `${action.type}:${action.payload.error}`;
+      if (action.payload.callType == callTypes.list) {
+        state.listLoading = false;
+      } else {
+        state.actionLoading = false;
+      }
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { signIn, signOut, incrementByAmount } = signInSlice.actions;
+export const { startCall, signIn, signOut, incrementByAmount, catchError } = signInSlice.actions;
 
 export default signInSlice.reducer;

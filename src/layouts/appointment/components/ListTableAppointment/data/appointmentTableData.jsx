@@ -28,36 +28,14 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 
 import { Link } from "react-router-dom";
+import { NameColumnFormatter } from "./formatter";
 
-export default function data() {
-  const Name = ({ image, name, phoneNumber }) => (
-    <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
-      <MDBox ml={2} lineHeight={1}>
-        <MDTypography display="block" variant="button" fontWeight="medium">
-          {name}
-        </MDTypography>
-        <MDTypography variant="caption">{phoneNumber}</MDTypography>
-      </MDBox>
-    </MDBox>
-  );
-
-  const Time = ({ from, to }) => (
-    <MDBox lineHeight={1} textAlign="center">
-      <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
-        {`${new Date(from).getDate()} ${new Date(from).getMonth()} ${new Date(from).getFullYear()}`}
-      </MDTypography>
-      <MDBox display="flex" gap="20px" lineHeight={1} textAlign="left">
-        <MDTypography variant="caption">{`${new Date(to).getHours()}:${new Date(
-          to
-        ).getMinutes()}:${new Date(to).getSeconds()}`}</MDTypography>
-        <MDTypography variant="caption">{`${new Date(to).getHours()}:${new Date(
-          to
-        ).getMinutes()}:${new Date(to).getSeconds()}`}</MDTypography>
-      </MDBox>
-    </MDBox>
-  );
-
+export default function data(entities) {
+  const dataMapping = entities.map((item, index) => {
+    return {
+      
+    }
+  })
   return {
     columns: [
       { Header: "Patient", accessor: "patient", width: "20%", align: "left" },
