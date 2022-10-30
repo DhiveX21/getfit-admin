@@ -1,3 +1,4 @@
+import MDBadge from 'components/MDBadge'
 import React from 'react'
 
 export const StatusColumnFormatter = () => {

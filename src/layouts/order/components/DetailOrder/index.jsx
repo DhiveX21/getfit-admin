@@ -24,6 +24,7 @@ import * as actions from "../../orderAction";
 import { ProductDetail, PatientDetail, Header } from "./partial";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import ProgressStatus from "./partial/ProgressStatus";
 
 function OrderDetail() {
   // Get Params
@@ -46,6 +47,16 @@ function OrderDetail() {
     };
   }, [params.id, dispatch]);
 
+  const cancelOrder = () => {
+    dispatch(actions.cancelOrderAction(params?.id)).then((response) => {
+      dispatch(actions.detailOrder(params?.id));
+    });
+  };
+  const completeOrder = () => {
+    dispatch(actions.completeOrderAction(params?.id)).then((response) => {
+      dispatch(actions.detailOrder(params?.id));
+    });
+  };
   return (
     <MDBox pt={6} pb={3}>
       <Grid container spacing={6}>
@@ -67,63 +78,25 @@ function OrderDetail() {
               />
             </div>
 
-            <div className="w-full p-[20px] flex flex-col justify-center">
-              <MDTypography fontSize="20px" fontWeight="bold">
-                Progress Status
-              </MDTypography>
-              <div className="w-full flex gap-[10px] items-center">
-                <div className="w-full min-h-[100px] bg-green-500 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Ordered via Websites.
-                  </MDTypography>
-                </div>
-                <SvgIcon color="primary">
-                  <path
-                    fill="currentColor"
-                    d="M5.59,7.41L7,6L13,12L7,18L5.59,16.59L10.17,12L5.59,7.41M11.59,7.41L13,6L19,12L13,18L11.59,16.59L16.17,12L11.59,7.41Z"
-                  />
-                </SvgIcon>
-                <div className="w-full min-h-[100px] bg-green-500 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Generate VA Number.
-                  </MDTypography>
-                </div>
-                <SvgIcon color="primary">
-                  <path
-                    fill="currentColor"
-                    d="M5.59,7.41L7,6L13,12L7,18L5.59,16.59L10.17,12L5.59,7.41M11.59,7.41L13,6L19,12L13,18L11.59,16.59L16.17,12L11.59,7.41Z"
-                  />
-                </SvgIcon>
-                <div className="w-full min-h-[100px] bg-blue-500 rounded-xl p-[10px] animate-pulse">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Waiting for Payment
-                  </MDTypography>
-                </div>
-                <SvgIcon color="primary">
-                  <path
-                    fill="currentColor"
-                    d="M5.59,7.41L7,6L13,12L7,18L5.59,16.59L10.17,12L5.59,7.41M11.59,7.41L13,6L19,12L13,18L11.59,16.59L16.17,12L11.59,7.41Z"
-                  />
-                </SvgIcon>
-                <div className="w-full min-h-[100px] bg-gray-500 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Settlement
-                  </MDTypography>
-                </div>
-              </div>
-            </div>
+            <ProgressStatus status={order?.status} />
 
             <div className="w-full p-[20px] flex flex-col justify-center">
               <MDTypography fontSize="20px" fontWeight="bold">
                 Action
               </MDTypography>
               <div className="w-full flex gap-[10px]">
-                <MDButton variant="gradient" color="info">
-                  Set To Paid
-                </MDButton>
-                <MDButton variant="gradient" color="primary">
-                  Cancel Transaction
-                </MDButton>
+                {order?.status == "unpaid" ? (
+                  <>
+                    <MDButton variant="gradient" color="info" onClick={completeOrder}>
+                      Set To Paid
+                    </MDButton>
+                    <MDButton variant="gradient" color="primary" onClick={cancelOrder}>
+                      Cancel Transaction
+                    </MDButton>
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </Card>

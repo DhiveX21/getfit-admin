@@ -32,7 +32,7 @@ export default function data(entities) {
       name: <NameColumnFormatter image={team2} name={item.user.name} email={item.user.email} />,
       orderDate: <OrderDateColumnFormatter title={item.created_at} description={"test"} />,
       price: <PriceColumnFormatter price={item.price_paid} />,
-      status: <StatusColumnFormatter />,
+      status: <StatusColumnFormatter status={item.status} />,
       action: <ActionColumnFormatter id={item.id} />,
     };
   });

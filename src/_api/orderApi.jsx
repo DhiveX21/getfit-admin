@@ -9,3 +9,11 @@ export function getAllOrderDatatable(params) {
 export function getOneOrder(orderId) {
   return axios.get(`${ORDER_URL}/orders/${orderId}`);
 }
+
+export function cancelOrder(orderId) {
+  return axios.put(`${ORDER_URL}/orders/cancel/${orderId}`);
+}
+
+export function completeOrder(orderId) {
+  return axios.put(`${ORDER_URL}/orders/complete/${orderId}`);
+}

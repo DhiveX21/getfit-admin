@@ -1,53 +1,56 @@
-import { getAllOrderDatatable } from "_api/orderApi";
-import { startCall, callTypes } from "_slices/orderSlice";
+import { getAllAppointmentDatatable } from "_api/appointmentApi";
+import { callTypes } from "_slices/appointmentSlice";
+import { startCall } from "_slices/appointmentSlice";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { catchError } from "_slices/orderSlice";
-import { orderDatatable } from "_slices/orderSlice";
-import { getOneOrder, cancelOrder, completeOrder } from "_api/orderApi";
-import { orderDetail } from "_slices/orderSlice";
+import { catchError } from "_slices/appointmentSlice";
+import { appointmentDatatable } from "_slices/appointmentSlice";
+import { appointmentDetail } from "_slices/appointmentSlice";
+import { getOneAppointment } from "_api/appointmentApi";
+import { cancelAppointment } from "_api/appointmentApi";
+import { updateStatusAppointment } from "_api/appointmentApi";
 const MySwal = withReactContent(Swal);
 
 export const datatable = (payload) => (dispatch) => {
   dispatch(startCall({ callType: callTypes.list }));
-  return getAllOrderDatatable(payload)
+  return getAllAppointmentDatatable(payload)
     .then((response) => {
-      const data = response.data.data;
-      dispatch(orderDatatable({ entities: data.entities, totalCount: data.totalCount }));
+      const { entities, totalCount } = response.data.data;
+      dispatch(appointmentDatatable({ entities: entities, totalCount: totalCount }));
     })
     .catch((err) => {
       err.clientMessage = "Something went wrong";
       MySwal.fire({
-        title: "Can't show order",
+        title: "Can't show appointment",
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.list }));
     });
 };
 
-export const detailOrder = (orderId) => (dispatch) => {
-  if (!orderId) {
-    return dispatch(orderDetail({ order: undefined }));
+export const detailAppointment = (appointmentId) => (dispatch) => {
+  if (!appointmentId) {
+    return dispatch(appointmentDetail({ appointment: undefined }));
   }
   dispatch(startCall({ callType: callTypes.action }));
-  return getOneOrder(orderId)
+  return getOneAppointment(appointmentId)
     .then((response) => {
       const data = response.data.data;
-      dispatch(orderDetail({ order: data }));
+      dispatch(appointmentDetail({ appointment: data }));
     })
     .catch((err) => {
       err.clientMessage = "Something went wrong";
       MySwal.fire({
-        title: "Can't show detail order",
+        title: "Can't show appointment",
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.action }));
     });
 };
 
-export const cancelOrderAction = (orderId) => (dispatch) => {
+export const cancelAppointmentAction = (appointmentId) => (dispatch) => {
   dispatch(startCall({ callType: callTypes.action }));
-  return cancelOrder(orderId)
+  return cancelAppointment(appointmentId)
     .then((response) => {
       const data = response.data.data;
       MySwal.fire({
@@ -59,16 +62,16 @@ export const cancelOrderAction = (orderId) => (dispatch) => {
     .catch((err) => {
       err.clientMessage = "Something went wrong";
       MySwal.fire({
-        title: "Can't cancel order",
+        title: "Can't cancel appointment",
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.action }));
     });
 };
 
-export const completeOrderAction = (orderId) => (dispatch) => {
+export const updateAppointmentAction = (appointmentId, req) => (dispatch) => {
   dispatch(startCall({ callType: callTypes.action }));
-  return completeOrder(orderId)
+  return updateStatusAppointment(appointmentId, req)
     .then((response) => {
       const data = response.data.data;
       MySwal.fire({
@@ -80,7 +83,7 @@ export const completeOrderAction = (orderId) => (dispatch) => {
     .catch((err) => {
       err.clientMessage = "Something went wrong";
       MySwal.fire({
-        title: "Can't complete order",
+        title: "Can't update appointment",
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.action }));

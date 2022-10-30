@@ -12,21 +12,24 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
 import ListTableAppointment from "./components/ListTableAppointment";
+import { Route, Routes } from "react-router-dom";
+import { AppointmentUIProvider } from "./appointmentUIContext";
+import DetailAppointment from "./components/DetailAppointment";
 
 function Appointment() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      
+      <AppointmentUIProvider>
+        <Routes>
+          <Route path="list-appointment" element={<ListTableAppointment />} />
+          <Route path=":id" element={<DetailAppointment />} />
+        </Routes>
+      </AppointmentUIProvider>
       <Footer />
     </DashboardLayout>
   );
