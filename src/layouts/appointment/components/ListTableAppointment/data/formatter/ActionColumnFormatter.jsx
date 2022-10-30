@@ -3,9 +3,9 @@ import MDTypography from "components/MDTypography";
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const ActionColumnFormatter = () => {
+export const ActionColumnFormatter = ({id}) => {
   return (
-    <Link to="/appointment/123">
+    <Link to={`/appointment/${id}`}>
       <MDTypography variant="caption" color="text" fontWeight="medium">
         <MDButton variant="gradient" color="info">
           Detail

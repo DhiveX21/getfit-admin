@@ -15,25 +15,19 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
-import MDButton from "components/MDButton";
-import MDBadge from "components/MDBadge";
-
 // Images
 import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
-
-import { Link } from "react-router-dom";
-import { NameColumnFormatter } from "./formatter";
+import { ActionColumnFormatter, AddressColumnFormatter, NameColumnFormatter, StatusColumnFormatter, TimeColumnFormatter, TypeColumnFormatter } from "./formatter";
 
 export default function data(entities) {
   const dataMapping = entities.map((item, index) => {
     return {
-      
+      patient: <NameColumnFormatter image={team2} name={item.patient_detail.name} phoneNumber={item.patient_detail.phone_number} />,
+      address: <AddressColumnFormatter address={item.address} />,
+      date: <TimeColumnFormatter from={item.date_appointment} to={item.date_appointment} />,
+      type: <TypeColumnFormatter />,
+      status: <StatusColumnFormatter />,
+      action: <ActionColumnFormatter id={item._id}/>
     }
   })
   return {
@@ -46,127 +40,6 @@ export default function data(entities) {
       { Header: "action", accessor: "action", width: "20%", align: "center" },
     ],
 
-    rows: [
-      {
-        patient: <Name image={team2} name="John Michael" phoneNumber="089561135135" />,
-        address: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="light">
-            Link harum manis RT.04/02 Kel.Cirimekar, Kab.Bogor
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/appointment/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team3} name="Alexa Liras" phoneNumber="0212324413" />,
-        address: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="light">
-            Link harum manis RT.04/02 Kel.Cirimekar, Kab.Bogor
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/appointment/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team4} name="Laurent Perrier" phoneNumber="0894321654" />,
-        address: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="light">
-            Link harum manis RT.04/02 Kel.Cirimekar, Kab.Bogor
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/appointment/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team3} name="Michael Levi" phoneNumber="081987354124" />,
-        address: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="light">
-            Link harum manis RT.04/02 Kel.Cirimekar, Kab.Bogor
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/appointment/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team3} name="Richard Gran" phoneNumber="0894321543" />,
-        address: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="light">
-            Link harum manis RT.04/02 Kel.Cirimekar, Kab.Bogor
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/appointment/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team4} name="Miriam Eric" phoneNumber="0894321654" />,
-        address: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="light">
-            Link harum manis RT.04/02 Kel.Cirimekar, Kab.Bogor
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/appointment/123123123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-    ],
+    rows: dataMapping,
   };
 }

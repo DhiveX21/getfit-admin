@@ -44,16 +44,16 @@ import Dashboard from "layouts/dashboard";
 // import Profile from "layouts/profile";
 // import SignUp from "layouts/authentication/sign-up";
 import SignIn from "layouts/authentication/sign-in";
-import PatientDetail from "layouts/patientDetail";
+
 import Appointment from "layouts/appointment";
-import AppointmentDetail from "layouts/appointmentDetail";
+
 import MedicalRecord from "layouts/medicalRecord";
 import MedicalRecordCreate from "layouts/medicalRecordCreate";
 import MedicalRecordDetail from "layouts/medicalRecordDetail";
 import Order from "layouts/order";
 // @mui icons
 import Icon from "@mui/material/Icon";
-import OrderDetail from "layouts/orderDetail";
+
 import RoutesValidation from "RoutesValidation";
 import Patient from "layouts/patient";
 
@@ -63,7 +63,8 @@ const routes = [
     name: "Dashboard",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
+    route: "/dashboard/*",
+    main_route: "/dashnoard",
     component: (
       <RoutesValidation>
         <Dashboard />
@@ -76,45 +77,23 @@ const routes = [
     key: "patient",
     icon: <Icon fontSize="small">Patient</Icon>,
     route: "/patient/*",
+    main_route: "/patient/list-patient",
     component: (
       <RoutesValidation>
         <Patient />
       </RoutesValidation>
     ),
   },
-  // {
-  //   type: "dynamic",
-  //   name: "Patient Detail",
-  //   key: "patientDetail",
-  //   icon: "",
-  //   route: "/patient/:id",
-  //   component: (
-  //     <RoutesValidation>
-  //       <PatientDetail />
-  //     </RoutesValidation>
-  //   ),
-  // },
   {
     type: "collapse",
     name: "Appointment",
     key: "appointment",
     icon: <Icon fontSize="small">Appointment</Icon>,
-    route: "/appointment",
+    route: "/appointment/*",
+    main_route: "/appointment/list-appointment",
     component: (
       <RoutesValidation>
         <Appointment />
-      </RoutesValidation>
-    ),
-  },
-  {
-    type: "dynamic",
-    name: "Appointment Detail",
-    key: "appointmentDetail",
-    icon: "",
-    route: "/appointment/:id",
-    component: (
-      <RoutesValidation>
-        <AppointmentDetail />
       </RoutesValidation>
     ),
   },
@@ -124,6 +103,7 @@ const routes = [
     key: "medicalRecord",
     icon: <Icon fontSize="small">Medical Record</Icon>,
     route: "/medical-record",
+    main_route: "/medical-record",
     component: (
       <RoutesValidation>
         <MedicalRecord />
@@ -136,6 +116,7 @@ const routes = [
     key: "medicalRecordCreate",
     icon: <Icon fontSize="small">Medical Record</Icon>,
     route: "/medical-record/create",
+    main_route: "/medical-record/create",
     component: (
       <RoutesValidation>
         <MedicalRecordCreate />
@@ -148,6 +129,7 @@ const routes = [
     key: "medicalRecordDetail",
     icon: "",
     route: "/medical-record/:id",
+    main_route: "/medical-record/:id",
     component: (
       <RoutesValidation>
         <MedicalRecordDetail />
@@ -160,24 +142,13 @@ const routes = [
     key: "order",
     icon: <Icon fontSize="small">Order</Icon>,
     route: "/order/*",
+    main_route: "/order/list-order",
     component: (
       <RoutesValidation>
         <Order />
       </RoutesValidation>
     ),
   },
-  // {
-  //   type: "dynamic",
-  //   name: "Order Detail",
-  //   key: "orderDetail",
-  //   icon: "",
-  //   route: "/order/:id",
-  //   component: (
-  //     <RoutesValidation>
-  //       <OrderDetail />
-  //     </RoutesValidation>
-  //   ),
-  // },
   // {
   //   type: "collapse",
   //   name: "Tables",
