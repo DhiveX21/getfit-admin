@@ -29,34 +29,54 @@ import team4 from "assets/images/team-4.jpg";
 
 import { Link } from "react-router-dom";
 
-export default function data() {
-  const Name = ({ image, name, phoneNumber }) => (
-    <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
-      <MDBox ml={2} lineHeight={1}>
-        <MDTypography display="block" variant="button" fontWeight="medium">
-          {name}
-        </MDTypography>
-        <MDTypography variant="caption">{phoneNumber}</MDTypography>
-      </MDBox>
-    </MDBox>
-  );
+// formatter
 
-  const Time = ({ from, to }) => (
-    <MDBox lineHeight={1} textAlign="center">
-      <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
-        {`${new Date(from).getDate()} ${new Date(from).getMonth()} ${new Date(from).getFullYear()}`}
-      </MDTypography>
-      <MDBox display="flex" gap="20px" lineHeight={1} textAlign="left">
-        <MDTypography variant="caption">{`${new Date(to).getHours()}:${new Date(
-          to
-        ).getMinutes()}:${new Date(to).getSeconds()}`}</MDTypography>
-        <MDTypography variant="caption">{`${new Date(to).getHours()}:${new Date(
-          to
-        ).getMinutes()}:${new Date(to).getSeconds()}`}</MDTypography>
-      </MDBox>
-    </MDBox>
-  );
+import { NameColumnFormatter } from "./formatter/nameFormatter";
+import { TimeColumnFormatter } from "./formatter/timeFormatter";
+
+export default function data(entities) {
+  console.log(entities);
+
+  const data = entities.map((item) => {
+    return {
+      patient: (
+        <NameColumnFormatter
+          image={team2}
+          name={item.patient_detail.name}
+          phoneNumber={item.patient_detail.phone_number}
+        />
+      ),
+      physio: (
+        <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
+          {item.therapist_detail.name}
+        </MDTypography>
+      ),
+      date: (
+        <TimeColumnFormatter
+          from={`${item.patient_detail.date} ${item.patient_detail.time}`}
+          to={`${item.patient_detail.date} ${item.patient_detail.time}`}
+        />
+      ),
+      type: (
+        <MDBadge
+          badgeContent={item.appointment_type}
+          color="primary"
+          variant="gradient"
+          size="sm"
+        />
+      ),
+      status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
+      action: (
+        <Link to={`/medical-record/${item._id}`}>
+          <MDTypography variant="caption" color="text" fontWeight="medium">
+            <MDButton variant="gradient" color="info">
+              Detail
+            </MDButton>
+          </MDTypography>
+        </Link>
+      ),
+    };
+  });
 
   return {
     columns: [
@@ -68,127 +88,6 @@ export default function data() {
       { Header: "action", accessor: "action", width: "20%", align: "center" },
     ],
 
-    rows: [
-      {
-        patient: <Name image={team2} name="John Michael" phoneNumber="089561135135" />,
-        physio: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-            Rifa Rahmalia. S. Kes
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/medical-record/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team3} name="Alexa Liras" phoneNumber="0212324413" />,
-        physio: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-            Rifa Rahmalia. S. Kes
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/medical-record/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team4} name="Laurent Perrier" phoneNumber="0894321654" />,
-        physio: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-            Rifa Rahmalia. S. Kes
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/medical-record/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team3} name="Michael Levi" phoneNumber="081987354124" />,
-        physio: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-            Rifa Rahmalia. S. Kes
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/medical-record/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team3} name="Richard Gran" phoneNumber="0894321543" />,
-        physio: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-            Rifa Rahmalia. S. Kes
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/medical-record/123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-      {
-        patient: <Name image={team4} name="Miriam Eric" phoneNumber="0894321654" />,
-        physio: (
-          <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-            Rifa Rahmalia. S. Kes
-          </MDTypography>
-        ),
-        date: <Time from="2022-09-24 01:00:11" to="2022-09-24 01:00:11" />,
-        type: <MDBadge badgeContent="Tele Physio" color="primary" variant="gradient" size="sm" />,
-        status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
-        action: (
-          <Link to="/medical-record/123123123">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="info">
-                Detail
-              </MDButton>
-            </MDTypography>
-          </Link>
-        ),
-      },
-    ],
+    rows: data,
   };
 }

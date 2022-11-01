@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import appointmentSlice from "_slices/appointmentSlice";
+import medicalRecordSlice from "_slices/medicalRecordSlice";
 import orderSlice from "_slices/orderSlice";
 import patientSlice from "_slices/patientSlice";
 import userSlice from "_slices/userSlice";
@@ -10,5 +11,6 @@ export default configureStore({
     patient: patientSlice,
     order: orderSlice,
     appointment: appointmentSlice,
+    medicalRecord: medicalRecordSlice,
   },
 });

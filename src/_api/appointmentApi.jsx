@@ -9,3 +9,6 @@ export function getAllAppointmentDatatable(params) {
 export function getOneAppointment(appointment_Id) {
   return axios.get(`${APPOINTMENT_URL}/appointments/${appointment_Id}`);
 }
+export function getAllMedicalRecordsDatatable(params) {
+  return axios.post(`${APPOINTMENT_URL}/records/datatable`, { ...params });
+}

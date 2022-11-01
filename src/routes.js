@@ -48,8 +48,7 @@ import SignIn from "layouts/authentication/sign-in";
 import Appointment from "layouts/appointment";
 
 import MedicalRecord from "layouts/medicalRecord";
-import MedicalRecordCreate from "layouts/medicalRecordCreate";
-import MedicalRecordDetail from "layouts/medicalRecordDetail";
+
 import Order from "layouts/order";
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -102,37 +101,11 @@ const routes = [
     name: "Medical Record",
     key: "medicalRecord",
     icon: <Icon fontSize="small">Medical Record</Icon>,
-    route: "/medical-record",
-    main_route: "/medical-record",
+    route: "/medical-record/*",
+    main_route: "/medical-record/list-medical-record",
     component: (
       <RoutesValidation>
         <MedicalRecord />
-      </RoutesValidation>
-    ),
-  },
-  {
-    type: "dynamic",
-    name: "Medical Record",
-    key: "medicalRecordCreate",
-    icon: <Icon fontSize="small">Medical Record</Icon>,
-    route: "/medical-record/create",
-    main_route: "/medical-record/create",
-    component: (
-      <RoutesValidation>
-        <MedicalRecordCreate />
-      </RoutesValidation>
-    ),
-  },
-  {
-    type: "dynamic",
-    name: "Medical Record Detail",
-    key: "medicalRecordDetail",
-    icon: "",
-    route: "/medical-record/:id",
-    main_route: "/medical-record/:id",
-    component: (
-      <RoutesValidation>
-        <MedicalRecordDetail />
       </RoutesValidation>
     ),
   },

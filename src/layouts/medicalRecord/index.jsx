@@ -23,47 +23,53 @@ import Footer from "components/extend/Footer";
 import MDButton from "components/MDButton";
 import { Link } from "react-router-dom";
 import ListTableMedicalRecord from "./components/ListTableMedicalRecord";
+import { Routes, Route } from "react-router-dom";
+import { MedicalRecordUIProvider } from "./medicalRecordUIContext";
 
 function MedicalRecord() {
   return (
     <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox pt={6} pb={3}>
-        <Grid container spacing={6}>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <MDTypography variant="h6" color="white">
-                  Patient Table
-                </MDTypography>
-                <Link to="/medical-record/create">
-                  <MDTypography variant="caption" color="text" fontWeight="medium">
-                    <MDButton variant="gradient" color="success">
-                      Create New
-                    </MDButton>
+      <MedicalRecordUIProvider>
+        <DashboardNavbar />
+        <MDBox pt={6} pb={3}>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <Card>
+                <MDBox
+                  mx={2}
+                  mt={-3}
+                  py={3}
+                  px={2}
+                  variant="gradient"
+                  bgColor="info"
+                  borderRadius="lg"
+                  coloredShadow="info"
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <MDTypography variant="h6" color="white">
+                    Patient Table
                   </MDTypography>
-                </Link>
-              </MDBox>
-              <MDBox p={2}>
-                <ListTableMedicalRecord />
-              </MDBox>
-            </Card>
+                  <Link to="/medical-record/create">
+                    <MDTypography variant="caption" color="text" fontWeight="medium">
+                      <MDButton variant="gradient" color="success">
+                        Create New
+                      </MDButton>
+                    </MDTypography>
+                  </Link>
+                </MDBox>
+                <MDBox p={2}>
+                  <Routes>
+                    <Route path="list-medical-record" element={<ListTableMedicalRecord />} />
+                  </Routes>
+                </MDBox>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </MDBox>
-      <Footer />
+        </MDBox>
+        <Footer />
+      </MedicalRecordUIProvider>
     </DashboardLayout>
   );
 }
