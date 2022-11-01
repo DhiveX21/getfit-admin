@@ -28,7 +28,7 @@ export default function ListTableOrder() {
   }, [orderUIProps.queryParams]);
 
   const { columns, rows } = orderTableData(entities);
-
+  
   return (
     <MDBox pt={6} pb={3}>
       <Grid container spacing={6}>

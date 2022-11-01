@@ -9,6 +9,11 @@ export function getAllAppointmentDatatable(params) {
 export function getOneAppointment(appointment_Id) {
   return axios.get(`${APPOINTMENT_URL}/appointments/${appointment_Id}`);
 }
-export function getAllMedicalRecordsDatatable(params) {
-  return axios.post(`${APPOINTMENT_URL}/records/datatable`, { ...params });
+
+export function cancelAppointment(appointment_Id) {
+  return axios.put(`${APPOINTMENT_URL}/appointments/${appointment_Id}/cancel`);
+}
+
+export function updateStatusAppointment(appointment_Id, req) {
+  return axios.put(`${APPOINTMENT_URL}/appointments/${appointment_Id}/status`, req);
 }

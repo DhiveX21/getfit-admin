@@ -9,6 +9,8 @@ import AppointmentDetail from "./partial/AppointmentDetail";
 import Header from "./partial/Header";
 import PatientDetail from "./partial/PatientDetail";
 import * as actions from "../../appointmentAction";
+import ProgressStatus from "./partial/ProgressStatus";
+import { appointmentStatusStep } from "_shareVar";
 
 export default function DetailAppointment() {
   // Get Params
@@ -31,6 +33,25 @@ export default function DetailAppointment() {
     };
   }, [params.id, dispatch]);
 
+  const cancelAppointment = () => {
+    dispatch(actions.cancelAppointmentAction(params?.id)).then((response) => {
+      dispatch(actions.detailAppointment(params?.id));
+    });
+  };
+  const updateAppointment = () => {
+    const currentStepIndex = appointmentStatusStep.findIndex((item, index) => {
+      if (appointment?.status == item.key) {
+        return true;
+      }
+    });
+    const nextStep = appointmentStatusStep[currentStepIndex + 1];
+    dispatch(actions.updateAppointmentAction(params?.id, { status: nextStep.key })).then(
+      (response) => {
+        dispatch(actions.detailAppointment(params?.id));
+      }
+    );
+  };
+
   return (
     <MDBox pt={6} pb={3}>
       <Grid container spacing={6}>
@@ -51,57 +72,24 @@ export default function DetailAppointment() {
               />
             </div>
 
-            <div className="w-full p-[20px] flex flex-col justify-center">
-              <MDTypography fontSize="20px" fontWeight="bold">
-                Progress Status
-              </MDTypography>
-              <div className="w-full flex gap-[10px]">
-                <div className="w-full bg-green-500 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Looking For Physio
-                  </MDTypography>
-                </div>
-                <div className="w-full bg-green-500 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Physio Approval
-                  </MDTypography>
-                </div>
-                <div className="w-full bg-green-500 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Waiting the Appointment time
-                  </MDTypography>
-                </div>
-                <div className="w-full bg-blue-500 animate-pulse rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    In Treatment
-                  </MDTypography>
-                </div>
-                <div className="w-full bg-gray-500 opacity-50 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Finish Treatment
-                  </MDTypography>
-                </div>
-                <div className="w-full bg-gray-500 opacity-50 rounded-xl p-[10px]">
-                  <MDTypography width="60%" color="white" fontSize="14px">
-                    Feedback
-                  </MDTypography>
+            <ProgressStatus status={appointment?.status} />
+            {appointment?.status != "cancel" ? (
+              <div className="w-full p-[20px] flex flex-col justify-center">
+                <MDTypography fontSize="20px" fontWeight="bold">
+                  Action
+                </MDTypography>
+                <div className="w-full flex gap-[10px]">
+                  <MDButton variant="gradient" color="info" onClick={updateAppointment}>
+                    To Next Step
+                  </MDButton>
+                  <MDButton variant="gradient" color="primary" onClick={cancelAppointment}>
+                    Cancel
+                  </MDButton>
                 </div>
               </div>
-            </div>
-
-            <div className="w-full p-[20px] flex flex-col justify-center">
-              <MDTypography fontSize="20px" fontWeight="bold">
-                Action
-              </MDTypography>
-              <div className="w-full flex gap-[10px]">
-                <MDButton variant="gradient" color="info">
-                  To Next Step
-                </MDButton>
-                <MDButton variant="gradient" color="primary">
-                  Cancel
-                </MDButton>
-              </div>
-            </div>
+            ) : (
+              ""
+            )}
           </Card>
         </Grid>
       </Grid>

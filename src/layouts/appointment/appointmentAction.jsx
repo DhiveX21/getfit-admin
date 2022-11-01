@@ -7,6 +7,8 @@ import { catchError } from "_slices/appointmentSlice";
 import { appointmentDatatable } from "_slices/appointmentSlice";
 import { appointmentDetail } from "_slices/appointmentSlice";
 import { getOneAppointment } from "_api/appointmentApi";
+import { cancelAppointment } from "_api/appointmentApi";
+import { updateStatusAppointment } from "_api/appointmentApi";
 const MySwal = withReactContent(Swal);
 
 export const datatable = (payload) => (dispatch) => {
@@ -39,6 +41,48 @@ export const detailAppointment = (appointmentId) => (dispatch) => {
       err.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show appointment",
+        icon: "error",
+      });
+      dispatch(catchError({ err, callType: callTypes.action }));
+    });
+};
+
+export const cancelAppointmentAction = (appointmentId) => (dispatch) => {
+  dispatch(startCall({ callType: callTypes.action }));
+  return cancelAppointment(appointmentId)
+    .then((response) => {
+      const data = response.data.data;
+      MySwal.fire({
+        title: "Success",
+        text: data.message,
+        icon: "success",
+      });
+    })
+    .catch((err) => {
+      err.clientMessage = "Something went wrong";
+      MySwal.fire({
+        title: "Can't cancel appointment",
+        icon: "error",
+      });
+      dispatch(catchError({ err, callType: callTypes.action }));
+    });
+};
+
+export const updateAppointmentAction = (appointmentId, req) => (dispatch) => {
+  dispatch(startCall({ callType: callTypes.action }));
+  return updateStatusAppointment(appointmentId, req)
+    .then((response) => {
+      const data = response.data.data;
+      MySwal.fire({
+        title: "Success",
+        text: data.message,
+        icon: "success",
+      });
+    })
+    .catch((err) => {
+      err.clientMessage = "Something went wrong";
+      MySwal.fire({
+        title: "Can't update appointment",
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.action }));
