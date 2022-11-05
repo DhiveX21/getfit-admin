@@ -1,18 +1,21 @@
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import { getMonthName } from "helpers/DateHelpers";
 
-export const TimeColumnFormatter = ({ from, to }) => (
-  <MDBox lineHeight={1} textAlign="center">
-    <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
-      {`${new Date(from).getDate()} ${new Date(from).getMonth()} ${new Date(from).getFullYear()}`}
-    </MDTypography>
-    <MDBox display="flex" gap="20px" lineHeight={1} textAlign="left">
-      <MDTypography variant="caption">{`${new Date(to).getHours()}:${new Date(
-        to
-      ).getMinutes()}:${new Date(to).getSeconds()}`}</MDTypography>
-      <MDTypography variant="caption">{`${new Date(to).getHours()}:${new Date(
-        to
-      ).getMinutes()}:${new Date(to).getSeconds()}`}</MDTypography>
-    </MDBox>
-  </MDBox>
-);
+export const TimeColumnFormatter = ({ from, to }) => {
+  if (from && to) {
+    const dateSplice = from.split(" ");
+    return (
+      <MDBox lineHeight={1} textAlign="center">
+        <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
+          {`${new Date(dateSplice[0]).getDate()} ${getMonthName(
+            new Date(dateSplice[0]).getMonth()
+          )} ${new Date(dateSplice[0]).getFullYear()}`}
+        </MDTypography>
+        <MDBox display="flex" gap="20px" lineHeight={1} textAlign="left">
+          <MDTypography variant="caption">{`${dateSplice[1]} WIB`}</MDTypography>
+        </MDBox>
+      </MDBox>
+    );
+  }
+};

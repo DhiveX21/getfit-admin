@@ -35,8 +35,6 @@ import { NameColumnFormatter } from "./formatter/nameFormatter";
 import { TimeColumnFormatter } from "./formatter/timeFormatter";
 
 export default function data(entities) {
-  console.log(entities);
-
   const data = entities.map((item) => {
     return {
       patient: (
@@ -52,10 +50,7 @@ export default function data(entities) {
         </MDTypography>
       ),
       date: (
-        <TimeColumnFormatter
-          from={`${item.patient_detail.date} ${item.patient_detail.time}`}
-          to={`${item.patient_detail.date} ${item.patient_detail.time}`}
-        />
+        <TimeColumnFormatter from={`${item.date} ${item.time}`} to={`${item.date} ${item.time}`} />
       ),
       type: (
         <MDBadge

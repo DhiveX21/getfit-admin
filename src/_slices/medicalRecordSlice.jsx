@@ -4,7 +4,7 @@ const initialMedicalRecordState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  appointment: undefined,
+  medicalRecord: undefined,
   entities: [],
   totalCount: 0,
 };
@@ -33,6 +33,11 @@ export const medicalRecordSlice = createSlice({
       state.entities = entities;
       state.totalCount = totalCount;
     },
+    medicalRecordDetail: (state, action) => {
+      state.actionLoading = false;
+      state.error = null;
+      state.medicalRecord = action.payload.medicalRecord;
+    },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
       if (action.payload.callType == callTypes.list) {
@@ -45,6 +50,7 @@ export const medicalRecordSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { startCall, medicalRecordDataTable, catchError } = medicalRecordSlice.actions;
+export const { startCall, medicalRecordDataTable, medicalRecordDetail, catchError } =
+  medicalRecordSlice.actions;
 
 export default medicalRecordSlice.reducer;
