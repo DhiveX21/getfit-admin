@@ -55,6 +55,7 @@ import Icon from "@mui/material/Icon";
 
 import RoutesValidation from "RoutesValidation";
 import Patient from "layouts/patient";
+import Notification from "layouts/notification";
 
 const routes = [
   {
@@ -119,6 +120,19 @@ const routes = [
     component: (
       <RoutesValidation>
         <Order />
+      </RoutesValidation>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Notification",
+    key: "notification",
+    icon: <Icon fontSize="small">Notification</Icon>,
+    route: "/notification/*",
+    main_route: "/notification/list-notification",
+    component: (
+      <RoutesValidation>
+        <Notification />
       </RoutesValidation>
     ),
   },
