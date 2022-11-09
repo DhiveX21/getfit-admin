@@ -1,32 +1,32 @@
 import React, { useEffect, useMemo } from "react";
 import DataTable from "components/extend/Tables/DataTable";
-import medicalRecordTableData from "./data/medicalRecordTableData";
-import { dataTableMedicalRecord } from "layouts/medicalRecord/medicalRecordAction";
+import notificationTableData from "./data/notificationTableData";
+import { dataTableNotification } from "layouts/notification/notificationAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useMedicalRecordUIContext } from "layouts/medicalRecord/medicalRecordUIContext";
+import { useNotificationUIContext } from "layouts/notification/notificationUIContext";
 import MDAvatar from "components/MDAvatar";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import { Link } from "react-router-dom";
 import MDButton from "components/MDButton";
 
-export default function ListTableMedicalRecord() {
-  const { currentState } = useSelector((state) => ({ currentState: state.medicalRecord }));
-  const { totalCount, entities, listLoading } = currentState;
+export default function ListTableNotification() {
+  const { currentState } = useSelector((state) => ({ currentState: state.notification }));
+  const { entities } = currentState;
   const dispatch = useDispatch();
-  const medicalRecordUIContext = useMedicalRecordUIContext();
-  const medicalRecordUIProps = useMemo(() => {
+  const notificationUIContext = useNotificationUIContext();
+  const notificationUIProps = useMemo(() => {
     return {
-      queryParams: medicalRecordUIContext.queryParams,
-      setQueryParams: medicalRecordUIContext.setQueryParams,
+      queryParams: notificationUIContext.queryParams,
+      setQueryParams: notificationUIContext.setQueryParams,
     };
-  }, [medicalRecordUIContext]);
+  }, [notificationUIContext]);
 
   useEffect(() => {
-    dispatch(dataTableMedicalRecord(medicalRecordUIProps.queryParams));
-  }, [medicalRecordUIProps.queryParams]);
+    dispatch(dataTableNotification(notificationUIProps.queryParams));
+  }, [notificationUIProps.queryParams]);
 
-  const { columns, rows } = medicalRecordTableData(entities);
+  const { columns, rows } = notificationTableData(entities);
 
   return (
     <>
@@ -44,9 +44,9 @@ export default function ListTableMedicalRecord() {
         alignItems="center"
       >
         <MDTypography variant="h6" color="white">
-          Medical Record
+          Notification
         </MDTypography>
-        <Link to="/medical-record/create">
+        <Link to="/notification/create">
           <MDTypography variant="caption" color="text" fontWeight="medium">
             <MDButton variant="gradient" color="success">
               Create New
@@ -56,8 +56,8 @@ export default function ListTableMedicalRecord() {
       </MDBox>
       <MDBox p={2}>
         <DataTable
-          params={medicalRecordUIProps.queryParams}
-          setParams={medicalRecordUIProps.setQueryParams}
+          params={notificationUIProps.queryParams}
+          setParams={notificationUIProps.setQueryParams}
           table={{ columns, rows }}
         />
       </MDBox>

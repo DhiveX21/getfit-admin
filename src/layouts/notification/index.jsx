@@ -16,41 +16,37 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
-import MDButton from "components/MDButton";
-import { Link } from "react-router-dom";
-import ListTableMedicalRecord from "./components/ListTableMedicalRecord";
-import DetailMedicalRecord from "./components/DetailMedicalRecord";
-import CreateMedicalRecord from "./components/CreateMedicalRecord";
-import { Routes, Route, useLocation } from "react-router-dom";
-import { MedicalRecordUIProvider } from "./medicalRecordUIContext";
+import ListTableNotification from "./components/ListTableNotification";
+import CreateNotification from "./components/CreateNotification";
+import { Routes, Route } from "react-router-dom";
+import { NotificationUIProvider } from "./notificationUIContext";
 
-function MedicalRecord() {
-  let location = useLocation();
+function Notification() {
   return (
     <DashboardLayout>
-      <MedicalRecordUIProvider>
+      <NotificationUIProvider>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <Card>
                 <Routes>
-                  <Route path="list-medical-record" element={<ListTableMedicalRecord />} />
-                  <Route path="create" element={<CreateMedicalRecord />} />
-                  <Route path=":id" element={<DetailMedicalRecord />} />
+                  <Route path="list-notification" element={<ListTableNotification />} />
+                  <Route path="create" element={<CreateNotification />} />
+                  {/* <Route path=":id" element={<DetailMedicalRecord />} /> */}
                 </Routes>
               </Card>
             </Grid>
           </Grid>
         </MDBox>
         <Footer />
-      </MedicalRecordUIProvider>
+      </NotificationUIProvider>
     </DashboardLayout>
   );
 }
 
-export default MedicalRecord;
+export default Notification;

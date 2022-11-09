@@ -44,10 +44,12 @@ export default function DetailAppointment() {
         return true;
       }
     });
-    const nextStep = appointmentStatusStep[currentStepIndex+1];
-    dispatch(actions.updateAppointmentAction(params?.id, {status: nextStep.key})).then((response) => {
-      dispatch(actions.detailAppointment(params?.id));
-    });
+    const nextStep = appointmentStatusStep[currentStepIndex + 1];
+    dispatch(actions.updateAppointmentAction(params?.id, { status: nextStep.key })).then(
+      (response) => {
+        dispatch(actions.detailAppointment(params?.id));
+      }
+    );
   };
 
   return (

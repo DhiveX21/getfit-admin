@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialAppointmentState = {
+const initialNotificationState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  appointment: undefined,
+  notification: undefined,
   entities: [],
+  category: [],
   totalCount: 0,
 };
 
@@ -14,9 +15,9 @@ export const callTypes = {
   action: "action",
 };
 
-export const appointmentSlice = createSlice({
-  name: "Appointment",
-  initialState: initialAppointmentState,
+export const notificationSlice = createSlice({
+  name: "Notification",
+  initialState: initialNotificationState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -26,17 +27,18 @@ export const appointmentSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    appointmentDatatable: (state, action) => {
+    notificationDataTable: (state, action) => {
       const { entities, totalCount } = action.payload;
       state.listLoading = false;
       state.error = null;
       state.entities = entities;
       state.totalCount = totalCount;
     },
-    appointmentDetail: (state, action) => {
-      state.actionLoading = false;
+    notificationCategory: (state, action) => {
+      const { entities } = action.payload;
+      state.listLoading = false;
       state.error = null;
-      state.appointment = action.payload.appointment;
+      state.category = entities;
     },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
@@ -50,7 +52,7 @@ export const appointmentSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { startCall, appointmentDatatable, appointmentDetail, catchError } =
-  appointmentSlice.actions;
+export const { startCall, notificationDataTable, notificationCategory, catchError } =
+  notificationSlice.actions;
 
-export default appointmentSlice.reducer;
+export default notificationSlice.reducer;
