@@ -9,3 +9,7 @@ export function getAllPatientDatatable(params) {
 export function getOnePatient(patientId) {
   return axios.get(`${PATIENT_URL}/patients/${patientId}`);
 }
+
+export function getAllPatient() {
+  return axios.get(`${PATIENT_URL}/patients`);
+}

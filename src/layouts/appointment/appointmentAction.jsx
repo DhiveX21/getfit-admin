@@ -27,7 +27,6 @@ export const datatable = (payload) => (dispatch) => {
       dispatch(catchError({ err, callType: callTypes.list }));
     });
 };
-
 export const detailAppointment = (appointmentId) => (dispatch) => {
   if (!appointmentId) {
     return dispatch(appointmentDetail({ appointment: undefined }));
