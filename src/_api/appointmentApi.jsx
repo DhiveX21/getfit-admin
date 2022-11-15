@@ -20,3 +20,7 @@ export function cancelAppointment(appointment_Id) {
 export function updateStatusAppointment(appointment_Id, req) {
   return axios.put(`${APPOINTMENT_URL}/appointments/${appointment_Id}/status`, req);
 }
+
+export function addMeetingLinkAppointment(appointment_Id, req) {
+  return axios.put(`${APPOINTMENT_URL}/appointments/${appointment_Id}/link-meeting`, req);
+}

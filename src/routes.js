@@ -136,6 +136,19 @@ const routes = [
       </RoutesValidation>
     ),
   },
+  {
+    type: "collapse",
+    name: "Video",
+    key: "video",
+    icon: <Icon fontSize="small">Video</Icon>,
+    route: "/video/*",
+    main_route: "/video/list-video",
+    component: (
+      <RoutesValidation>
+        <Notification />
+      </RoutesValidation>
+    ),
+  },
   // {
   //   type: "collapse",
   //   name: "Tables",

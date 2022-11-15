@@ -19,7 +19,7 @@ export default function Header({ title }) {
       gap="20px"
       alignItems="center"
     >
-      <BackButton to="/medical-record" />
+      <BackButton to="/appointment/list-appointment" />
       <MDTypography variant="h6" color="white">
         {title}
       </MDTypography>

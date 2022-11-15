@@ -3,13 +3,18 @@ import { startCall } from "_slices/notificationSlice";
 import { catchError } from "_slices/notificationSlice";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { notificationDataTable, notificationCategory } from "_slices/notificationSlice";
+import {
+  notificationDataTable,
+  notificationCategory,
+  notificationDetail,
+} from "_slices/notificationSlice";
 import {
   getAllNotificationDatatable,
   getAllNotificationCategory,
   createNotification,
   createNotificationCategory,
   createNotificationWhatsapp,
+  getOneNotification,
 } from "_api/notificationApi";
 import {} from "_api/notificationApi";
 import { getAllAppointment } from "_api/appointmentApi";
@@ -125,5 +130,25 @@ export const createNotificationWhatsappAction = (phoneNumber, message) => (dispa
         title: "Failed Create Notification Category",
         icon: "error",
       });
+    });
+};
+
+export const detailNotification = (notificationId) => (dispatch) => {
+  if (!notificationId) {
+    return dispatch(notificationDetail({ notification: undefined }));
+  }
+  dispatch(startCall({ callType: callTypes.action }));
+  return getOneNotification(notificationId)
+    .then((response) => {
+      const data = response.data.data;
+      dispatch(notificationDetail({ notification: data }));
+    })
+    .catch((err) => {
+      err.clientMessage = "Something went wrong";
+      MySwal.fire({
+        title: "Can't show detail patient",
+        icon: "error",
+      });
+      dispatch(catchError({ err, callType: callTypes.action }));
     });
 };

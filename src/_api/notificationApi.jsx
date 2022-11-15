@@ -4,13 +4,17 @@ const MEDICAL_RECORD_URL = process.env.REACT_APP_APPOINTMENT_SERVICE_URL;
 const NOTIFICATION_URL = process.env.REACT_APP_NOTIFICATION_SERVICE_URL;
 
 export function getAllNotificationDatatable(params) {
-  return axios.post(`${MEDICAL_RECORD_URL}/records/datatable`, { ...params });
+  return axios.post(`${NOTIFICATION_URL}/notifications/datatable`, { ...params });
 }
 
 export function getAllNotificationCategory() {
   return axios.get(`${NOTIFICATION_URL}/notification-categories`, {
     params: { status: "active" },
   });
+}
+
+export function getOneNotification(notificationId) {
+  return axios.get(`${NOTIFICATION_URL}/notifications/${notificationId}`);
 }
 
 export function createNotification(body) {

@@ -31,38 +31,42 @@ import { Link } from "react-router-dom";
 
 // formatter
 
-import { NameColumnFormatter } from "./formatter/nameFormatter";
+import { TitleColumnFormatter } from "./formatter/titleFormatter";
 import { TimeColumnFormatter } from "./formatter/timeFormatter";
 
 export default function data(entities) {
   const data = entities.map((item) => {
     return {
-      patient: (
-        <NameColumnFormatter
-          image={team2}
-          name={item.patient_detail.name}
-          phoneNumber={item.patient_detail.phone_number}
-        />
-      ),
-      physio: (
-        <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-          {item.therapist_detail.name}
+      title: <TitleColumnFormatter title={item.title} />,
+      description: (
+        <MDTypography
+          display="block"
+          variant="caption"
+          className="max-w-[300px] overflow-hidden"
+          color="text"
+          fontWeight="bold"
+        >
+          <p>{item.description}</p>
         </MDTypography>
       ),
       date: (
-        <TimeColumnFormatter from={`${item.date} ${item.time}`} to={`${item.date} ${item.time}`} />
+        <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
+          {item.created_at}
+        </MDTypography>
       ),
       type: (
         <MDBadge
-          badgeContent={item.appointment_type}
-          color="primary"
+          badgeContent={item.is_important ? "Prioritas" : "Normal"}
+          color={item.is_important ? "primary" : "info"}
           variant="gradient"
           size="sm"
         />
       ),
-      status: <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />,
+      category: (
+        <MDBadge badgeContent={item.category_id} color="success" variant="gradient" size="sm" />
+      ),
       action: (
-        <Link to={`/medical-record/${item._id}`}>
+        <Link to={`/notification/${item.id}`}>
           <MDTypography variant="caption" color="text" fontWeight="medium">
             <MDButton variant="gradient" color="info">
               Detail
@@ -75,12 +79,12 @@ export default function data(entities) {
 
   return {
     columns: [
-      { Header: "Patient", accessor: "patient", width: "20%", align: "left" },
-      { Header: "Physio", accessor: "physio", width: "20%", align: "left" },
-      { Header: "Date", accessor: "date", width: "20%", align: "center" },
-      { Header: "Type", accessor: "type", width: "10%", align: "center" },
-      { Header: "Status", accessor: "status", width: "10%", align: "center" },
-      { Header: "action", accessor: "action", width: "20%", align: "center" },
+      { Header: "title", accessor: "title", align: "left" },
+      { Header: "description", accessor: "description", align: "left" },
+      { Header: "date", accessor: "date", align: "center" },
+      { Header: "type", accessor: "type", width: "10%", align: "center" },
+      { Header: "category", accessor: "category", width: "10%", align: "center" },
+      { Header: "action", accessor: "action", align: "center" },
     ],
 
     rows: data,

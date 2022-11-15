@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialNotificationState = {
+const initialExerciseState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  notification: undefined,
+  exercise: undefined,
   entities: [],
-  category: [],
   totalCount: 0,
 };
 
@@ -15,9 +14,9 @@ export const callTypes = {
   action: "action",
 };
 
-export const notificationSlice = createSlice({
-  name: "Notification",
-  initialState: initialNotificationState,
+export const exerciseSlice = createSlice({
+  name: "Exercise",
+  initialState: initialExerciseState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -27,24 +26,14 @@ export const notificationSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    notificationDataTable: (state, action) => {
+    exerciseVideoDataTable: (state, action) => {
       const { entities, totalCount } = action.payload;
       state.listLoading = false;
       state.error = null;
       state.entities = entities;
       state.totalCount = totalCount;
     },
-    notificationDetail: (state, action) => {
-      state.actionLoading = false;
-      state.error = null;
-      state.notification = action.payload.notification;
-    },
-    notificationCategory: (state, action) => {
-      const { entities } = action.payload;
-      state.listLoading = false;
-      state.error = null;
-      state.category = entities;
-    },
+
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
       if (action.payload.callType == callTypes.list) {
@@ -57,12 +46,6 @@ export const notificationSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  startCall,
-  notificationDataTable,
-  notificationDetail,
-  notificationCategory,
-  catchError,
-} = notificationSlice.actions;
+export const { startCall, exerciseVideoDataTable, catchError } = exerciseSlice.actions;
 
-export default notificationSlice.reducer;
+export default exerciseSlice.reducer;

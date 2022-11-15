@@ -16,38 +16,38 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
-
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
-import ListTableNotification from "./components/ListTableNotification";
-import CreateNotification from "./components/CreateNotification";
-import { Routes, Route } from "react-router-dom";
-import { NotificationUIProvider } from "./notificationUIContext";
-import DetailNotification from "./components/DetailNotification";
+import { Link } from "react-router-dom";
+import ListTableMedicalRecord from "./components/ListTableMedicalRecord";
 
-function Notification() {
+import { Routes, Route, useLocation } from "react-router-dom";
+import { MedicalRecordUIProvider } from "./medicalRecordUIContext";
+
+function Video() {
+  let location = useLocation();
   return (
     <DashboardLayout>
-      <NotificationUIProvider>
+      <MedicalRecordUIProvider>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <Card>
                 <Routes>
-                  <Route path="list-notification" element={<ListTableNotification />} />
-                  <Route path="create" element={<CreateNotification />} />
-                  <Route path=":id" element={<DetailNotification />} />
+                  <Route path="list-video" element={<ListTableMedicalRecord />} />
+                  {/* <Route path="create" element={<CreateMedicalRecord />} />
+                  <Route path=":id" element={<DetailMedicalRecord />} /> */}
                 </Routes>
               </Card>
             </Grid>
           </Grid>
         </MDBox>
         <Footer />
-      </NotificationUIProvider>
+      </MedicalRecordUIProvider>
     </DashboardLayout>
   );
 }
 
-export default Notification;
+export default MedicalRecord;

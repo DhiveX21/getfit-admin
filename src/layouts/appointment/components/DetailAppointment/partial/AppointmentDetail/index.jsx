@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import MDTypography from "components/MDTypography";
+import { formatDateRawToYMD, dateFormater } from "helpers/DateHelpers";
 
 export default function AppointmentDetail({ appointment_date, appointment_time, physiotherapy }) {
   return (
@@ -17,7 +18,7 @@ export default function AppointmentDetail({ appointment_date, appointment_time, 
           :
         </MDTypography>
         <MDTypography width="50%" color="text" fontSize="14px">
-          {appointment_date}
+          {dateFormater(formatDateRawToYMD(appointment_date))}
         </MDTypography>
       </div>
       <div className=" flex gap-[10px] ">

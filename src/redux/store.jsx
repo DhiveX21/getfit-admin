@@ -15,4 +15,8 @@ export default configureStore({
     medicalRecord: medicalRecordSlice,
     notification: notificationSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

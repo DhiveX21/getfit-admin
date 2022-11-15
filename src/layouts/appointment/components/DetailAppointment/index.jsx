@@ -72,8 +72,12 @@ export default function DetailAppointment() {
               />
             </div>
 
-            <ProgressStatus status={appointment?.status} />
-            {appointment?.status != "cancel" ? (
+            <ProgressStatus
+              type={appointment?.appointment_type}
+              linkMeeting={appointment?.link_meeting}
+              status={appointment?.status}
+            />
+            {appointment?.status !== "cancel" && appointment?.status !== "complete" ? (
               <div className="w-full p-[20px] flex flex-col justify-center">
                 <MDTypography fontSize="20px" fontWeight="bold">
                   Action

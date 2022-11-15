@@ -5,6 +5,10 @@ export function dateFormater(dateString) {
   return date + "-" + month + "-" + year;
 }
 
+export function formatDateRawToYMD(dateRaw) {
+  return dateRaw.replace(/T/, " ").replace(/\..+/, "").replace("00:00:00", "");
+}
+
 export function getMonthName(integerMonth) {
   const monthNames = [
     "January",
