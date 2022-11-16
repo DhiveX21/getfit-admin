@@ -20,34 +20,36 @@ import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout"
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
 import { Link } from "react-router-dom";
-import ListTableMedicalRecord from "./components/ListTableMedicalRecord";
+import ListTableVideo from "./components/ListTableVideo";
+import CreateVideo from "./components/CreateVideo";
 
 import { Routes, Route, useLocation } from "react-router-dom";
-import { MedicalRecordUIProvider } from "./medicalRecordUIContext";
+import { VideoUIProvider } from "./videoUIContext";
+import DetailVideo from "./components/DetailVideo";
 
 function Video() {
   let location = useLocation();
   return (
     <DashboardLayout>
-      <MedicalRecordUIProvider>
+      <VideoUIProvider>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <Card>
                 <Routes>
-                  <Route path="list-video" element={<ListTableMedicalRecord />} />
-                  {/* <Route path="create" element={<CreateMedicalRecord />} />
-                  <Route path=":id" element={<DetailMedicalRecord />} /> */}
+                  <Route path="list-video" element={<ListTableVideo />} />
+                  <Route path="create" element={<CreateVideo />} />
+                  <Route path=":id" element={<DetailVideo />} />
                 </Routes>
               </Card>
             </Grid>
           </Grid>
         </MDBox>
         <Footer />
-      </MedicalRecordUIProvider>
+      </VideoUIProvider>
     </DashboardLayout>
   );
 }
 
-export default MedicalRecord;
+export default Video;

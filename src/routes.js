@@ -56,6 +56,7 @@ import Icon from "@mui/material/Icon";
 import RoutesValidation from "RoutesValidation";
 import Patient from "layouts/patient";
 import Notification from "layouts/notification";
+import Video from "layouts/video";
 
 const routes = [
   {
@@ -145,7 +146,7 @@ const routes = [
     main_route: "/video/list-video",
     component: (
       <RoutesValidation>
-        <Notification />
+        <Video />
       </RoutesValidation>
     ),
   },

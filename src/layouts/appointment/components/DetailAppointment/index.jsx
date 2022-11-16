@@ -11,8 +11,10 @@ import PatientDetail from "./partial/PatientDetail";
 import * as actions from "../../appointmentAction";
 import ProgressStatus from "./partial/ProgressStatus";
 import { appointmentStatusStep } from "_shareVar";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailAppointment() {
+  const navigate = useNavigate();
   // Get Params
   const params = useParams();
 
@@ -34,22 +36,32 @@ export default function DetailAppointment() {
   }, [params.id, dispatch]);
 
   const cancelAppointment = () => {
-    dispatch(actions.cancelAppointmentAction(params?.id)).then((response) => {
-      dispatch(actions.detailAppointment(params?.id));
-    });
+    if (window.confirm("are you sure to CANCEL this appointment?")) {
+      dispatch(actions.cancelAppointmentAction(params?.id)).then((response) => {
+        dispatch(actions.detailAppointment(params?.id));
+      });
+    }
   };
   const updateAppointment = () => {
-    const currentStepIndex = appointmentStatusStep.findIndex((item, index) => {
-      if (appointment?.status == item.key) {
-        return true;
-      }
-    });
-    const nextStep = appointmentStatusStep[currentStepIndex + 1];
-    dispatch(actions.updateAppointmentAction(params?.id, { status: nextStep.key })).then(
-      (response) => {
-        dispatch(actions.detailAppointment(params?.id));
-      }
-    );
+    if (window.confirm("are you sure to UPDATE this appointment?")) {
+      const currentStepIndex = appointmentStatusStep.findIndex((item, index) => {
+        if (appointment?.status == item.key) {
+          return true;
+        }
+      });
+      const nextStep = appointmentStatusStep[currentStepIndex + 1];
+      dispatch(actions.updateAppointmentAction(params?.id, { status: nextStep.key })).then(
+        (response) => {
+          dispatch(actions.detailAppointment(params?.id));
+        }
+      );
+    }
+  };
+  const deleteAppointment = () => {
+    if (window.confirm("are you sure to DELETE this appointment?")) {
+      dispatch(actions.deleteAppointmentAction(params?.id));
+      navigate("/appointment/list-appointment");
+    }
   };
 
   return (
@@ -77,23 +89,28 @@ export default function DetailAppointment() {
               linkMeeting={appointment?.link_meeting}
               status={appointment?.status}
             />
-            {appointment?.status !== "cancel" && appointment?.status !== "complete" ? (
-              <div className="w-full p-[20px] flex flex-col justify-center">
-                <MDTypography fontSize="20px" fontWeight="bold">
-                  Action
-                </MDTypography>
-                <div className="w-full flex gap-[10px]">
-                  <MDButton variant="gradient" color="info" onClick={updateAppointment}>
-                    To Next Step
-                  </MDButton>
-                  <MDButton variant="gradient" color="primary" onClick={cancelAppointment}>
-                    Cancel
-                  </MDButton>
-                </div>
+            <div className="w-full p-[20px] flex flex-col justify-center">
+              <MDTypography fontSize="20px" fontWeight="bold">
+                Action
+              </MDTypography>
+              <div className="w-full flex gap-[10px]">
+                {appointment?.status !== "cancel" && appointment?.status !== "complete" ? (
+                  <>
+                    <MDButton variant="gradient" color="info" onClick={updateAppointment}>
+                      To Next Step
+                    </MDButton>
+                    <MDButton variant="gradient" color="primary" onClick={cancelAppointment}>
+                      Cancel
+                    </MDButton>
+                  </>
+                ) : (
+                  ""
+                )}
+                <MDButton variant="outlined" color="primary" onClick={deleteAppointment}>
+                  Delete
+                </MDButton>
               </div>
-            ) : (
-              ""
-            )}
+            </div>
           </Card>
         </Grid>
       </Grid>

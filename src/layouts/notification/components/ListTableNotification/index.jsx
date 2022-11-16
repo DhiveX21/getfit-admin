@@ -12,7 +12,7 @@ import MDButton from "components/MDButton";
 
 export default function ListTableNotification() {
   const { currentState } = useSelector((state) => ({ currentState: state.notification }));
-  const { entities } = currentState;
+  const { totalCount, entities } = currentState;
   const dispatch = useDispatch();
   const notificationUIContext = useNotificationUIContext();
   const notificationUIProps = useMemo(() => {
@@ -24,6 +24,7 @@ export default function ListTableNotification() {
 
   useEffect(() => {
     dispatch(dataTableNotification(notificationUIProps.queryParams));
+    console.log(notificationUIProps);
   }, [notificationUIProps.queryParams]);
 
   const { columns, rows } = notificationTableData(entities);
@@ -56,6 +57,7 @@ export default function ListTableNotification() {
       </MDBox>
       <MDBox p={2}>
         <DataTable
+          totalCount={totalCount}
           params={notificationUIProps.queryParams}
           setParams={notificationUIProps.setQueryParams}
           table={{ columns, rows }}

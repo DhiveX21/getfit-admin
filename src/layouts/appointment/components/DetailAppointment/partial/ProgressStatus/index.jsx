@@ -65,7 +65,7 @@ export default function ProgressStatus({ type, linkMeeting, status }) {
               <input
                 type="text"
                 ref={linkMeetingInput}
-                className="rounded-lg"
+                className="rounded-lg text-[14px] px-[10px] py-[5px]"
                 defaultValue={linkMeeting}
               />
               <button

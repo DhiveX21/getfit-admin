@@ -12,11 +12,14 @@ import EditMedicalRecordForm from "./EditMedicalRecordForm";
 import MDBox from "components/MDBox";
 import { Link } from "react-router-dom";
 import BackButton from "components/extend/Button/BackButton";
+import { deleteMedicalRecordAction } from "../../medicalRecordAction";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailMedicalRecord() {
   const [editMode, setEditMode] = useState(false);
   // Get Params
 
+  const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
   const { medicalRecord, medicalRecordActionLoading } = useSelector(
@@ -26,6 +29,13 @@ export default function DetailMedicalRecord() {
     }),
     shallowEqual
   );
+
+  const handleDeleteMedicalRecord = () => {
+    if (window.confirm("are you sure to DELETE this Medical Record")) {
+      dispatch(deleteMedicalRecordAction(params.id));
+      navigate("/medical-record/list-medical-record");
+    }
+  };
 
   useEffect(() => {
     dispatch(actions.detailMedicalRecord(params.id));
@@ -169,6 +179,15 @@ export default function DetailMedicalRecord() {
           >
             {editMode ? "Cancel Edit" : "Edit"}
           </MDButton>
+          {!editMode ? (
+            <MDButton
+              variant="outlined"
+              onClick={() => handleDeleteMedicalRecord()}
+              color="primary"
+            >
+              Delete
+            </MDButton>
+          ) : null}
         </div>
       </div>
     </div>

@@ -69,17 +69,23 @@ export default function NotificationForm() {
   }, [category]);
 
   function handleSubmit() {
-    selectedPatient.map((patientId) => {
+    if (selectedPatient.length > 0) {
+      selectedPatient.map((patientId) => {
+        dispatch(
+          createNotificationAction(
+            patientId,
+            selectedPriority,
+            selectedCategory,
+            inputTitle,
+            inputMessage
+          )
+        );
+      });
+    } else {
       dispatch(
-        createNotificationAction(
-          patientId,
-          selectedPriority,
-          selectedCategory,
-          inputTitle,
-          inputMessage
-        )
+        createNotificationAction(null, selectedPriority, selectedCategory, inputTitle, inputMessage)
       );
-    });
+    }
   }
 
   function handleSelectedPatient(e) {
@@ -101,7 +107,7 @@ export default function NotificationForm() {
           Select Patient
         </MDTypography>
         <Select
-          className="basic-single text-[14px]"
+          className="basic-single text-[14px] z-12"
           closeMenuOnSelect={false}
           components={animatedComponents}
           onChange={(e) => handleSelectedPatient(e)}
@@ -114,7 +120,7 @@ export default function NotificationForm() {
           Select Level
         </MDTypography>
         <Select
-          className="basic-single text-[14px]"
+          className="basic-single text-[14px] z-11"
           classNamePrefix="select"
           isSearchable={true}
           name="color"
@@ -127,7 +133,7 @@ export default function NotificationForm() {
           Select Category
         </MDTypography>
         <Select
-          className="basic-single text-[14px]"
+          className="basic-single text-[14px] z-9"
           classNamePrefix="select"
           isSearchable={true}
           name="color"
@@ -135,11 +141,12 @@ export default function NotificationForm() {
           onChange={(e) => setSelectedCategory(e.value)}
         />
       </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px">
+      <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
         <MDTypography variant="h6" color="text">
           Input Title
         </MDTypography>
         <MDInput
+          className=" z-8"
           fullWidth
           required
           label="Message"

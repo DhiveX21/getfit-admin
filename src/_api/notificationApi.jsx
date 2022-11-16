@@ -25,6 +25,10 @@ export function createNotificationCategory(body) {
   return axios.post(`${NOTIFICATION_URL}/notification-categories`, { ...body });
 }
 
+export function deleteNotification(notificationId) {
+  return axios.delete(`${NOTIFICATION_URL}/notifications/${notificationId}`);
+}
+
 export function createNotificationWhatsapp(body) {
   const config = {
     headers: {

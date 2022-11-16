@@ -42,7 +42,7 @@ export default function data(entities) {
         <MDTypography
           display="block"
           variant="caption"
-          className="max-w-[300px] overflow-hidden"
+          className="max-w-[250px] overflow-hidden"
           color="text"
           fontWeight="bold"
         >
@@ -63,7 +63,7 @@ export default function data(entities) {
         />
       ),
       category: (
-        <MDBadge badgeContent={item.category_id} color="success" variant="gradient" size="sm" />
+        <MDBadge badgeContent={item.category.title} color="success" variant="gradient" size="sm" />
       ),
       action: (
         <Link to={`/notification/${item.id}`}>

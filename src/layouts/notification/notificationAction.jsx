@@ -15,6 +15,7 @@ import {
   createNotificationCategory,
   createNotificationWhatsapp,
   getOneNotification,
+  deleteNotification,
 } from "_api/notificationApi";
 import {} from "_api/notificationApi";
 import { getAllAppointment } from "_api/appointmentApi";
@@ -147,6 +148,27 @@ export const detailNotification = (notificationId) => (dispatch) => {
       err.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show detail patient",
+        icon: "error",
+      });
+      dispatch(catchError({ err, callType: callTypes.action }));
+    });
+};
+
+export const deleteNotificationAction = (notificationId) => (dispatch) => {
+  dispatch(startCall({ callType: callTypes.action }));
+  return deleteNotification(notificationId)
+    .then((response) => {
+      const data = response.data.data;
+      MySwal.fire({
+        title: "Success Delete Notification",
+        text: data.message,
+        icon: "success",
+      });
+    })
+    .catch((err) => {
+      err.clientMessage = "Something went wrong";
+      MySwal.fire({
+        title: "Can't Delete Notification",
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.action }));

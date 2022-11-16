@@ -7,9 +7,11 @@ import MDButton from "components/MDButton";
 import { useParams } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import * as actions from "layouts/notification/notificationAction";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailNotification() {
   const params = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { notification, notificationActionLoading } = useSelector(
     (state) => ({
@@ -19,7 +21,12 @@ export default function DetailNotification() {
     shallowEqual
   );
 
-  console.log(notification);
+  const handleNotificationDelete = () => {
+    if (window.confirm("Are you sure to delete this notification?")) {
+      dispatch(actions.deleteNotificationAction(params.id));
+      navigate("/notification/list-notification");
+    }
+  };
   useEffect(() => {
     dispatch(actions.detailNotification(params.id));
 
@@ -137,14 +144,16 @@ export default function DetailNotification() {
         </MDBox>
       </div>
 
-      {/* <div className="w-full p-[20px] flex flex-col justify-center">
+      <div className="w-full p-[20px] flex flex-col justify-center">
         <MDTypography color="dark" fontSize="20px" fontWeight="bold">
           Action
         </MDTypography>
         <div className="w-full flex gap-[10px]">
-          <MDButton variant="gradient">a</MDButton>
+          <MDButton variant="outlined" color="primary" onClick={() => handleNotificationDelete()}>
+            DELETE
+          </MDButton>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
