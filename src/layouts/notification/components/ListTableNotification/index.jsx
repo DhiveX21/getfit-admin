@@ -24,7 +24,6 @@ export default function ListTableNotification() {
 
   useEffect(() => {
     dispatch(dataTableNotification(notificationUIProps.queryParams));
-    console.log(notificationUIProps);
   }, [notificationUIProps.queryParams]);
 
   const { columns, rows } = notificationTableData(entities);
