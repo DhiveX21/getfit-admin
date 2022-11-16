@@ -8,17 +8,7 @@ import { useParams } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import * as actions from "layouts/video/videoAction";
 import { useNavigate } from "react-router-dom";
-import YouTube from "react-youtube";
 import { getIdYoutubeUrl } from "helpers/YoutubeHelpers";
-
-const opts = {
-  height: "300px",
-  width: "100%",
-  playerVars: {
-    // https://developers.google.com/youtube/player_parameters
-    autoplay: 1,
-  },
-};
 
 export default function DetailVideo() {
   const params = useParams();
@@ -151,15 +141,21 @@ export default function DetailVideo() {
             <MDTypography width="10%" color="text" fontSize="14px">
               :
             </MDTypography>
-            <div className="flex flex-col overflow-y-scroll max-h-[200px] bg-slate-200 p-1 rounded-lg">
-              {video?.video_watches.map((item) => {
-                return (
-                  <MDTypography width="50%" color="text" fontSize="14px" className="text-left">
-                    <p className="break-keep">{item.user.name}</p>
-                  </MDTypography>
-                );
-              })}
-            </div>
+            {video?.video_watches?.length > 0 ? (
+              <div className="flex flex-col overflow-y-scroll max-h-[200px] bg-slate-200 p-1 rounded-lg">
+                {video?.video_watches?.map((item) => {
+                  return (
+                    <MDTypography width="50%" color="text" fontSize="14px" className="text-left">
+                      <p className="break-keep">{item.user.name}</p>
+                    </MDTypography>
+                  );
+                })}
+              </div>
+            ) : (
+              <MDTypography width="50%" color="text" fontSize="14px" className="text-left">
+                <p className="break-keep">None</p>
+              </MDTypography>
+            )}
           </div>
         </div>
       </div>
@@ -182,12 +178,18 @@ export default function DetailVideo() {
           <MDTypography color="dark" fontSize="16px" fontWeight="medium">
             {video?.description}
           </MDTypography>
-          <YouTube
-            autoplay={false}
-            videoId={getIdYoutubeUrl(video?.video_url)}
-            opts={opts}
-            // onReady={this._onReady}
-          />
+
+          {video?.video_url ? (
+            <iframe
+              width="853"
+              height="480"
+              src={`https://www.youtube.com/embed/${getIdYoutubeUrl(video.video_url)}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded youtube"
+            />
+          ) : null}
         </MDBox>
       </div>
 
