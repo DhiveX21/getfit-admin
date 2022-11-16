@@ -122,7 +122,6 @@ export const createMedicalRecordAction = (appointmentData, records) => (dispatch
       dispatch(catchError({ err, callType: callTypes.action }));
     });
 };
-<<<<<<< HEAD
 
 export const deleteMedicalRecordAction = (medicalRecordId) => (dispatch) => {
   dispatch(startCall({ callType: callTypes.action }));
@@ -144,5 +143,3 @@ export const deleteMedicalRecordAction = (medicalRecordId) => (dispatch) => {
       dispatch(catchError({ err, callType: callTypes.action }));
     });
 };
-=======
->>>>>>> staging

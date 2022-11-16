@@ -9,10 +9,6 @@ export function getAllAppointment() {
   return axios.get(`${APPOINTMENT_URL}/appointments`);
 }
 
-export function getAllAppointment() {
-  return axios.get(`${APPOINTMENT_URL}/appointments`);
-}
-
 export function getAllAppointmentByIdUser(idUser) {
   return axios.get(`${APPOINTMENT_URL}/appointments/user/${idUser}`);
 }
