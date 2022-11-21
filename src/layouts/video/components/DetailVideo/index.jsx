@@ -1,50 +1,40 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import MDTypography from "components/MDTypography";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import * as actions from "../../medicalRecordAction";
-import { dateFormater } from "helpers/DateHelpers";
-import MDButton from "components/MDButton";
-import { useForm } from "react-hook-form";
-import MDInput from "components/MDInput";
-import EditMedicalRecordForm from "./EditMedicalRecordForm";
+import React, { useEffect } from "react";
 import MDBox from "components/MDBox";
-import { Link } from "react-router-dom";
 import BackButton from "components/extend/Button/BackButton";
-import { deleteMedicalRecordAction } from "../../medicalRecordAction";
+import MDTypography from "components/MDTypography";
+import { Link } from "react-router-dom";
+import MDButton from "components/MDButton";
+import { useParams } from "react-router-dom";
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import * as actions from "layouts/video/videoAction";
 import { useNavigate } from "react-router-dom";
+import { getIdYoutubeUrl } from "helpers/YoutubeHelpers";
 
-export default function DetailMedicalRecord() {
-  const [editMode, setEditMode] = useState(false);
-  // Get Params
-
-  const navigate = useNavigate();
+export default function DetailVideo() {
   const params = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { medicalRecord, medicalRecordActionLoading } = useSelector(
+  const { video, videoActionLoading } = useSelector(
     (state) => ({
-      medicalRecord: state.medicalRecord.medicalRecord,
-      medicalRecordActionLoading: state.medicalRecord.actionLoading,
+      video: state.exercise.video.video,
+      videoActionLoading: state.exercise.actionLoading,
     }),
     shallowEqual
   );
 
-  const handleDeleteMedicalRecord = () => {
-    if (window.confirm("are you sure to DELETE this Medical Record")) {
-      dispatch(deleteMedicalRecordAction(params.id));
-      navigate("/medical-record/list-medical-record");
+  const handleVideoDelete = () => {
+    if (window.confirm("Are you sure to delete this video?")) {
+      dispatch(actions.deleteVideoAction(params.id));
+      navigate("/video/list-video");
     }
   };
-
   useEffect(() => {
-    dispatch(actions.detailMedicalRecord(params.id));
+    dispatch(actions.detailVideo(params.id));
 
     return () => {
-      dispatch(actions.detailMedicalRecord(undefined));
+      dispatch(actions.detailVideo(undefined));
     };
   }, [params.id]);
-
   return (
     <div className="flex flex-col">
       <MDBox
@@ -61,12 +51,12 @@ export default function DetailMedicalRecord() {
         alignItems="center"
       >
         <MDBox display="flex" alignItems="center" gap="20px">
-          <BackButton to="/medical-record/list-medical-record" />
+          <BackButton to="/video/list-video" />
           <MDTypography variant="h6" color="white">
-            Detail Medical Record
+            Detail Video
           </MDTypography>
         </MDBox>
-        <Link to="/medical-record/create">
+        <Link to="/video/create">
           <MDTypography variant="caption" color="text" fontWeight="medium">
             <MDButton variant="gradient" color="success">
               Create New
@@ -77,94 +67,130 @@ export default function DetailMedicalRecord() {
       <div className="flex">
         <div className="w-1/2 p-[20px]">
           <MDTypography fontSize="20px" fontWeight="bold">
-            Appointment Detail
+            Video Detail
           </MDTypography>
 
           <div className=" flex gap-[10px] ">
             <MDTypography width="40%" color="text" fontSize="14px">
-              Appointment Date
+              Video Title
             </MDTypography>
             <MDTypography width="10%" color="text" fontSize="14px">
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {dateFormater(medicalRecord?.date)}
+              {video?.title}
+            </MDTypography>
+          </div>
+
+          <div className=" flex gap-[10px] ">
+            <MDTypography width="40%" color="text" fontSize="14px">
+              Video Description
+            </MDTypography>
+            <MDTypography width="10%" color="text" fontSize="14px">
+              :
+            </MDTypography>
+            <MDTypography width="50%" color="text" fontSize="14px">
+              {video?.description}
+            </MDTypography>
+          </div>
+
+          <div className=" flex gap-[10px] ">
+            <MDTypography width="40%" color="text" fontSize="14px">
+              Video Status
+            </MDTypography>
+            <MDTypography width="10%" color="text" fontSize="14px">
+              :
+            </MDTypography>
+            <MDTypography width="50%" color="text" fontSize="14px">
+              {video?.is_active ? "Active" : "inActive"}
+            </MDTypography>
+          </div>
+
+          <div className=" flex gap-[10px] ">
+            <MDTypography width="40%" color="text" fontSize="14px">
+              Video Url
+            </MDTypography>
+            <MDTypography width="10%" color="text" fontSize="14px">
+              :
+            </MDTypography>
+            <MDTypography width="50%" color="text" fontSize="14px">
+              {video?.video_url}
             </MDTypography>
           </div>
           <div className=" flex gap-[10px] ">
             <MDTypography width="40%" color="text" fontSize="14px">
-              Appointment Hours
+              Category
             </MDTypography>
             <MDTypography width="10%" color="text" fontSize="14px">
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {`${medicalRecord?.time} WIB`}
-            </MDTypography>
-          </div>
-          <div className=" flex gap-[10px] ">
-            <MDTypography width="40%" color="text" fontSize="14px">
-              Physiotherapy
-            </MDTypography>
-            <MDTypography width="10%" color="text" fontSize="14px">
-              :
-            </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {`${medicalRecord?.therapist_detail.name}`}
+              {video?.category_id}
             </MDTypography>
           </div>
         </div>
         <div className="w-1/2 p-[20px]">
           <MDTypography fontSize="20px" fontWeight="bold">
-            Patient Detail
+            User Detail
           </MDTypography>
 
           <div className=" flex gap-[10px] ">
             <MDTypography width="40%" color="text" fontSize="14px">
-              Name
+              Patient is watching
             </MDTypography>
             <MDTypography width="10%" color="text" fontSize="14px">
               :
             </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {medicalRecord?.patient_detail.name}
-            </MDTypography>
-          </div>
-          <div className=" flex gap-[10px] ">
-            <MDTypography width="40%" color="text" fontSize="14px">
-              Phone Number
-            </MDTypography>
-            <MDTypography width="10%" color="text" fontSize="14px">
-              :
-            </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {medicalRecord?.patient_detail.phone_number}
-            </MDTypography>
-          </div>
-          <div className=" flex gap-[10px] ">
-            <MDTypography width="40%" color="text" fontSize="14px">
-              Email
-            </MDTypography>
-            <MDTypography width="10%" color="text" fontSize="14px">
-              :
-            </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {medicalRecord?.patient_detail.email}
-            </MDTypography>
+            {video?.video_watches?.length > 0 ? (
+              <div className="flex flex-col overflow-y-scroll max-h-[200px] bg-slate-200 p-1 rounded-lg">
+                {video?.video_watches?.map((item) => {
+                  return (
+                    <MDTypography width="50%" color="text" fontSize="14px" className="text-left">
+                      <p className="break-keep">{item.user.name}</p>
+                    </MDTypography>
+                  );
+                })}
+              </div>
+            ) : (
+              <MDTypography width="50%" color="text" fontSize="14px" className="text-left">
+                <p className="break-keep">None</p>
+              </MDTypography>
+            )}
           </div>
         </div>
       </div>
       <div className="w-full p-[20px] flex flex-col justify-center">
         <MDTypography color="dark" fontSize="20px" fontWeight="bold">
-          Medical Record
+          Video
         </MDTypography>
-        {medicalRecord ? (
-          <EditMedicalRecordForm
-            editMode={editMode}
-            setEditMode={(value) => setEditMode(value)}
-            medicalRecord={medicalRecord ? medicalRecord : null}
-          />
-        ) : null}
+        <MDBox
+          display="flex"
+          flexDirection="column"
+          bgColor="lightGray"
+          borderRadius="10px"
+          alignItems="center"
+          gap="20px"
+          padding="20px"
+        >
+          <MDTypography color="primary" fontSize="16px" fontWeight="medium">
+            {video?.title}
+          </MDTypography>
+          <MDTypography color="dark" fontSize="16px" fontWeight="medium">
+            {video?.description}
+          </MDTypography>
+
+          {video?.video_url ? (
+            <iframe
+              width="853"
+              height="480"
+              src={`https://www.youtube.com/embed/${getIdYoutubeUrl(video.video_url)}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded youtube"
+            />
+          ) : null}
+        </MDBox>
       </div>
 
       <div className="w-full p-[20px] flex flex-col justify-center">
@@ -172,36 +198,11 @@ export default function DetailMedicalRecord() {
           Action
         </MDTypography>
         <div className="w-full flex gap-[10px]">
-          <MDButton
-            variant="gradient"
-            onClick={() => setEditMode(!editMode)}
-            color={editMode ? "primary" : "warning"}
-          >
-            {editMode ? "Cancel Edit" : "Edit"}
+          <MDButton variant="outlined" color="primary" onClick={() => handleVideoDelete()}>
+            DELETE
           </MDButton>
-          {!editMode ? (
-            <MDButton
-              variant="outlined"
-              onClick={() => handleDeleteMedicalRecord()}
-              color="primary"
-            >
-              Delete
-            </MDButton>
-          ) : null}
         </div>
       </div>
     </div>
   );
 }
-
-DetailMedicalRecord.defaultProps = {
-  appointment_date: "2022-08-11T00:00:00.000Z",
-  appointment_time: "19.00",
-  physiotherapy: "test",
-};
-
-DetailMedicalRecord.propTypes = {
-  appointment_date: PropTypes.string,
-  appointment_time: PropTypes.string,
-  physiotherapy: PropTypes.string,
-};

@@ -13,3 +13,7 @@ export function getOnePatient(patientId) {
 export function getAllPatient() {
   return axios.get(`${PATIENT_URL}/patients`);
 }
+
+export function deletePatient(patientId) {
+  return axios.delete(`${PATIENT_URL}/patients/${patientId}`);
+}

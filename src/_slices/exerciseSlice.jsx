@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialNotificationState = {
+const initialExerciseState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  notification: undefined,
-  entities: [],
-  category: [],
-  totalCount: 0,
+  video: {
+    video: undefined,
+    entities: [],
+    category: [],
+    totalCount: 0,
+  },
 };
 
 export const callTypes = {
@@ -15,9 +17,9 @@ export const callTypes = {
   action: "action",
 };
 
-export const notificationSlice = createSlice({
-  name: "Notification",
-  initialState: initialNotificationState,
+export const exerciseSlice = createSlice({
+  name: "Exercise",
+  initialState: initialExerciseState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -27,23 +29,23 @@ export const notificationSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    notificationDataTable: (state, action) => {
+    exerciseVideoDataTable: (state, action) => {
       const { entities, totalCount } = action.payload;
       state.listLoading = false;
       state.error = null;
-      state.entities = entities;
-      state.totalCount = totalCount;
+      state.video.entities = entities;
+      state.video.totalCount = totalCount;
     },
-    notificationDetail: (state, action) => {
-      state.actionLoading = false;
-      state.error = null;
-      state.notification = action.payload.notification;
-    },
-    notificationCategory: (state, action) => {
+    exerciseVideoCategory: (state, action) => {
       const { entities } = action.payload;
       state.listLoading = false;
       state.error = null;
-      state.category = entities;
+      state.video.category = entities;
+    },
+    videoDetail: (state, action) => {
+      state.actionLoading = false;
+      state.error = null;
+      state.video.video = action.payload.video;
     },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
@@ -57,12 +59,7 @@ export const notificationSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  startCall,
-  notificationDataTable,
-  notificationDetail,
-  notificationCategory,
-  catchError,
-} = notificationSlice.actions;
+export const { startCall, exerciseVideoDataTable, exerciseVideoCategory, videoDetail, catchError } =
+  exerciseSlice.actions;
 
-export default notificationSlice.reducer;
+export default exerciseSlice.reducer;

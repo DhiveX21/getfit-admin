@@ -1,8 +1,13 @@
-import MDBadge from 'components/MDBadge'
-import React from 'react'
+import MDBadge from "components/MDBadge";
+import React from "react";
 
-export const StatusColumnFormatter = () => {
+export const StatusColumnFormatter = ({ status }) => {
   return (
-    <MDBadge badgeContent="Finished" color="success" variant="gradient" size="sm" />
-  )
-}
+    <MDBadge
+      badgeContent={status ? status : ""}
+      color={status === "cancel" ? "primary" : status === "finding" ? "info" : "success"}
+      variant="gradient"
+      size="sm"
+    />
+  );
+};

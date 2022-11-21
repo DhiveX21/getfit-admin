@@ -16,38 +16,40 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
-
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
-import ListTableNotification from "./components/ListTableNotification";
-import CreateNotification from "./components/CreateNotification";
-import { Routes, Route } from "react-router-dom";
-import { NotificationUIProvider } from "./notificationUIContext";
-import DetailNotification from "./components/DetailNotification";
+import { Link } from "react-router-dom";
+import ListTableVideo from "./components/ListTableVideo";
+import CreateVideo from "./components/CreateVideo";
 
-function Notification() {
+import { Routes, Route, useLocation } from "react-router-dom";
+import { VideoUIProvider } from "./videoUIContext";
+import DetailVideo from "./components/DetailVideo";
+
+function Video() {
+  let location = useLocation();
   return (
     <DashboardLayout>
-      <NotificationUIProvider>
+      <VideoUIProvider>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <Card>
                 <Routes>
-                  <Route path="list-notification" element={<ListTableNotification />} />
-                  <Route path="create" element={<CreateNotification />} />
-                  <Route path=":id" element={<DetailNotification />} />
+                  <Route path="list-video" element={<ListTableVideo />} />
+                  <Route path="create" element={<CreateVideo />} />
+                  <Route path=":id" element={<DetailVideo />} />
                 </Routes>
               </Card>
             </Grid>
           </Grid>
         </MDBox>
         <Footer />
-      </NotificationUIProvider>
+      </VideoUIProvider>
     </DashboardLayout>
   );
 }
 
-export default Notification;
+export default Video;

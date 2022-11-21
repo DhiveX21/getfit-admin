@@ -9,6 +9,7 @@ import {
   updateMedicalRecord,
   getAllMedicalRecordsDatatable,
   createMedicalRecord,
+  deleteMedicalRecord,
 } from "_api/medicalRecordApi";
 import { getAllAppointment } from "_api/appointmentApi";
 import { dateFormater } from "helpers/DateHelpers";
@@ -116,6 +117,27 @@ export const createMedicalRecordAction = (appointmentData, records) => (dispatch
       err.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show detail patient",
+        icon: "error",
+      });
+      dispatch(catchError({ err, callType: callTypes.action }));
+    });
+};
+
+export const deleteMedicalRecordAction = (medicalRecordId) => (dispatch) => {
+  dispatch(startCall({ callType: callTypes.action }));
+  return deleteMedicalRecord(medicalRecordId)
+    .then((response) => {
+      const data = response.data.data;
+      MySwal.fire({
+        title: "Success Delete Medical Record",
+        text: data.message,
+        icon: "success",
+      });
+    })
+    .catch((err) => {
+      err.clientMessage = "Something went wrong";
+      MySwal.fire({
+        title: "Can't Delete Medical Record",
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.action }));

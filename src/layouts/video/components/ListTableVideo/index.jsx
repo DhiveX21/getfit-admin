@@ -1,32 +1,32 @@
 import React, { useEffect, useMemo } from "react";
 import DataTable from "components/extend/Tables/DataTable";
-import notificationTableData from "./data/notificationTableData";
-import { dataTableNotification } from "layouts/notification/notificationAction";
+import videoTableData from "./data/videoTableData";
+import { dataTableVideo } from "layouts/video/videoAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useNotificationUIContext } from "layouts/notification/notificationUIContext";
+import { useVideoUIContext } from "layouts/video/videoUIContext";
 import MDAvatar from "components/MDAvatar";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import { Link } from "react-router-dom";
 import MDButton from "components/MDButton";
 
-export default function ListTableNotification() {
-  const { currentState } = useSelector((state) => ({ currentState: state.notification }));
-  const { totalCount, entities } = currentState;
+export default function ListTableVideo() {
+  const { currentState } = useSelector((state) => ({ currentState: state.exercise.video }));
+  const { totalCount, entities, listLoading } = currentState;
   const dispatch = useDispatch();
-  const notificationUIContext = useNotificationUIContext();
-  const notificationUIProps = useMemo(() => {
+  const videoUIContext = useVideoUIContext();
+  const videoUIProps = useMemo(() => {
     return {
-      queryParams: notificationUIContext.queryParams,
-      setQueryParams: notificationUIContext.setQueryParams,
+      queryParams: videoUIContext.queryParams,
+      setQueryParams: videoUIContext.setQueryParams,
     };
-  }, [notificationUIContext]);
+  }, [videoUIContext]);
 
   useEffect(() => {
-    dispatch(dataTableNotification(notificationUIProps.queryParams));
-  }, [notificationUIProps.queryParams]);
+    dispatch(dataTableVideo(videoUIProps.queryParams));
+  }, [videoUIProps.queryParams]);
 
-  const { columns, rows } = notificationTableData(entities);
+  const { columns, rows } = videoTableData(entities);
 
   return (
     <>
@@ -44,9 +44,9 @@ export default function ListTableNotification() {
         alignItems="center"
       >
         <MDTypography variant="h6" color="white">
-          Notification
+          Medical Record
         </MDTypography>
-        <Link to="/notification/create">
+        <Link to="/video/create">
           <MDTypography variant="caption" color="text" fontWeight="medium">
             <MDButton variant="gradient" color="success">
               Create New
@@ -56,9 +56,8 @@ export default function ListTableNotification() {
       </MDBox>
       <MDBox p={2}>
         <DataTable
-          totalCount={totalCount}
-          params={notificationUIProps.queryParams}
-          setParams={notificationUIProps.setQueryParams}
+          params={videoUIProps.queryParams}
+          setParams={videoUIProps.setQueryParams}
           table={{ columns, rows }}
         />
       </MDBox>

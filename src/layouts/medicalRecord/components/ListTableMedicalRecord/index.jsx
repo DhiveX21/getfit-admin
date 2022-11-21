@@ -56,6 +56,7 @@ export default function ListTableMedicalRecord() {
       </MDBox>
       <MDBox p={2}>
         <DataTable
+          totalCount={totalCount}
           params={medicalRecordUIProps.queryParams}
           setParams={medicalRecordUIProps.setQueryParams}
           table={{ columns, rows }}

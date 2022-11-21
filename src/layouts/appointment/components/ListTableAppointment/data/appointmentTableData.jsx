@@ -17,19 +17,38 @@ Coded by www.creative-tim.com
 
 // Images
 import team2 from "assets/images/team-2.jpg";
-import { ActionColumnFormatter, AddressColumnFormatter, NameColumnFormatter, StatusColumnFormatter, TimeColumnFormatter, TypeColumnFormatter } from "./formatter";
+import {
+  ActionColumnFormatter,
+  AddressColumnFormatter,
+  NameColumnFormatter,
+  StatusColumnFormatter,
+  TimeColumnFormatter,
+  TypeColumnFormatter,
+} from "./formatter";
 
 export default function data(entities) {
   const dataMapping = entities.map((item, index) => {
     return {
-      patient: <NameColumnFormatter image={team2} name={item.patient_detail.name} phoneNumber={item.patient_detail.phone_number} />,
+      patient: (
+        <NameColumnFormatter
+          image={team2}
+          name={item.patient_detail.name}
+          phoneNumber={item.patient_detail.phone_number}
+        />
+      ),
       address: <AddressColumnFormatter address={item.address} />,
-      date: <TimeColumnFormatter from={item.date_appointment} to={item.date_appointment} />,
+      date: (
+        <TimeColumnFormatter
+          from={item.date_appointment}
+          time={item.time_appointment}
+          to={item.date_appointment}
+        />
+      ),
       type: <TypeColumnFormatter />,
-      status: <StatusColumnFormatter />,
-      action: <ActionColumnFormatter id={item._id}/>
-    }
-  })
+      status: <StatusColumnFormatter status={item.status} />,
+      action: <ActionColumnFormatter id={item._id} />,
+    };
+  });
   return {
     columns: [
       { Header: "Patient", accessor: "patient", width: "20%", align: "left" },

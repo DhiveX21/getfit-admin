@@ -31,42 +31,35 @@ import { Link } from "react-router-dom";
 
 // formatter
 
-import { TitleColumnFormatter } from "./formatter/titleFormatter";
+import { NameColumnFormatter } from "./formatter/nameFormatter";
 import { TimeColumnFormatter } from "./formatter/timeFormatter";
 
 export default function data(entities) {
   const data = entities.map((item) => {
     return {
-      title: <TitleColumnFormatter title={item.title} />,
-      description: (
+      title: <NameColumnFormatter image={team2} name={item.title} phoneNumber={item.description} />,
+      url: (
         <MDTypography
           display="block"
           variant="caption"
-          className="max-w-[250px] overflow-hidden"
           color="text"
           fontWeight="bold"
+          className="max-w-[200px]"
         >
-          <p>{item.description}</p>
+          {item.video_url}
         </MDTypography>
       ),
-      date: (
+      status: (
         <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-          {item.created_at}
+          {item.is_active ? "active" : "inactive"}
         </MDTypography>
-      ),
-      type: (
-        <MDBadge
-          badgeContent={item.is_important ? "Prioritas" : "Normal"}
-          color={item.is_important ? "primary" : "info"}
-          variant="gradient"
-          size="sm"
-        />
       ),
       category: (
-        <MDBadge badgeContent={item.category.title} color="success" variant="gradient" size="sm" />
+        <MDBadge badgeContent={item.category.title} color="primary" variant="gradient" size="sm" />
       ),
+
       action: (
-        <Link to={`/notification/${item.id}`}>
+        <Link to={`/video/${item.id}`}>
           <MDTypography variant="caption" color="text" fontWeight="medium">
             <MDButton variant="gradient" color="info">
               Detail
@@ -79,12 +72,11 @@ export default function data(entities) {
 
   return {
     columns: [
-      { Header: "title", accessor: "title", align: "left" },
-      { Header: "description", accessor: "description", align: "left" },
-      { Header: "date", accessor: "date", align: "center" },
-      { Header: "type", accessor: "type", width: "10%", align: "center" },
+      { Header: "title", accessor: "title", width: "20%", align: "left" },
+      { Header: "URL", accessor: "url", width: "20%", align: "left" },
+      { Header: "status", accessor: "status", width: "20%", align: "left" },
       { Header: "category", accessor: "category", width: "10%", align: "center" },
-      { Header: "action", accessor: "action", align: "center" },
+      { Header: "action", accessor: "action", width: "20%", align: "center" },
     ],
 
     rows: data,

@@ -30,6 +30,7 @@ import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
+import MDButton from "components/MDButton";
 
 // Material Dashboard 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
@@ -107,7 +108,7 @@ function Header({ children, name }) {
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
-            <AppBar position="static">
+            {/* <AppBar position="static">
               <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
                 <Tab
                   label="App"
@@ -134,7 +135,14 @@ function Header({ children, name }) {
                   }
                 />
               </Tabs>
-            </AppBar>
+            </AppBar> */}
+            <div className="flex w-full">
+              <div className="flex gap-[20px]">
+                <MDButton variant="gradient" color="primary">
+                  Delete
+                </MDButton>
+              </div>
+            </div>
           </Grid>
         </Grid>
         {children}

@@ -56,6 +56,7 @@ import Icon from "@mui/material/Icon";
 import RoutesValidation from "RoutesValidation";
 import Patient from "layouts/patient";
 import Notification from "layouts/notification";
+import Video from "layouts/video";
 
 const routes = [
   {
@@ -133,6 +134,19 @@ const routes = [
     component: (
       <RoutesValidation>
         <Notification />
+      </RoutesValidation>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Video",
+    key: "video",
+    icon: <Icon fontSize="small">Video</Icon>,
+    route: "/video/*",
+    main_route: "/video/list-video",
+    component: (
+      <RoutesValidation>
+        <Video />
       </RoutesValidation>
     ),
   },

@@ -14,3 +14,6 @@ export function updateMedicalRecord(medicalRecordId, body) {
 export function createMedicalRecord(params) {
   return axios.post(`${MEDICAL_RECORD_URL}/records`, { ...params });
 }
+export function deleteMedicalRecord(medicalRecordId) {
+  return axios.delete(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`);
+}
