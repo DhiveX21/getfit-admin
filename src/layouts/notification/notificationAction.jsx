@@ -63,7 +63,7 @@ export const createNotificationAction =
       title: title,
       description: description,
       category_id: +categoryId,
-      user_id: +patientId,
+      user_id: +patientId ? +patientId : null,
       is_important: isImportant,
     };
     dispatch(startCall({ callType: callTypes.list }));

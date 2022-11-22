@@ -87,7 +87,7 @@ export default function DetailPatient() {
           />
         </MDBox>
         <MDBox width="70%">
-          <div className="flex bg-white rounded-lg p-[15px]">
+          <div className="flex bg-white rounded-lg p-[15px] opacity-30">
             <div className="w-full flex flex-col gap-[30px]">
               <div className="w-full">
                 <MDTypography variant="h6" color="dark">

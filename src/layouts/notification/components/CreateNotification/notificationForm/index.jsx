@@ -69,7 +69,7 @@ export default function NotificationForm() {
   }, [category]);
 
   function handleSubmit() {
-    if (selectedPatient.length > 0) {
+    if (selectedPatient?.length > 0) {
       selectedPatient.map((patientId) => {
         dispatch(
           createNotificationAction(
