@@ -18,8 +18,6 @@ import {
   deleteNotification,
 } from "_api/notificationApi";
 import {} from "_api/notificationApi";
-import { getAllAppointment } from "_api/appointmentApi";
-import { dateFormater } from "helpers/DateHelpers";
 
 const MySwal = withReactContent(Swal);
 
