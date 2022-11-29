@@ -33,20 +33,15 @@ import MDBox from "components/MDBox";
 // import MDInput from "components/MDInput";
 
 // Material Dashboard 2 React example components
-import Breadcrumbs from "examples/Breadcrumbs";
-import NotificationItem from "examples/Items/NotificationItem";
+
+import Breadcrumbs from "components/extend/Breadcrumbs";
+import NotificationItem from "components/extend/Items/NotificationItem";
 
 import { signOut } from "layouts/authentication/sign-in/reduxSlice/signInSlice";
 import { useDispatch } from "react-redux";
 
 // Custom styles for DashboardNavbar
-import {
-  navbar,
-  navbarContainer,
-  navbarRow,
-  navbarIconButton,
-  navbarMobileMenu,
-} from "examples/Navbars/DashboardNavbar/styles";
+import { navbar, navbarContainer, navbarRow, navbarIconButton, navbarMobileMenu } from "./styles";
 
 // Material Dashboard 2 React context
 import {

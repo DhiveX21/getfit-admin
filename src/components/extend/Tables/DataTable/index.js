@@ -36,8 +36,8 @@ import MDInput from "components/MDInput";
 import MDPagination from "components/MDPagination";
 
 // Material Dashboard 2 React example components
-import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
-import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
+import DataTableHeadCell from "./DataTableHeadCell";
+import DataTableBodyCell from "./DataTableBodyCell";
 
 function DataTable({
   params,
@@ -73,7 +73,7 @@ function DataTable({
     useSortBy,
     usePagination
   );
-    
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -100,17 +100,21 @@ function DataTable({
   useEffect(() => {
     setParams({
       ...params,
-      pageIndex: pageIndex
-    })
-  }, [pageIndex])
-  
+      pageIndex: pageIndex,
+    });
+  }, [pageIndex]);
 
   // Set the entries per page value based on the select value
   const setEntriesPerPage = (value) => setPageSize(value);
 
   // Render the paginations
   const renderPagination = pageOptions.map((option) => (
-    <MDPagination item key={option} onClick={() => gotoPage(Number(option))} active={pageIndex === option}>
+    <MDPagination
+      item
+      key={option}
+      onClick={() => gotoPage(Number(option))}
+      active={pageIndex === option}
+    >
       {option + 1}
     </MDPagination>
   ));
