@@ -17,3 +17,15 @@ export function getAllPatient() {
 export function deletePatient(patientId) {
   return axios.delete(`${PATIENT_URL}/patients/${patientId}`);
 }
+
+export function createUser(body) {
+  return axios.post(`${PATIENT_URL}/users`, { ...body });
+}
+
+export function createPatient(body) {
+  return axios.post(`${PATIENT_URL}/patients`, { ...body });
+}
+
+export function updatePatient(patientId, body) {
+  return axios.put(`${PATIENT_URL}/patients/${patientId}`, { ...body });
+}

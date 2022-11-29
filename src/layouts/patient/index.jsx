@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import DetailPatient from "./components/DetailPatient/Index";
 import ListTablePatient from "./components/ListTablePatient";
 import { PatientUIProvider } from "./patientUIContext";
+import CreatePatient from "./components/CreatePatient";
 
 export default function Patient() {
   return (
@@ -15,6 +16,7 @@ export default function Patient() {
         <Routes>
           <Route path="list-patient" element={<ListTablePatient />} />
           <Route path=":id" element={<DetailPatient />} />
+          <Route path="create" element={<CreatePatient />} />
         </Routes>
       </PatientUIProvider>
       <Footer />
