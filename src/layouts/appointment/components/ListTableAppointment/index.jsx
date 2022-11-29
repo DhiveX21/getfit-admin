@@ -20,7 +20,7 @@ export default function ListTableAppointment() {
 
   // Get Redux
   const { currentState } = useSelector((state) => ({ currentState: state.appointment }));
-  const { totalCount, entities, listLoading } = currentState;
+  const { totalCount, entities } = currentState;
   // Dispatch
   const dispatch = useDispatch();
 

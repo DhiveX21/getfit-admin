@@ -6,7 +6,7 @@ import { orderStatusStep } from "_shareVar";
 export default function index({ status }) {
   let flagCurrent = false;
 
-  if (status == "cancel") {
+  if (status === "cancel") {
     return (
       <div className="w-full p-[20px] flex flex-col justify-center">
         <MDTypography fontSize="20px" fontWeight="bold">
@@ -24,14 +24,14 @@ export default function index({ status }) {
   }
 
   const steps = orderStatusStep.map((item, index) => {
-    if (item.key == "cancel") {
+    if (item.key === "cancel") {
       return "";
     }
     let color = "bg-green-500";
-    if (flagCurrent == false && item.key == status) {
+    if (flagCurrent === false && item.key === status) {
       color = "bg-blue-500";
       flagCurrent = true;
-    } else if (flagCurrent == true && item.key != status) {
+    } else if (flagCurrent === true && item.key !== status) {
       color = "bg-gray-500";
     } else {
       color = "bg-green-500";

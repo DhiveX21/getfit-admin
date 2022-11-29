@@ -21,7 +21,7 @@ export const notificationSlice = createSlice({
   reducers: {
     startCall: (state, action) => {
       state.error = null;
-      if (action.payload.callType == callTypes.list) {
+      if (action.payload.callType === callTypes.list) {
         state.listLoading = true;
       } else {
         state.actionLoading = true;
@@ -47,7 +47,7 @@ export const notificationSlice = createSlice({
     },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
-      if (action.payload.callType == callTypes.list) {
+      if (action.payload.callType === callTypes.list) {
         state.listLoading = false;
       } else {
         state.actionLoading = false;
