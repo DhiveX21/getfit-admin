@@ -26,7 +26,7 @@ export default function ListTableAppointment() {
 
   useEffect(() => {
     dispatch(actions.datatable(appointmentUIProps.queryParams));
-  }, [appointmentUIProps.queryParams]);
+  }, [appointmentUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = appointmentTableData(entities);
   return (

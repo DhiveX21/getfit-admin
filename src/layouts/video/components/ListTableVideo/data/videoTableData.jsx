@@ -16,28 +16,21 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
 import MDButton from "components/MDButton";
 import MDBadge from "components/MDBadge";
 
 // Images
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
-
 import { Link } from "react-router-dom";
 
 // formatter
-
 import { NameColumnFormatter } from "./formatter/nameFormatter";
-import { TimeColumnFormatter } from "./formatter/timeFormatter";
+
 
 export default function data(entities) {
   const data = entities.map((item) => {
     return {
-      title: <NameColumnFormatter image={team2} name={item.title} phoneNumber={item.description} />,
+      title: <NameColumnFormatter name={item.title} phoneNumber={item.description} />,
       url: (
         <MDTypography
           display="block"
@@ -50,9 +43,11 @@ export default function data(entities) {
         </MDTypography>
       ),
       status: (
-        <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
-          {item.is_active ? "active" : "inactive"}
-        </MDTypography>
+        item.is_active ? (
+          <MDBadge badgeContent="active" color="success" variant="gradient" size="sm" />
+        ) : (
+          <MDBadge badgeContent="inactive" color="danger" variant="gradient" size="sm" />
+        )
       ),
       category: (
         <MDBadge badgeContent={item.category.title} color="primary" variant="gradient" size="sm" />

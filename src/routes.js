@@ -101,7 +101,7 @@ const routes = [
   {
     type: "collapse",
     name: "Medical Record",
-    key: "medicalRecord",
+    key: "medical-record",
     icon: <Icon fontSize="small">Medical Record</Icon>,
     route: "/medical-record/*",
     main_route: "/medical-record/list-medical-record",

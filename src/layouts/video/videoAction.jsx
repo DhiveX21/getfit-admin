@@ -10,15 +10,17 @@ import { getAllVideoCategory } from "_api/exerciseApi";
 import { createVideoCategory } from "_api/exerciseApi";
 import { videoDetail } from "_slices/exerciseSlice";
 import { createVideo } from "_api/exerciseApi";
+import { updateVideo } from "_api/exerciseApi";
 import { getOneVideo } from "_api/exerciseApi";
 import { deleteVideo } from "_api/exerciseApi";
+import { exerciseVideoUpdated } from "_slices/exerciseSlice";
+import { exerciseVideoDeleted } from "_slices/exerciseSlice";
 const MySwal = withReactContent(Swal);
 
 export const dataTableVideo = (payload) => (dispatch) => {
   dispatch(startCall({ callType: callTypes.list }));
   return getAllVideoDatatable(payload)
     .then((response) => {
-      console.log(response);
       const data = response.data.data;
       dispatch(exerciseVideoDataTable({ entities: data.entities, totalCount: data.totalCount }));
     })
@@ -99,6 +101,35 @@ export const createVideoAction = (categoryId, title, description, videoUrl) => (
     });
 };
 
+export const updateVideoAction =
+  (id, categoryId, title, description, videoUrl, is_active) => (dispatch) => {
+    const body = {
+      title: title,
+      description: description,
+      category_id: +categoryId,
+      video_url: videoUrl,
+      is_active: is_active,
+    };
+    dispatch(startCall({ callType: callTypes.action }));
+    return updateVideo(id, body)
+      .then((response) => {
+        MySwal.fire({
+          title: "Success Update Video",
+          icon: "success",
+        });
+        const data = response.data.data;
+        dispatch(exerciseVideoUpdated({ data: data }));
+      })
+      .catch((error) => {
+        error.clientMessage = "Something went wrong";
+        MySwal.fire({
+          title: "Can't update Video",
+          icon: "error",
+        });
+        dispatch(catchError({ error, callType: callTypes.action }));
+      });
+  };
+
 export const detailVideo = (videoId) => (dispatch) => {
   if (!videoId) {
     return dispatch(videoDetail({ video: undefined }));
@@ -129,13 +160,14 @@ export const deleteVideoAction = (videoId) => (dispatch) => {
         text: data.message,
         icon: "success",
       });
+      dispatch(exerciseVideoDeleted({ id: videoId }));
     })
-    .catch((err) => {
-      err.clientMessage = "Something went wrong";
+    .catch((error) => {
+      error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't Delete Video",
         icon: "error",
       });
-      dispatch(catchError({ err, callType: callTypes.action }));
+      dispatch(catchError({ error, callType: callTypes.action }));
     });
 };

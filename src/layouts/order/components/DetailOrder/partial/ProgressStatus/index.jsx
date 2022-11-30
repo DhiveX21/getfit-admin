@@ -44,7 +44,7 @@ export default function index({ status }) {
           </MDTypography>
         </div>
 
-        {index != orderStatusStep.length - 1 ? (
+        {index !== orderStatusStep.length - 1 ? (
           <SvgIcon color="primary">
             <path
               fill="currentColor"

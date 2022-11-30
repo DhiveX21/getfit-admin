@@ -13,7 +13,7 @@ export default function DetailNotification() {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { notification, notificationActionLoading } = useSelector(
+  const { notification } = useSelector(
     (state) => ({
       notification: state.notification.notification,
       notificationActionLoading: state.notification.actionLoading,
@@ -33,7 +33,7 @@ export default function DetailNotification() {
     return () => {
       dispatch(actions.detailNotification(undefined));
     };
-  }, [params.id]);
+  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="flex flex-col">
       <MDBox

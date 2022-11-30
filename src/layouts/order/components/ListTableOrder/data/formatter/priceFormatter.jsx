@@ -1,7 +1,8 @@
 import MDTypography from "components/MDTypography";
+import { PriceFormat } from "helpers/PriceHelpers";
 
 export const PriceColumnFormatter = ({ price }) => (
   <MDTypography variant="caption" color="info" fontWeight="medium">
-    {price}
+    Rp. {PriceFormat(price)}
   </MDTypography>
 );

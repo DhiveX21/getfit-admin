@@ -20,12 +20,12 @@ export default function ListTableOrder() {
 
   // Get Redux
   const { currentState } = useSelector((state) => ({ currentState: state.order }));
-  const { totalCount, entities, listLoading } = currentState;
+  const { totalCount, entities } = currentState;
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(actions.datatable(orderUIProps.queryParams));
-  }, [orderUIProps.queryParams]);
+  }, [orderUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = orderTableData(entities);
   

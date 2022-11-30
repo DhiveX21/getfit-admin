@@ -23,7 +23,7 @@ export default function ListTableMedicalRecord() {
 
   useEffect(() => {
     dispatch(dataTableMedicalRecord(medicalRecordUIProps.queryParams));
-  }, [medicalRecordUIProps.queryParams]);
+  }, [medicalRecordUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = medicalRecordTableData(entities);
 

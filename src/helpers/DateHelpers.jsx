@@ -2,7 +2,7 @@ export function dateFormater(dateString) {
   const date = new Date(dateString).getDate();
   const month = getMonthName(new Date(dateString).getMonth());
   const year = new Date(dateString).getFullYear();
-  return date + "-" + month + "-" + year;
+  return date + " " + month + " " + year;
 }
 
 export function formatDateRawToYMD(dateRaw) {

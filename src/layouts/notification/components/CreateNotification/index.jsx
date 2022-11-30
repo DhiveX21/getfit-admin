@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React, {useState } from "react";
 import MDBox from "components/MDBox";
 import BackButton from "components/extend/Button/BackButton";
 import MDTypography from "components/MDTypography";
