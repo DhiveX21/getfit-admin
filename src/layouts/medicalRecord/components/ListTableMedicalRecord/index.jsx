@@ -4,7 +4,6 @@ import medicalRecordTableData from "./data/medicalRecordTableData";
 import { dataTableMedicalRecord } from "layouts/medicalRecord/medicalRecordAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useMedicalRecordUIContext } from "layouts/medicalRecord/medicalRecordUIContext";
-import MDAvatar from "components/MDAvatar";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import { Link } from "react-router-dom";
@@ -12,7 +11,7 @@ import MDButton from "components/MDButton";
 
 export default function ListTableMedicalRecord() {
   const { currentState } = useSelector((state) => ({ currentState: state.medicalRecord }));
-  const { totalCount, entities, listLoading } = currentState;
+  const { totalCount, entities } = currentState;
   const dispatch = useDispatch();
   const medicalRecordUIContext = useMedicalRecordUIContext();
   const medicalRecordUIProps = useMemo(() => {
@@ -24,7 +23,7 @@ export default function ListTableMedicalRecord() {
 
   useEffect(() => {
     dispatch(dataTableMedicalRecord(medicalRecordUIProps.queryParams));
-  }, [medicalRecordUIProps.queryParams]);
+  }, [medicalRecordUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = medicalRecordTableData(entities);
 

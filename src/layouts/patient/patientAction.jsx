@@ -53,6 +53,11 @@ export const deletePatientAction = (patientId) => (dispatch) => {
   return deletePatient(patientId)
     .then((response) => {
       const data = response.data.data;
+      MySwal.fire({
+        title: "Success",
+        text: data.message,
+        icon: "success",
+      });
     })
     .catch((err) => {
       err.clientMessage = "Something went wrong";

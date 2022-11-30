@@ -13,7 +13,7 @@ export default function CategoryForm() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(categoryVideoAction());
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleSubmit() {
     dispatch(createVideoCategoryAction(inputTitle, inputDescription));
@@ -22,7 +22,7 @@ export default function CategoryForm() {
     <div className="animation-popup flex flex-col gap-[20px] mt-[20px]">
       <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
         <MDTypography variant="h6" color="text">
-          CREATE CATEGORY Video
+          CREATE CATEGORY VIDEO
         </MDTypography>
       </MDBox>
 
@@ -33,7 +33,7 @@ export default function CategoryForm() {
         <MDInput
           fullWidth
           required
-          label="Message"
+          label="Title"
           onChange={(e) => setInputTitle(e.target.value)}
           multiline
           rows={1}
@@ -46,7 +46,7 @@ export default function CategoryForm() {
         <MDInput
           fullWidth
           required
-          label="Message"
+          label="Description"
           onChange={(e) => setInputDescription(e.target.value)}
           multiline
           rows={5}
@@ -54,7 +54,7 @@ export default function CategoryForm() {
       </MDBox>
 
       <MDButton variant="gradient" color="success" onClick={() => handleSubmit()}>
-        Send
+        Submit
       </MDButton>
     </div>
   );

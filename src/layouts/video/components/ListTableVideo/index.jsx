@@ -4,7 +4,6 @@ import videoTableData from "./data/videoTableData";
 import { dataTableVideo } from "layouts/video/videoAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useVideoUIContext } from "layouts/video/videoUIContext";
-import MDAvatar from "components/MDAvatar";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import { Link } from "react-router-dom";
@@ -12,7 +11,7 @@ import MDButton from "components/MDButton";
 
 export default function ListTableVideo() {
   const { currentState } = useSelector((state) => ({ currentState: state.exercise.video }));
-  const { totalCount, entities, listLoading } = currentState;
+  const { totalCount, entities } = currentState;
   const dispatch = useDispatch();
   const videoUIContext = useVideoUIContext();
   const videoUIProps = useMemo(() => {
@@ -24,7 +23,7 @@ export default function ListTableVideo() {
 
   useEffect(() => {
     dispatch(dataTableVideo(videoUIProps.queryParams));
-  }, [videoUIProps.queryParams]);
+  }, [videoUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = videoTableData(entities);
 
@@ -57,6 +56,7 @@ export default function ListTableVideo() {
       <MDBox p={2}>
         <DataTable
           params={videoUIProps.queryParams}
+          totalCount={totalCount}
           setParams={videoUIProps.setQueryParams}
           table={{ columns, rows }}
         />

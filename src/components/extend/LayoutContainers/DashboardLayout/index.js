@@ -34,7 +34,7 @@ function DashboardLayout({ children }) {
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");
-  }, [pathname]);
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <MDBox

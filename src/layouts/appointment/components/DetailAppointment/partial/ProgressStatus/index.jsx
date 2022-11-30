@@ -12,7 +12,6 @@ export default function ProgressStatus({ type, linkMeeting, status }) {
   let flagCurrent = false;
 
   const addLinkMeetingHandle = () => {
-    console.log(linkMeetingInput.current.value);
     dispatch(
       actions.addMeetingLinkAppointmentAction(params?.id, linkMeetingInput.current.value)
     ).then((response) => {
@@ -20,7 +19,7 @@ export default function ProgressStatus({ type, linkMeeting, status }) {
     });
   };
 
-  if (status == "cancel") {
+  if (status === "cancel") {
     return (
       <div className="w-full p-[20px] flex flex-col justify-center">
         <MDTypography fontSize="20px" fontWeight="bold">
@@ -38,14 +37,14 @@ export default function ProgressStatus({ type, linkMeeting, status }) {
   }
 
   const steps = appointmentStatusStep.map((item, index) => {
-    if (item.key == "cancel") {
+    if (item.key === "cancel") {
       return "";
     }
     let color = "bg-green-500";
-    if (flagCurrent == false && item.key == status) {
+    if (flagCurrent === false && item.key === status) {
       color = "bg-blue-500";
       flagCurrent = true;
-    } else if (flagCurrent == true && item.key != status) {
+    } else if (flagCurrent === true && item.key !== status) {
       color = "bg-gray-500";
     } else {
       color = "bg-green-500";

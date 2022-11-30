@@ -1,6 +1,5 @@
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
 
 export const TitleColumnFormatter = ({ title }) => (
   <MDBox

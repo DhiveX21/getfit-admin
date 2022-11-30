@@ -31,7 +31,7 @@ export default function data(entities) {
   const dataMapping = entities.map((item, index) => {
     return {
       name: <NameColumnFormatter image={team2} name={item.name} email={item.user.email} />,
-      birthdate: <BirthDateColumnFormatter title={item.birth_date} description={`${item.age} Tahun`} />,
+      birthdate: <BirthDateColumnFormatter birth_date={item.birth_date} age={`${item.age} Years Old`} />,
       status: (
         <StatusColumnFormatter
           homeCare={1}

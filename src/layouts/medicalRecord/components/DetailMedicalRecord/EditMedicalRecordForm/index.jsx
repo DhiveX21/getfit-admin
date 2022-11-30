@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 import { useState } from "react";
 import DynamicForm from "./DynamicForm";
@@ -43,7 +42,7 @@ export default function EditMedicalRecordForm({ medicalRecord, editMode, setEdit
 
   useEffect(() => {
     setEditMode(false);
-  }, [medicalRecord.records]);
+  }, [medicalRecord.records]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

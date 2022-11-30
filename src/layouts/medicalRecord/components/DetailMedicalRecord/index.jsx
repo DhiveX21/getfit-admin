@@ -6,8 +6,6 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import * as actions from "../../medicalRecordAction";
 import { dateFormater } from "helpers/DateHelpers";
 import MDButton from "components/MDButton";
-import { useForm } from "react-hook-form";
-import MDInput from "components/MDInput";
 import EditMedicalRecordForm from "./EditMedicalRecordForm";
 import MDBox from "components/MDBox";
 import { Link } from "react-router-dom";
@@ -22,7 +20,7 @@ export default function DetailMedicalRecord() {
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
-  const { medicalRecord, medicalRecordActionLoading } = useSelector(
+  const { medicalRecord } = useSelector(
     (state) => ({
       medicalRecord: state.medicalRecord.medicalRecord,
       medicalRecordActionLoading: state.medicalRecord.actionLoading,
@@ -43,7 +41,7 @@ export default function DetailMedicalRecord() {
     return () => {
       dispatch(actions.detailMedicalRecord(undefined));
     };
-  }, [params.id]);
+  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="flex flex-col">

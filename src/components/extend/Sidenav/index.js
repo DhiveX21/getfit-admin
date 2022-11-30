@@ -32,11 +32,11 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
 // Material Dashboard 2 React example components
-import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
+import SidenavCollapse from "./SidenavCollapse";
 
 // Custom styles for the Sidenav
-import SidenavRoot from "examples/Sidenav/SidenavRoot";
-import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
+import SidenavRoot from "./SidenavRoot";
+import sidenavLogoLabel from "./styles/sidenav";
 
 // Material Dashboard 2 React context
 import {
@@ -51,6 +51,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
+  const splitName = collapseName.split("/");
 
   let textColor = "white";
 
@@ -80,12 +81,12 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
-  }, [dispatch, location]);
+  }, [dispatch, location]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route, main_route }) => {
     let returnValue;
-
+    
     if (type === "collapse") {
       returnValue = href ? (
         <Link
@@ -104,7 +105,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </Link>
       ) : (
         <NavLink key={key} to={main_route}>
-          <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
+          <SidenavCollapse name={name} icon={icon} active={key === splitName[0]} />
         </NavLink>
       );
     } else if (type === "title") {

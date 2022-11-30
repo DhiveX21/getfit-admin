@@ -95,14 +95,14 @@ function DataTable({
   // Set the default value for the entries per page when component mounts
   useEffect(() => {
     setPageSize(defaultValue || 10);
-  }, [defaultValue]);
+  }, [defaultValue]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setParams({
       ...params,
       pageIndex: pageIndex
     })
-  }, [pageIndex])
+  }, [pageIndex]) // eslint-disable-line react-hooks/exhaustive-deps
   
 
   // Set the entries per page value based on the select value

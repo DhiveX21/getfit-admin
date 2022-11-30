@@ -1,10 +1,10 @@
+import { Icon } from "@mui/material";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
 
-export const NameColumnFormatter = ({ image, name, phoneNumber }) => (
+export const NameColumnFormatter = ({ name, phoneNumber }) => (
   <MDBox display="flex" alignItems="center" lineHeight={1} className="max-w-[300px]">
-    <MDAvatar src={image} name={name} size="sm" />
+    <Icon fontSize="medium">account_circle</Icon>
     <MDBox ml={2} lineHeight={1}>
       <MDTypography display="block" variant="button" fontWeight="medium">
         {name}

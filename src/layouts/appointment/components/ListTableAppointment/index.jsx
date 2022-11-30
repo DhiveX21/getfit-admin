@@ -20,13 +20,13 @@ export default function ListTableAppointment() {
 
   // Get Redux
   const { currentState } = useSelector((state) => ({ currentState: state.appointment }));
-  const { totalCount, entities, listLoading } = currentState;
+  const { totalCount, entities } = currentState;
   // Dispatch
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(actions.datatable(appointmentUIProps.queryParams));
-  }, [appointmentUIProps.queryParams]);
+  }, [appointmentUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = appointmentTableData(entities);
   return (

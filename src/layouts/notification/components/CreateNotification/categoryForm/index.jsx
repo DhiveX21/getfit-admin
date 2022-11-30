@@ -15,7 +15,7 @@ export default function CategoryForm() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(categoryNotificationAction());
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleSubmit() {
     dispatch(createNotificationCategoryAction(inputTitle, inputDescription));

@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const MEDICAL_RECORD_URL = process.env.REACT_APP_APPOINTMENT_SERVICE_URL;
 const EXERCISE_URL = process.env.REACT_APP_EXERCISE_SERVICE_URL;
 
 export function getAllVideoDatatable(params) {
@@ -14,6 +13,9 @@ export function createVideoCategory(body) {
 }
 export function createVideo(body) {
   return axios.post(`${EXERCISE_URL}/videos`, { ...body });
+}
+export function updateVideo(id, body) {
+  return axios.put(`${EXERCISE_URL}/videos/${id}`, { ...body });
 }
 export function getOneVideo(videoId) {
   return axios.get(`${EXERCISE_URL}/videos/${videoId}`);

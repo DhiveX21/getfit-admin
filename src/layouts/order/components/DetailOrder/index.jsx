@@ -17,7 +17,7 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import { Card, SvgIcon } from "@mui/material";
+import { Card } from "@mui/material";
 import MDButton from "components/MDButton";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import * as actions from "../../orderAction";
@@ -45,7 +45,7 @@ function OrderDetail() {
     return () => {
       dispatch(actions.detailOrder(undefined));
     };
-  }, [params.id, dispatch]);
+  }, [params.id, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cancelOrder = () => {
     dispatch(actions.cancelOrderAction(params?.id)).then((response) => {
@@ -85,7 +85,7 @@ function OrderDetail() {
                 Action
               </MDTypography>
               <div className="w-full flex gap-[10px]">
-                {order?.status == "unpaid" ? (
+                {order?.status === "unpaid" ? (
                   <>
                     <MDButton variant="gradient" color="info" onClick={completeOrder}>
                       Set To Paid
