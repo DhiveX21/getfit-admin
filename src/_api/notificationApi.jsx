@@ -20,6 +20,10 @@ export function createNotification(body) {
   return axios.post(`${NOTIFICATION_URL}/notifications`, { ...body });
 }
 
+export function updateNotification(body, id) {
+  return axios.put(`${NOTIFICATION_URL}/notifications/${id}`, { ...body });
+}
+
 export function createNotificationCategory(body) {
   return axios.post(`${NOTIFICATION_URL}/notification-categories`, { ...body });
 }
