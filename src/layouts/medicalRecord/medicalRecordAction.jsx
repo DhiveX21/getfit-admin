@@ -113,13 +113,13 @@ export const createMedicalRecordAction = (appointmentData, records) => (dispatch
         icon: "success",
       });
     })
-    .catch((err) => {
-      err.clientMessage = "Something went wrong";
+    .catch((error) => {
+      error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show detail patient",
         icon: "error",
       });
-      dispatch(catchError({ err, callType: callTypes.action }));
+      dispatch(catchError({ error, callType: callTypes.action }));
     });
 };
 

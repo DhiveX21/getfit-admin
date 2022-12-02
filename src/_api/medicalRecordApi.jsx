@@ -8,6 +8,9 @@ export function getAllMedicalRecordsDatatable(params) {
 export function getOneMedicalRecord(medicalRecordId) {
   return axios.get(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`);
 }
+export function getAllMedicalRecordByIdUser(idUser) {
+  return axios.get(`${MEDICAL_RECORD_URL}/records/user/${idUser}`);
+}
 export function updateMedicalRecord(medicalRecordId, body) {
   return axios.put(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`, { ...body });
 }

@@ -11,10 +11,11 @@ import { createMedicalRecordAction } from "layouts/medicalRecord/medicalRecordAc
 import MDBox from "components/MDBox";
 import BackButton from "components/extend/Button/BackButton";
 import MDTypography from "components/MDTypography";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MDButton from "components/MDButton";
 
 export default function CreateMedicalRecord() {
+  const navigate = useNavigate()
   const [fieldMedicalRecord, setFieldMedicalRecord] = useState([{ key: "", value: "" }]);
   const [appointmentData, setAppointmentData] = useState(null);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -76,7 +77,9 @@ export default function CreateMedicalRecord() {
         icon: "error",
       });
     } else {
-      dispatch(createMedicalRecordAction(appointmentData[selectedAppointment], fieldMedicalRecord));
+      dispatch(createMedicalRecordAction(appointmentData[selectedAppointment], fieldMedicalRecord)).then((result) => {
+        navigate("/medical-record/list-medical-record");
+      });
     }
   }
 

@@ -9,19 +9,22 @@ import MDTypography from "components/MDTypography";
 import { useNavigate } from "react-router-dom";
 import RelatedMenu from "./partial/RelatedMenu";
 import EditForm from "./partial/editForm";
+import BackButton from "components/extend/Button/BackButton";
 
 export default function DetailPatient() {
   let navigate = useNavigate();
-  const [patientAppointment, setPatientAppointment] = useState();
+  // const [patientAppointment, setPatientAppointment] = useState();
   const [editMode, setEditMode] = useState(false);
 
   // Get Params
   const params = useParams();
 
   const dispatch = useDispatch();
-  const { patient } = useSelector(
+  const { patient, appointments, records } = useSelector(
     (state) => ({
       patient: state.patient.patient,
+      appointments: state.patient.appointment.some,
+      records: state.patient.record.some,
     }),
     shallowEqual
   );
@@ -34,7 +37,10 @@ export default function DetailPatient() {
   };
 
   useEffect(() => {
-    dispatch(actions.detailPatient(params.id));
+    dispatch(actions.detailPatient(params.id)).then((result) => {
+      dispatch(actions.getAllAppointmentByIdUserAction(result?.user_id));
+      dispatch(actions.getAllMedicalRecordByIdUserAction(result?.user_id));
+    });
 
     return () => {
       dispatch(actions.detailPatient(undefined));
@@ -63,9 +69,12 @@ export default function DetailPatient() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <MDTypography variant="h6" color="white">
-          Detail {patient?.name}
-        </MDTypography>
+        <MDBox display="flex" alignItems="center" gap="20px">
+          <BackButton to="/patient/list-patient" />
+          <MDTypography variant="h6" color="white">
+            Detail {patient?.name}
+          </MDTypography>
+        </MDBox>
 
         <MDTypography variant="caption" color="text" fontWeight="medium" display="flex" gap="20px">
           <MDButton variant="gradient" color="warning" onClick={() => setEditMode(!editMode)}>
@@ -87,7 +96,11 @@ export default function DetailPatient() {
             email={patient?.user.email}
           />
         </MDBox>
-        {editMode ? <EditForm patientData={patient} /> : <RelatedMenu />}
+        {editMode ? (
+          <EditForm patientData={patient} />
+        ) : (
+          <RelatedMenu appointments={appointments} records={records} />
+        )}
       </MDBox>
     </>
   );
