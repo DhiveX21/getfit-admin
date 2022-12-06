@@ -12,6 +12,9 @@ import { deletePatient } from "_api/patientApi";
 import { createUser } from "_api/patientApi";
 import { createPatient } from "_api/patientApi";
 import { updatePatient } from "_api/patientApi";
+import { patientSomeAppointment } from "_slices/patientSlice";
+import { getAllMedicalRecordByIdUser } from "_api/medicalRecordApi";
+import { patientSomeRecord } from "_slices/patientSlice";
 const MySwal = withReactContent(Swal);
 
 export const datatablePatient = (payload) => (dispatch) => {
@@ -40,6 +43,7 @@ export const detailPatient = (patientId) => (dispatch) => {
     .then((response) => {
       const data = response.data.data;
       dispatch(patientDetail({ patient: data }));
+      return data;
     })
     .catch((err) => {
       err.clientMessage = "Something went wrong";
@@ -77,7 +81,7 @@ export const getAllAppointmentByIdUserAction = (idUser) => (dispatch) => {
   return getAllAppointmentByIdUser(idUser)
     .then((response) => {
       const data = response.data.data;
-      return data;
+      dispatch(patientSomeAppointment({ appointments: data }));
     })
     .catch((err) => {
       err.clientMessage = "Something went wrong";
@@ -86,6 +90,23 @@ export const getAllAppointmentByIdUserAction = (idUser) => (dispatch) => {
         icon: "error",
       });
       dispatch(catchError({ err, callType: callTypes.action }));
+    });
+};
+
+export const getAllMedicalRecordByIdUserAction = (idUser) => (dispatch) => {
+  dispatch(startCall({ callType: callTypes.action }));
+  return getAllMedicalRecordByIdUser(idUser)
+    .then((response) => {
+      const data = response.data.data;
+      dispatch(patientSomeRecord({ records: data }));
+    })
+    .catch((error) => {
+      error.clientMessage = "Something went wrong";
+      MySwal.fire({
+        title: "Can't show some medical record patient",
+        icon: "error",
+      });
+      dispatch(catchError({ error, callType: callTypes.action }));
     });
 };
 
