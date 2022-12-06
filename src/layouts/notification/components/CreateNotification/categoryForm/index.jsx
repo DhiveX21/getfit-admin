@@ -35,7 +35,7 @@ export default function CategoryForm() {
         <MDInput
           fullWidth
           required
-          label="Message"
+          label="Title"
           onChange={(e) => setInputTitle(e.target.value)}
           multiline
           rows={1}
@@ -48,7 +48,7 @@ export default function CategoryForm() {
         <MDInput
           fullWidth
           required
-          label="Message"
+          label="Description"
           onChange={(e) => setInputDescription(e.target.value)}
           multiline
           rows={5}

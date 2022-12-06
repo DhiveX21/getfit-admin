@@ -1,28 +1,59 @@
+import { updateNotificationAction } from "layouts/notification/notificationAction";
 import React, { useEffect, useState } from "react";
-
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
+import { useDispatch, useSelector } from "react-redux";
+import makeAnimated from "react-select/animated";
 import { getAllPatient } from "_api/patientApi";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-import { useSelector, useDispatch } from "react-redux";
 import { categoryNotificationAction } from "layouts/notification/notificationAction";
-import { createNotificationAction } from "layouts/notification/notificationAction";
-import { useNavigate } from "react-router-dom";
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+import Select from "react-select";
+import MDInput from "components/MDInput";
+import MDButton from "components/MDButton";
+import { detailNotification } from "layouts/notification/notificationAction";
 
-export default function NotificationForm() {
+export default function UpdateForm({ notification }) {
+  // define patient  to select to field
+  let defaultPatientOption = [];
+  let defaultPatientValue = [];
+  if (notification.user_id === -2) {
+    notification?.patient.map((item) => {
+      let tempObjectPatient = { label: item.name, value: item.user_id };
+      defaultPatientOption = [...defaultPatientOption, tempObjectPatient];
+      defaultPatientValue = [...defaultPatientValue, item.user_id];
+    });
+  }
+  // if (notification.user_id === -1) {
+  //   defaultPatientOption = [];
+  //   defaultPatientValue = [];
+  // }
+
+  // define Priority  to select to field
+  let defaultPriorityOption;
+  let defaultPriorityValue;
+  if (notification?.is_important) {
+    defaultPriorityOption = { value: true, label: "Important" };
+    defaultPriorityValue = true;
+  } else {
+    defaultPriorityOption = { value: false, label: "Regular" };
+    defaultPriorityValue = false;
+  }
+
+  // define Category  to select to field
+  let defaultCategoryOption;
+  let defaultCategoryValue;
+
+  defaultCategoryOption = { value: notification.category.id, label: notification.category.title };
+  defaultCategoryValue = notification.category.id;
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [patientData, setPatientData] = useState();
   const [patientOptions, setPatientOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState();
-  const [selectedPriority, setSelectedPriority] = useState();
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedPatient, setSelectedPatient] = useState(defaultPatientValue);
+  const [selectedPriority, setSelectedPriority] = useState(defaultPriorityValue);
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategoryValue);
   const [inputMessage, setInputMessage] = useState();
   const [inputTitle, setInputTitle] = useState();
   const animatedComponents = makeAnimated();
@@ -57,6 +88,8 @@ export default function NotificationForm() {
   // if redux category is not define , re fetch from action
   useEffect(() => {
     dispatch(categoryNotificationAction());
+    setInputTitle(notification?.title);
+    setInputMessage(notification?.description);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   //filling the options for category
@@ -71,25 +104,32 @@ export default function NotificationForm() {
   function handleSubmit() {
     if (selectedPatient?.length > 0) {
       dispatch(
-        createNotificationAction(
+        updateNotificationAction(
           selectedPatient,
           selectedPriority,
           selectedCategory,
           inputTitle,
-          inputMessage
+          inputMessage,
+          notification.id
         )
       ).then(() => {
-        navigate("/notification/list-notification");
+        dispatch(detailNotification(notification.id));
       });
     } else {
       dispatch(
-        createNotificationAction(null, selectedPriority, selectedCategory, inputTitle, inputMessage)
+        updateNotificationAction(
+          null,
+          selectedPriority,
+          selectedCategory,
+          inputTitle,
+          inputMessage,
+          notification.id
+        )
       ).then(() => {
-        navigate("/notification/list-notification");
+        dispatch(detailNotification(notification.id));
       });
     }
   }
-
   function handleSelectedPatient(e) {
     let tempPatient = [];
     e.forEach((item) => {
@@ -97,11 +137,12 @@ export default function NotificationForm() {
     });
     setSelectedPatient(tempPatient);
   }
+
   return (
     <div className="animation-popup flex flex-col gap-[20px] mt-[20px]">
       <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
         <MDTypography variant="h6" color="text">
-          CREATE NOTIFICATION
+          UPDATE NOTIFICATION
         </MDTypography>
       </MDBox>
       <MDBox display="flex-column" alignItems="center" gap="20px">
@@ -112,6 +153,7 @@ export default function NotificationForm() {
           className="basic-single text-[14px] z-12"
           closeMenuOnSelect={false}
           components={animatedComponents}
+          defaultValue={defaultPatientOption || "Select"}
           onChange={(e) => handleSelectedPatient(e)}
           isMulti
           options={patientOptions}
@@ -126,6 +168,7 @@ export default function NotificationForm() {
           classNamePrefix="select"
           isSearchable={true}
           name="color"
+          defaultValue={defaultPriorityOption}
           options={priorityOptions}
           onChange={(e) => setSelectedPriority(e.value)}
         />
@@ -140,6 +183,7 @@ export default function NotificationForm() {
           isSearchable={true}
           name="color"
           options={categoryOptions}
+          defaultValue={defaultCategoryOption}
           onChange={(e) => setSelectedCategory(e.value)}
         />
       </MDBox>
@@ -151,6 +195,7 @@ export default function NotificationForm() {
           className=" z-8"
           fullWidth
           required
+          defaultValue={inputTitle}
           label="Title"
           onChange={(e) => setInputTitle(e.target.value)}
           multiline
@@ -164,6 +209,7 @@ export default function NotificationForm() {
         <MDInput
           fullWidth
           required
+          defaultValue={inputMessage}
           label="Message"
           onChange={(e) => setInputMessage(e.target.value)}
           multiline

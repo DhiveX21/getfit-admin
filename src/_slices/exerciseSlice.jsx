@@ -51,7 +51,7 @@ export const exerciseSlice = createSlice({
       state.error = null;
       state.actionLoading = false;
       state.video.video = action.payload.data;
-      state.entities = state.video.entities.map((entity) => {
+      state.video.entities = state.video.entities.map((entity) => {
         if (entity.id === action.payload.data.id) {
           return action.payload.data;
         }

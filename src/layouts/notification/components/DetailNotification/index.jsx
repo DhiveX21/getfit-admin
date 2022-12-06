@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MDBox from "components/MDBox";
 import BackButton from "components/extend/Button/BackButton";
 import MDTypography from "components/MDTypography";
@@ -7,11 +7,13 @@ import MDButton from "components/MDButton";
 import { useParams } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import * as actions from "layouts/notification/notificationAction";
-import { useNavigate } from "react-router-dom";
+import Detail from "./detail";
+import CategoryForm from "../CreateNotification/categoryForm";
+import UpdateForm from "./updateForm";
 
 export default function DetailNotification() {
   const params = useParams();
-  const navigate = useNavigate();
+  const [mode, setMode] = useState("detail");
   const dispatch = useDispatch();
   const { notification } = useSelector(
     (state) => ({
@@ -21,12 +23,6 @@ export default function DetailNotification() {
     shallowEqual
   );
 
-  const handleNotificationDelete = () => {
-    if (window.confirm("Are you sure to delete this notification?")) {
-      dispatch(actions.deleteNotificationAction(params.id));
-      navigate("/notification/list-notification");
-    }
-  };
   useEffect(() => {
     dispatch(actions.detailNotification(params.id));
 
@@ -34,6 +30,7 @@ export default function DetailNotification() {
       dispatch(actions.detailNotification(undefined));
     };
   }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="flex flex-col">
       <MDBox
@@ -55,105 +52,55 @@ export default function DetailNotification() {
             Detail Notification
           </MDTypography>
         </MDBox>
-        <Link to="/notification/create">
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            <MDButton variant="gradient" color="success">
-              Create New
-            </MDButton>
-          </MDTypography>
-        </Link>
+        <div className="flex gap-[10px]">
+          {mode !== "update" && mode !== "detail" && (
+            <Link to="/notification/create">
+              <MDTypography variant="caption" color="text" fontWeight="medium">
+                <MDButton variant="gradient" color="success">
+                  Create New
+                </MDButton>
+              </MDTypography>
+            </Link>
+          )}
+          {mode === "detail" && (
+            <MDTypography variant="caption" color="text" fontWeight="medium">
+              <MDButton variant="gradient" onClick={() => setMode("update")} color="warning">
+                Edit Notification
+              </MDButton>
+            </MDTypography>
+          )}
+          {(mode === "update" || mode === "category") && (
+            <MDTypography variant="caption" color="text" fontWeight="medium">
+              <MDButton variant="gradient" onClick={() => setMode("detail")} color="warning">
+                Detail Notification
+              </MDButton>
+            </MDTypography>
+          )}
+
+          {mode !== "update" && mode !== "detail" && (
+            <MDTypography variant="caption" color="text" fontWeight="medium">
+              <MDButton variant="gradient" onClick={() => setMode("category")} color="success">
+                New Category
+              </MDButton>
+            </MDTypography>
+          )}
+        </div>
       </MDBox>
-      <div className="flex">
-        <div className="w-1/2 p-[20px]">
-          <MDTypography fontSize="20px" fontWeight="bold">
-            Notification Detail
-          </MDTypography>
-
-          <div className=" flex gap-[10px] ">
-            <MDTypography width="40%" color="text" fontSize="14px">
-              Notification Created At
-            </MDTypography>
-            <MDTypography width="10%" color="text" fontSize="14px">
-              :
-            </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.created_at}
-            </MDTypography>
-          </div>
-
-          <div className=" flex gap-[10px] ">
-            <MDTypography width="40%" color="text" fontSize="14px">
-              Priority
-            </MDTypography>
-            <MDTypography width="10%" color="text" fontSize="14px">
-              :
-            </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.is_important ? "Prioritas" : "Normal"}
-            </MDTypography>
-          </div>
-          <div className=" flex gap-[10px] ">
-            <MDTypography width="40%" color="text" fontSize="14px">
-              Category
-            </MDTypography>
-            <MDTypography width="10%" color="text" fontSize="14px">
-              :
-            </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.category_id}
-            </MDTypography>
+      {mode === "detail" && <Detail notification={notification} />}
+      {mode === "update" && (
+        <div className="w-full flex flex-col justify-center items-center gap-[20px] px-[20px] my-[40px]">
+          <div className="w-2/3  p-2 rounded-xl flex flex-col gap-[10px] relative ">
+            <UpdateForm notification={notification} />
           </div>
         </div>
-        <div className="w-1/2 p-[20px]">
-          <MDTypography fontSize="20px" fontWeight="bold">
-            User Detail
-          </MDTypography>
-
-          <div className=" flex gap-[10px] ">
-            <MDTypography width="40%" color="text" fontSize="14px">
-              Target
-            </MDTypography>
-            <MDTypography width="10%" color="text" fontSize="14px">
-              :
-            </MDTypography>
-            <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.user_id === -1 ? "All Patient" : notification?.user_id}
-            </MDTypography>
+      )}
+      {mode === "category" && (
+        <div className="w-full flex flex-col justify-center items-center gap-[20px] px-[20px] my-[40px]">
+          <div className="w-2/3  p-2 rounded-xl flex flex-col gap-[10px] relative ">
+            <CategoryForm />
           </div>
         </div>
-      </div>
-      <div className="w-full p-[20px] flex flex-col justify-center">
-        <MDTypography color="dark" fontSize="20px" fontWeight="bold">
-          Notification
-        </MDTypography>
-        <MDBox
-          display="flex"
-          flexDirection="column"
-          bgColor="lightGray"
-          borderRadius="10px"
-          alignItems="center"
-          gap="20px"
-          padding="20px"
-        >
-          <MDTypography color="primary" fontSize="16px" fontWeight="medium">
-            {notification?.title}
-          </MDTypography>
-          <MDTypography color="dark" fontSize="16px" fontWeight="medium">
-            {notification?.description}
-          </MDTypography>
-        </MDBox>
-      </div>
-
-      <div className="w-full p-[20px] flex flex-col justify-center">
-        <MDTypography color="dark" fontSize="20px" fontWeight="bold">
-          Action
-        </MDTypography>
-        <div className="w-full flex gap-[10px]">
-          <MDButton variant="outlined" color="primary" onClick={() => handleNotificationDelete()}>
-            DELETE
-          </MDButton>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
