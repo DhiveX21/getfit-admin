@@ -102,8 +102,8 @@ export const updateNotificationAction =
           title: "Success Update Notification",
           icon: "success",
         });
-        const data = response.data.data;
-        dispatch(notificationUpdated({data: data}))
+        // const data = response.data.data;
+        // dispatch(notificationUpdated({ data: data }));
       })
       .catch((error) => {
         error.clientMessage = "Something went wrong";

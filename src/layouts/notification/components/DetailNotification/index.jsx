@@ -53,13 +53,15 @@ export default function DetailNotification() {
           </MDTypography>
         </MDBox>
         <div className="flex gap-[10px]">
-          <Link to="/notification/create">
-            <MDTypography variant="caption" color="text" fontWeight="medium">
-              <MDButton variant="gradient" color="success">
-                Create New
-              </MDButton>
-            </MDTypography>
-          </Link>
+          {mode !== "update" && mode !== "detail" && (
+            <Link to="/notification/create">
+              <MDTypography variant="caption" color="text" fontWeight="medium">
+                <MDButton variant="gradient" color="success">
+                  Create New
+                </MDButton>
+              </MDTypography>
+            </Link>
+          )}
           {mode === "detail" && (
             <MDTypography variant="caption" color="text" fontWeight="medium">
               <MDButton variant="gradient" onClick={() => setMode("update")} color="warning">
@@ -74,11 +76,14 @@ export default function DetailNotification() {
               </MDButton>
             </MDTypography>
           )}
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            <MDButton variant="gradient" onClick={() => setMode("category")} color="success">
-              New Category
-            </MDButton>
-          </MDTypography>
+
+          {mode !== "update" && mode !== "detail" && (
+            <MDTypography variant="caption" color="text" fontWeight="medium">
+              <MDButton variant="gradient" onClick={() => setMode("category")} color="success">
+                New Category
+              </MDButton>
+            </MDTypography>
+          )}
         </div>
       </MDBox>
       {mode === "detail" && <Detail notification={notification} />}

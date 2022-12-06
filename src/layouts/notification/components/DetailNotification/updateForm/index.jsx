@@ -14,13 +14,46 @@ import MDButton from "components/MDButton";
 import { detailNotification } from "layouts/notification/notificationAction";
 
 export default function UpdateForm({ notification }) {
+  // define patient  to select to field
+  let defaultPatientOption = [];
+  let defaultPatientValue = [];
+  if (notification.user_id === -2) {
+    notification?.patient.map((item) => {
+      let tempObjectPatient = { label: item.name, value: item.user_id };
+      defaultPatientOption = [...defaultPatientOption, tempObjectPatient];
+      defaultPatientValue = [...defaultPatientValue, item.user_id];
+    });
+  }
+  // if (notification.user_id === -1) {
+  //   defaultPatientOption = [];
+  //   defaultPatientValue = [];
+  // }
+
+  // define Priority  to select to field
+  let defaultPriorityOption;
+  let defaultPriorityValue;
+  if (notification?.is_important) {
+    defaultPriorityOption = { value: true, label: "Important" };
+    defaultPriorityValue = true;
+  } else {
+    defaultPriorityOption = { value: false, label: "Regular" };
+    defaultPriorityValue = false;
+  }
+
+  // define Category  to select to field
+  let defaultCategoryOption;
+  let defaultCategoryValue;
+
+  defaultCategoryOption = { value: notification.category.id, label: notification.category.title };
+  defaultCategoryValue = notification.category.id;
+
   const dispatch = useDispatch();
   const [patientData, setPatientData] = useState();
   const [patientOptions, setPatientOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState();
-  const [selectedPriority, setSelectedPriority] = useState();
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedPatient, setSelectedPatient] = useState(defaultPatientValue);
+  const [selectedPriority, setSelectedPriority] = useState(defaultPriorityValue);
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategoryValue);
   const [inputMessage, setInputMessage] = useState();
   const [inputTitle, setInputTitle] = useState();
   const animatedComponents = makeAnimated();
@@ -120,7 +153,7 @@ export default function UpdateForm({ notification }) {
           className="basic-single text-[14px] z-12"
           closeMenuOnSelect={false}
           components={animatedComponents}
-          defaultValue={selectedPatient}
+          defaultValue={defaultPatientOption || "Select"}
           onChange={(e) => handleSelectedPatient(e)}
           isMulti
           options={patientOptions}
@@ -135,6 +168,7 @@ export default function UpdateForm({ notification }) {
           classNamePrefix="select"
           isSearchable={true}
           name="color"
+          defaultValue={defaultPriorityOption}
           options={priorityOptions}
           onChange={(e) => setSelectedPriority(e.value)}
         />
@@ -149,6 +183,7 @@ export default function UpdateForm({ notification }) {
           isSearchable={true}
           name="color"
           options={categoryOptions}
+          defaultValue={defaultCategoryOption}
           onChange={(e) => setSelectedCategory(e.value)}
         />
       </MDBox>
