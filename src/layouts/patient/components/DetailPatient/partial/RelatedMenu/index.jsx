@@ -4,6 +4,7 @@ import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import { dateFormater } from "helpers/DateHelpers";
 import { Link } from "react-router-dom";
+import { formatDateRawToYMD } from "helpers/DateHelpers";
 
 export default function RelatedMenu({ appointments, records }) {
   return (
@@ -27,9 +28,14 @@ export default function RelatedMenu({ appointments, records }) {
                   className="bg-slate-100 w-full rounded-lg p-1 flex gap-[20px] justify-between items-center"
                   key={item._id}
                 >
-                  <h4 className="text-[18px]">{`${item.appointment_type}__${
-                    item.patient_detail.name
-                  }__${dateFormater(item.date_appointment)}__${item.time_appointment}WIB`}</h4>
+                  <h4 className="text-[16px] px-[10px]">
+                    {`${item.appointment_type} || `}
+                    <b className="text-red-500">{`${item.patient_detail.name} `}</b>
+                    <span className="text-blue-700">
+                      {" "}
+                      {`${dateFormater(item.date_appointment)}  ${item.time_appointment} WIB`}
+                    </span>
+                  </h4>
                   <div className="flex gap-[10px]">
                     <Link to={`/appointment/${item._id}`}>
                       <MDButton variant="gradient" color="info">
@@ -53,7 +59,10 @@ export default function RelatedMenu({ appointments, records }) {
                   className="bg-slate-100 w-full rounded-lg p-1 flex gap-[20px] justify-between items-center"
                   key={item._id}
                 >
-                  <h4 className="text-[18px]">{`${item.appointment_type}__${item.date}`}</h4>
+                  <h4 className="text-[16px] px-[10px]">
+                    {`${item.appointment_type} ||  `}
+                    <span className="text-blue-700">{`${formatDateRawToYMD(item.date)}`}</span>
+                  </h4>
                   <div className="flex gap-[10px]">
                     <Link to={`/medical-record/${item._id}`}>
                       <MDButton variant="gradient" color="info">
