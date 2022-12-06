@@ -16,20 +16,16 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
-import MDButton from "components/MDButton";
-import { Link } from "react-router-dom";
 import ListTableMedicalRecord from "./components/ListTableMedicalRecord";
 import DetailMedicalRecord from "./components/DetailMedicalRecord";
 import CreateMedicalRecord from "./components/CreateMedicalRecord";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { MedicalRecordUIProvider } from "./medicalRecordUIContext";
 
 function MedicalRecord() {
-  let location = useLocation();
   return (
     <DashboardLayout>
       <MedicalRecordUIProvider>

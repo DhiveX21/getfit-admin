@@ -4,7 +4,6 @@ import notificationTableData from "./data/notificationTableData";
 import { dataTableNotification } from "layouts/notification/notificationAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotificationUIContext } from "layouts/notification/notificationUIContext";
-import MDAvatar from "components/MDAvatar";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import { Link } from "react-router-dom";
@@ -24,7 +23,7 @@ export default function ListTableNotification() {
 
   useEffect(() => {
     dispatch(dataTableNotification(notificationUIProps.queryParams));
-  }, [notificationUIProps.queryParams]);
+  }, [notificationUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = notificationTableData(entities);
 

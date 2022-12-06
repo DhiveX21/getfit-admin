@@ -39,6 +39,19 @@ export const notificationSlice = createSlice({
       state.error = null;
       state.notification = action.payload.notification;
     },
+    notificationUpdated: (state, action) => {
+      state.error = null;
+      state.actionLoading = false;
+      state.notification = action.payload.data;
+      let tempEntities = [];
+      state.entities.map((entity) => {
+        if (entity.id === action.payload.data.id) {
+          tempEntities = [...tempEntities, action.payload.data];
+        }
+        tempEntities = [...tempEntities, entity];
+      });
+      state.entities = tempEntities;
+    },
     notificationCategory: (state, action) => {
       const { entities } = action.payload;
       state.listLoading = false;
@@ -61,6 +74,7 @@ export const {
   startCall,
   notificationDataTable,
   notificationDetail,
+  notificationUpdated,
   notificationCategory,
   catchError,
 } = notificationSlice.actions;

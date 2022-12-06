@@ -12,7 +12,6 @@ import { getAllPatient } from "_api/patientApi";
 import Swal from "sweetalert2";
 import makeAnimated from "react-select/animated";
 import withReactContent from "sweetalert2-react-content";
-import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { createNotificationWhatsappAction } from "layouts/notification/notificationAction";
 
@@ -44,7 +43,13 @@ export default function WhatsappForm() {
     } else {
       let tempOptions = [];
       patientData.map((item, index) => {
-        tempOptions = [...tempOptions, { value: item.user.phone_number, label: item.user.name }];
+        tempOptions = [
+          ...tempOptions,
+          {
+            value: item.user.phone_number,
+            label: item.user.name + " >>> " + item.user.phone_number,
+          },
+        ];
       });
       setPatientOptions(tempOptions);
     }
@@ -59,14 +64,12 @@ export default function WhatsappForm() {
   }
 
   function handleSubmit() {
-    console.log(inputMessage);
-    console.log(selectedPatient);
     if (selectedPatient.length > 0) {
       let flag = true;
       for (let i = 0; i < selectedPatient.length; i++) {
-        if (selectedPatient[i].charAt(0) !== "6") {
+        if (selectedPatient[i].charAt(0) !== "+") {
           MySwal.fire({
-            title: `Please Change the first character on Phone Number with 62`,
+            title: `Please Change the first character on Phone Number with +62`,
             icon: "error",
           });
           flag = false;
@@ -76,7 +79,7 @@ export default function WhatsappForm() {
 
       if (flag) {
         selectedPatient.map((item) => {
-          dispatch(createNotificationWhatsappAction(item, inputMessage));
+          dispatch(createNotificationWhatsappAction(item.substring(1), inputMessage));
         });
       }
     } else {

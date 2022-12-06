@@ -41,7 +41,7 @@ export default function DetailMedicalRecord() {
     return () => {
       dispatch(actions.detailMedicalRecord(undefined));
     };
-  }, [params.id]);
+  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="flex flex-col">

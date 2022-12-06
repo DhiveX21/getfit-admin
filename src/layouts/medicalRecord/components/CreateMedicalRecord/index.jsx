@@ -35,7 +35,7 @@ export default function CreateMedicalRecord() {
           });
         });
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function addFieldHandle(index) {
     setFieldMedicalRecord([...fieldMedicalRecord, { key: index, value: " " }]);

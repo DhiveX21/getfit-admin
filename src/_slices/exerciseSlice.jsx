@@ -47,6 +47,22 @@ export const exerciseSlice = createSlice({
       state.error = null;
       state.video.video = action.payload.video;
     },
+    exerciseVideoUpdated: (state, action) => {
+      state.error = null;
+      state.actionLoading = false;
+      state.video.video = action.payload.data;
+      state.video.entities = state.video.entities.map((entity) => {
+        if (entity.id === action.payload.data.id) {
+          return action.payload.data;
+        }
+        return entity;
+      });
+    },
+    exerciseVideoDeleted: (state, action) => {
+      state.error = null;
+      state.actionLoading = false;
+      state.entities = state.video.entities.filter(el => el.id !== action.payload.id);
+    },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
       if (action.payload.callType === callTypes.list) {
@@ -59,7 +75,14 @@ export const exerciseSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { startCall, exerciseVideoDataTable, exerciseVideoCategory, videoDetail, catchError } =
-  exerciseSlice.actions;
+export const {
+  startCall,
+  exerciseVideoDataTable,
+  exerciseVideoCategory,
+  exerciseVideoUpdated,
+  exerciseVideoDeleted,
+  videoDetail,
+  catchError,
+} = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

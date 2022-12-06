@@ -23,12 +23,12 @@ export default function ListTablePatient() {
 
   // Get Redux
   const { currentState } = useSelector((state) => ({ currentState: state.patient }));
-  const { totalCount, entities, listLoading } = currentState;
+  const { totalCount, entities } = currentState;
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(actions.datatablePatient(patientUIProps.queryParams));
-  }, [patientUIProps.queryParams]);
+  }, [patientUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = patientTableData(entities);
 

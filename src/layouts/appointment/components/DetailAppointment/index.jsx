@@ -45,8 +45,10 @@ export default function DetailAppointment() {
   const updateAppointment = () => {
     if (window.confirm("are you sure to UPDATE this appointment?")) {
       const currentStepIndex = appointmentStatusStep.findIndex((item, index) => {
-        const status = appointment?.status === item.key ? true : null;
-        return status;
+        if (appointment?.status === item.key) {
+          return true;
+        }
+        return false;
       });
       const nextStep = appointmentStatusStep[currentStepIndex + 1];
       dispatch(actions.updateAppointmentAction(params?.id, { status: nextStep.key })).then(

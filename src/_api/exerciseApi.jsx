@@ -14,6 +14,9 @@ export function createVideoCategory(body) {
 export function createVideo(body) {
   return axios.post(`${EXERCISE_URL}/videos`, { ...body });
 }
+export function updateVideo(id, body) {
+  return axios.put(`${EXERCISE_URL}/videos/${id}`, { ...body });
+}
 export function getOneVideo(videoId) {
   return axios.get(`${EXERCISE_URL}/videos/${videoId}`);
 }

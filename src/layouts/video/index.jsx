@@ -19,16 +19,14 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
-import { Link } from "react-router-dom";
 import ListTableVideo from "./components/ListTableVideo";
 import CreateVideo from "./components/CreateVideo";
 
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { VideoUIProvider } from "./videoUIContext";
 import DetailVideo from "./components/DetailVideo";
 
 function Video() {
-  let location = useLocation();
   return (
     <DashboardLayout>
       <VideoUIProvider>

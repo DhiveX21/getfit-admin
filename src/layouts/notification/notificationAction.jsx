@@ -18,6 +18,8 @@ import {
   deleteNotification,
 } from "_api/notificationApi";
 import {} from "_api/notificationApi";
+import { updateNotification } from "_api/notificationApi";
+import { notificationUpdated } from "_slices/notificationSlice";
 
 const MySwal = withReactContent(Swal);
 
@@ -28,13 +30,13 @@ export const dataTableNotification = (payload) => (dispatch) => {
       const data = response.data.data;
       dispatch(notificationDataTable({ entities: data.entities, totalCount: data.totalCount }));
     })
-    .catch((err) => {
-      err.clientMessage = "Something went wrong";
+    .catch((error) => {
+      error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show Notification List",
         icon: "error",
       });
-      dispatch(catchError({ err, callType: callTypes.list }));
+      dispatch(catchError({ error, callType: callTypes.list }));
     });
 };
 
@@ -56,15 +58,15 @@ export const categoryNotificationAction = () => (dispatch) => {
 };
 
 export const createNotificationAction =
-  (patientId, isImportant, categoryId, title, description) => (dispatch) => {
+  (patients, isImportant, categoryId, title, description) => (dispatch) => {
     const body = {
       title: title,
       description: description,
       category_id: +categoryId,
-      user_id: +patientId ? +patientId : null,
+      user_id: patients,
       is_important: isImportant,
     };
-    dispatch(startCall({ callType: callTypes.list }));
+    dispatch(startCall({ callType: callTypes.action }));
     return createNotification(body)
       .then((response) => {
         MySwal.fire({
@@ -74,12 +76,42 @@ export const createNotificationAction =
         const data = response.data.data;
         return data;
       })
-      .catch((err) => {
-        err.clientMessage = "Something went wrong";
+      .catch((error) => {
+        error.clientMessage = "Something went wrong";
         MySwal.fire({
           title: "Can't show Notification Category List",
           icon: "error",
         });
+        dispatch(catchError({ error, callType: callTypes.action }));
+      });
+  };
+
+export const updateNotificationAction =
+  (patients, isImportant, categoryId, title, description, notificationId) => (dispatch) => {
+    const body = {
+      title: title,
+      description: description,
+      category_id: +categoryId,
+      user_id: patients,
+      is_important: isImportant,
+    };
+    dispatch(startCall({ callType: callTypes.action }));
+    return updateNotification(body, notificationId)
+      .then((response) => {
+        MySwal.fire({
+          title: "Success Update Notification",
+          icon: "success",
+        });
+        // const data = response.data.data;
+        // dispatch(notificationUpdated({ data: data }));
+      })
+      .catch((error) => {
+        error.clientMessage = "Something went wrong";
+        MySwal.fire({
+          title: "Can't Update Notification",
+          icon: "error",
+        });
+        dispatch(catchError({ error, callType: callTypes.action }));
       });
   };
 

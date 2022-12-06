@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import MDBox from "components/MDBox";
-import BackButton from "components/extend/Button/BackButton";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import { Link } from "react-router-dom";
 import MDButton from "components/MDButton";
 import { getAllPatient } from "_api/patientApi";
 import Swal from "sweetalert2";
@@ -14,9 +12,11 @@ import makeAnimated from "react-select/animated";
 import { useSelector, useDispatch } from "react-redux";
 import { categoryNotificationAction } from "layouts/notification/notificationAction";
 import { createNotificationAction } from "layouts/notification/notificationAction";
+import { useNavigate } from "react-router-dom";
 
 export default function NotificationForm() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [patientData, setPatientData] = useState();
   const [patientOptions, setPatientOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
@@ -28,7 +28,7 @@ export default function NotificationForm() {
   const animatedComponents = makeAnimated();
   const MySwal = withReactContent(Swal);
   const priorityOptions = [
-    { value: true, label: "important" },
+    { value: true, label: "Important" },
     { value: false, label: "Regular" },
   ];
   const { category } = useSelector((state) => ({ category: state.notification.category }));
@@ -47,50 +47,52 @@ export default function NotificationForm() {
         });
     } else {
       let tempOptions = [];
-      patientData.map((item, index) => {
+      patientData.forEach((item, index) => {
         tempOptions = [...tempOptions, { value: item.user_id, label: item.user.name }];
       });
       setPatientOptions(tempOptions);
     }
-  }, [patientData]);
+  }, [patientData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // if redux category is not define , re fetch from action
   useEffect(() => {
     dispatch(categoryNotificationAction());
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   //filling the options for category
   useEffect(() => {
     let tempOptions = [];
-    category?.map((item, index) => {
+    category?.forEach((item, index) => {
       tempOptions = [...tempOptions, { value: item.id, label: item.title }];
     });
     setCategoryOptions(tempOptions);
-  }, [category]);
+  }, [category]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleSubmit() {
     if (selectedPatient?.length > 0) {
-      selectedPatient.map((patientId) => {
-        dispatch(
-          createNotificationAction(
-            patientId,
-            selectedPriority,
-            selectedCategory,
-            inputTitle,
-            inputMessage
-          )
-        );
+      dispatch(
+        createNotificationAction(
+          selectedPatient,
+          selectedPriority,
+          selectedCategory,
+          inputTitle,
+          inputMessage
+        )
+      ).then(() => {
+        navigate("/notification/list-notification");
       });
     } else {
       dispatch(
         createNotificationAction(null, selectedPriority, selectedCategory, inputTitle, inputMessage)
-      );
+      ).then(() => {
+        navigate("/notification/list-notification");
+      });
     }
   }
 
   function handleSelectedPatient(e) {
     let tempPatient = [];
-    e.map((item) => {
+    e.forEach((item) => {
       tempPatient = [...tempPatient, item.value];
     });
     setSelectedPatient(tempPatient);
@@ -149,7 +151,7 @@ export default function NotificationForm() {
           className=" z-8"
           fullWidth
           required
-          label="Message"
+          label="Title"
           onChange={(e) => setInputTitle(e.target.value)}
           multiline
           rows={1}
