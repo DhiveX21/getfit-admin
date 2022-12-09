@@ -55,11 +55,13 @@ export default function DetailVideo() {
           </MDTypography>
         </MDBox>
         <div className="flex gap-[10px]">
-          <Link to="/video/create">
-            <MDButton variant="gradient" color="success">
-              Create New
-            </MDButton>
-          </Link>
+          {mode !== "detail" && mode !== "update" && (
+            <Link to="/video/create">
+              <MDButton variant="gradient" color="success">
+                Create New
+              </MDButton>
+            </Link>
+          )}
           {mode === "detail" && (
             <MDTypography variant="caption" color="text" fontWeight="medium">
               <MDButton variant="gradient" onClick={() => setMode("update")} color="warning">
@@ -74,11 +76,13 @@ export default function DetailVideo() {
               </MDButton>
             </MDTypography>
           )}
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            <MDButton variant="gradient" onClick={() => setMode("category")} color="success">
-              New Category
-            </MDButton>
-          </MDTypography>
+          {mode !== "detail" && mode !== "update" && (
+            <MDTypography variant="caption" color="text" fontWeight="medium">
+              <MDButton variant="gradient" onClick={() => setMode("category")} color="success">
+                New Category
+              </MDButton>
+            </MDTypography>
+          )}
         </div>
       </MDBox>
       {mode === "detail" && <Detail video={video} />}

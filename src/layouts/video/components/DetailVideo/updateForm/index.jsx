@@ -11,9 +11,16 @@ import DefaultSwitch from "components/extend/Switch/DefaultSwitch";
 import { updateVideoAction } from "layouts/video/videoAction";
 
 export default function UpdateForm({ video }) {
+  // define Category  to select to field
+  let defaultCategoryOption;
+  let defaultCategoryValue;
+
+  defaultCategoryOption = { value: video.category.id, label: video.category.title };
+  defaultCategoryValue = video.category.id;
+
   const dispatch = useDispatch();
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategoryValue);
   const [inputDescription, setInputDescription] = useState();
   const [videoLink, setVideoLink] = useState();
   const [inputTitle, setInputTitle] = useState();
@@ -54,7 +61,7 @@ export default function UpdateForm({ video }) {
   function handleChangeStatus(e) {
     setInputStatus(e.target.checked);
   }
-  
+
   return (
     <div className="w-full flex flex-col justify-center items-center gap-[20px] px-[20px] my-[40px]">
       <div className="w-2/3  p-2 rounded-xl flex flex-col gap-[10px] relative ">
@@ -74,7 +81,7 @@ export default function UpdateForm({ video }) {
               classNamePrefix="select"
               isSearchable={true}
               name="color"
-              defaultValue={categoryOptions[0]}
+              defaultValue={defaultCategoryOption}
               options={categoryOptions}
               onChange={(e) => setSelectedCategory(e.value)}
             />
