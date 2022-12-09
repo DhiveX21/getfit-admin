@@ -11,6 +11,7 @@ import { cancelAppointment } from "_api/appointmentApi";
 import { updateStatusAppointment } from "_api/appointmentApi";
 import { addMeetingLinkAppointment } from "_api/appointmentApi";
 import { deleteAppointment } from "_api/appointmentApi";
+import { createAppointment } from "_api/appointmentApi";
 const MySwal = withReactContent(Swal);
 
 export const datatable = (payload) => (dispatch) => {
@@ -135,3 +136,34 @@ export const addMeetingLinkAppointmentAction = (appointmentId, meetingLink) => (
       dispatch(catchError({ err, callType: callTypes.action }));
     });
 };
+
+export const createAppointmentAction =
+  (patientId, therapistId, date, time, appointmentType, address, complaints) => (dispatch) => {
+    const body = {
+      patient_id: patientId,
+      therapist_id: therapistId,
+      date: date,
+      time: time,
+      appointment_type: appointmentType,
+      address: address,
+      complaints: complaints,
+    };
+    dispatch(startCall({ callType: callTypes.action }));
+    return createAppointment(body)
+      .then((response) => {
+        MySwal.fire({
+          title: "Success Create Appointment",
+          icon: "success",
+        });
+        const data = response.data.data;
+        return data;
+      })
+      .catch((error) => {
+        error.clientMessage = "Something went wrong";
+        MySwal.fire({
+          title: "Can't show Appointment List",
+          icon: "error",
+        });
+        dispatch(catchError({ error, callType: callTypes.action }));
+      });
+  };

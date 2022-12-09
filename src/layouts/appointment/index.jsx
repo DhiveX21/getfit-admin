@@ -19,6 +19,7 @@ import ListTableAppointment from "./components/ListTableAppointment";
 import { Route, Routes } from "react-router-dom";
 import { AppointmentUIProvider } from "./appointmentUIContext";
 import DetailAppointment from "./components/DetailAppointment";
+import CreateAppointment from "./components/CreateAppointment";
 
 function Appointment() {
   return (
@@ -28,6 +29,7 @@ function Appointment() {
         <Routes>
           <Route path="list-appointment" element={<ListTableAppointment />} />
           <Route path=":id" element={<DetailAppointment />} />
+          <Route path="create" element={<CreateAppointment />} />
         </Routes>
       </AppointmentUIProvider>
       <Footer />

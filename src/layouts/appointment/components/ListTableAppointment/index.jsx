@@ -7,6 +7,9 @@ import MDTypography from "components/MDTypography";
 import { useAppointmentUIContext } from "layouts/appointment/appointmentUIContext";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../appointmentAction";
+import BackButton from "components/extend/Button/BackButton";
+import MDButton from "components/MDButton";
+import { Link } from "react-router-dom";
 
 export default function ListTableAppointment() {
   // Appointment UI Context
@@ -43,11 +46,25 @@ export default function ListTableAppointment() {
               bgColor="info"
               borderRadius="lg"
               coloredShadow="info"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <MDTypography variant="h6" color="white">
-                Appointment Table
-              </MDTypography>
+              <MDBox display="flex" alignItems="center" gap="20px">
+                <BackButton to="/appointment/list-appointment" />
+                <MDTypography variant="h6" color="white">
+                  List Appointment
+                </MDTypography>
+              </MDBox>
+              <Link to="/appointment/create">
+                <MDTypography variant="caption" color="text" fontWeight="medium">
+                  <MDButton variant="gradient" color="success">
+                    Create New
+                  </MDButton>
+                </MDTypography>
+              </Link>
             </MDBox>
+
             <MDBox p={2}>
               <DataTable
                 table={{ columns, rows }}
