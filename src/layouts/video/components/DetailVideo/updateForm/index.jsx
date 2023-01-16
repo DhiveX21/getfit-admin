@@ -61,7 +61,7 @@ export default function UpdateForm({ video }) {
   function handleChangeStatus(e) {
     setInputStatus(e.target.checked);
   }
-
+  console.log(defaultCategoryOption);
   return (
     <div className="w-full flex flex-col justify-center items-center gap-[20px] px-[20px] my-[40px]">
       <div className="w-2/3  p-2 rounded-xl flex flex-col gap-[10px] relative ">

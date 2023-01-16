@@ -29,7 +29,7 @@ import {
 export default function data(entities) {
   const dataMapping = entities.map((item, index) => {
     return {
-      name: <NameColumnFormatter image={team2} name={item.user.name} email={item.user.email} />,
+      name: <NameColumnFormatter image={team2} name={item.user?.name} email={item.user?.email} />,
       orderDate: <OrderDateColumnFormatter date_order={item.created_at} />,
       price: <PriceColumnFormatter price={item.price_paid} />,
       status: <StatusColumnFormatter status={item.status} />,

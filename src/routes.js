@@ -57,6 +57,7 @@ import RoutesValidation from "RoutesValidation";
 import Patient from "layouts/patient";
 import Notification from "layouts/notification";
 import Video from "layouts/video";
+import Product from "layouts/product";
 
 const routes = [
   {
@@ -147,6 +148,19 @@ const routes = [
     component: (
       <RoutesValidation>
         <Video />
+      </RoutesValidation>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Product",
+    key: "product",
+    icon: <Icon fontSize="small">Product</Icon>,
+    route: "/product/*",
+    main_route: "/product/list-product",
+    component: (
+      <RoutesValidation>
+        <Product />
       </RoutesValidation>
     ),
   },

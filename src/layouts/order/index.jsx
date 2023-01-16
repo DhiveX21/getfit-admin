@@ -17,7 +17,7 @@ import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout"
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
 import { OrderUIProvider } from "./orderUIContext";
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ListTableOrder from "./components/ListTableOrder";
 import OrderDetail from "./components/DetailOrder";
 

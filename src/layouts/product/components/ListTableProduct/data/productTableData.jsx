@@ -22,39 +22,41 @@ import MDBadge from "components/MDBadge";
 
 // Images
 import { Link } from "react-router-dom";
+import { PriceFormat } from "helpers/PriceHelpers";
 
 // formatter
-import { NameColumnFormatter } from "./formatter/nameFormatter";
 
 
 export default function data(entities) {
   const data = entities.map((item) => {
     return {
-      title: <NameColumnFormatter name={item.title} phoneNumber={item.description} />,
-      url: (
-        <MDTypography
-          display="block"
-          variant="caption"
-          color="text"
-          fontWeight="bold"
-          className="max-w-[200px]"
-        >
-          {item.video_url}
+      name: (
+        <MDTypography display="block" variant="button" fontWeight="medium">
+          {item.name}
+        </MDTypography>
+      ),
+      code: (
+        <MDTypography display="block" variant="button" fontWeight="medium">
+          {item.code}
+        </MDTypography>
+      ),
+      quota: (
+        <MDBadge badgeContent={item.quota} color="primary" variant="gradient" size="sm" />
+      ),
+      cost_paid: (
+        <MDTypography display="block" variant="button" fontWeight="medium">
+          Rp. {PriceFormat(item.cost_paid)}
         </MDTypography>
       ),
       status: (
-        item.is_active ? (
+        item.status ? (
           <MDBadge badgeContent="active" color="success" variant="gradient" size="sm" />
         ) : (
-          <MDBadge badgeContent="inactive" color="error" variant="gradient" size="sm" />
+          <MDBadge badgeContent="inactive" color="danger" variant="gradient" size="sm" />
         )
       ),
-      category: (
-        <MDBadge badgeContent={item.category.title} color="primary" variant="gradient" size="sm" />
-      ),
-
       action: (
-        <Link to={`/video/${item.id}`}>
+        <Link to={`/product/${item.id}`}>
           <MDTypography variant="caption" color="text" fontWeight="medium">
             <MDButton variant="gradient" color="info">
               Detail
@@ -67,11 +69,12 @@ export default function data(entities) {
 
   return {
     columns: [
-      { Header: "title", accessor: "title", width: "20%", align: "left" },
-      { Header: "URL", accessor: "url", width: "20%", align: "left" },
-      { Header: "status", accessor: "status", width: "20%", align: "left" },
-      { Header: "category", accessor: "category", width: "10%", align: "center" },
-      { Header: "action", accessor: "action", width: "20%", align: "center" },
+      { Header: "Name", accessor: "name", width: "20%", align: "left" },
+      { Header: "Code", accessor: "code", width: "20%", align: "left" },
+      { Header: "Quota", accessor: "quota", width: "20%", align: "left" },
+      { Header: "Price", accessor: "cost_paid", width: "10%", align: "center" },
+      { Header: "Status", accessor: "status", width: "10%", align: "center" },
+      { Header: "Action", accessor: "action", width: "20%", align: "center" },
     ],
 
     rows: data,

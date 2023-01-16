@@ -6,6 +6,7 @@ import orderSlice from "_slices/orderSlice";
 import patientSlice from "_slices/patientSlice";
 import userSlice from "_slices/userSlice";
 import exerciseSlice from "_slices/exerciseSlice";
+import productSlice from "_slices/productSlice";
 
 export default configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export default configureStore({
     medicalRecord: medicalRecordSlice,
     notification: notificationSlice,
     exercise: exerciseSlice,
+    product: productSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
