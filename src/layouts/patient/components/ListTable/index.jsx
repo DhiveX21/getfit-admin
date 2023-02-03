@@ -1,36 +1,29 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import DataTable from "components/extend/Tables/DataTable";
-import patientTableData from "./data/patientTableData";
-import { usePatientUIContext } from "layouts/patient/patientUIContext";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../patientAction";
+import tableData from "./data/TableData";
+import { useMainUIContext } from "../../MainUIContext";
+import { useSelector } from "react-redux";
 import MDBox from "components/MDBox";
 import { Card, Grid } from "@mui/material";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import { Link } from "react-router-dom";
 
-export default function ListTablePatient() {
-  // Patient UI Context
-  const patientUIContext = usePatientUIContext();
+export default function MainListTable() {
+  // Main UI Context
+  const mainUIContext = useMainUIContext();
 
-  const patientUIProps = useMemo(() => {
+  const mainUIProps = useMemo(() => {
     return {
-      queryParams: patientUIContext.queryParams,
-      setQueryParams: patientUIContext.setQueryParams,
+      queryParams: mainUIContext.queryParams,
+      setQueryParams: mainUIContext.setQueryParams,
     };
-  }, [patientUIContext]);
+  }, [mainUIContext]);
 
   // Get Redux
   const { currentState } = useSelector((state) => ({ currentState: state.patient }));
   const { totalCount, entities } = currentState;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(actions.datatablePatient(patientUIProps.queryParams));
-  }, [patientUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const { columns, rows } = patientTableData(entities);
+  const { columns, rows } = tableData(entities);
 
   return (
     <MDBox pt={6} pb={3}>
@@ -65,8 +58,8 @@ export default function ListTablePatient() {
               <DataTable
                 table={{ columns, rows }}
                 totalCount={totalCount}
-                params={patientUIProps.queryParams}
-                setParams={patientUIProps.setQueryParams}
+                params={mainUIProps.queryParams}
+                setParams={mainUIProps.setQueryParams}
               />
             </MDBox>
           </Card>

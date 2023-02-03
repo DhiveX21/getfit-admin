@@ -13,7 +13,7 @@ export default function RelatedMenu({ appointments, records }) {
         <div className="w-full flex flex-col gap-[30px]">
           <div className="w-full">
             <MDTypography variant="h6" color="dark">
-              Related Menu
+              Related Data Patient
             </MDTypography>
           </div>
           <div className="w-full flex flex-col bg-slate-200 p-3 rounded-lg">

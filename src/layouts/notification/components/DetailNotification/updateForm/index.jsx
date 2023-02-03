@@ -2,7 +2,6 @@ import { updateNotificationAction } from "layouts/notification/notificationActio
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import makeAnimated from "react-select/animated";
-import { getAllPatient } from "_api/patientApi";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { categoryNotificationAction } from "layouts/notification/notificationAction";
@@ -12,6 +11,7 @@ import Select from "react-select";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import { detailNotification } from "layouts/notification/notificationAction";
+import { patientAPI } from "_api";
 
 export default function UpdateForm({ notification }) {
   // define patient  to select to field
@@ -66,7 +66,7 @@ export default function UpdateForm({ notification }) {
 
   useEffect(() => {
     if (!patientData) {
-      getAllPatient()
+      patientAPI.getAllPatient()
         .then((response) => {
           setPatientData(response.data.data);
         })

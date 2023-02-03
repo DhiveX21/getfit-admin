@@ -1,63 +1,57 @@
-import { getAllPatientDatatable } from "_api/patientApi";
-import { callTypes } from "_slices/patientSlice";
-import { startCall } from "_slices/patientSlice";
-import { catchError } from "_slices/patientSlice";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { patientDatatable } from "_slices/patientSlice";
-import { patientDetail } from "_slices/patientSlice";
-import { getOnePatient } from "_api/patientApi";
-import { getAllAppointmentByIdUser } from "_api/appointmentApi";
-import { deletePatient } from "_api/patientApi";
-import { createUser } from "_api/patientApi";
-import { createPatient } from "_api/patientApi";
-import { updatePatient } from "_api/patientApi";
-import { patientSomeAppointment } from "_slices/patientSlice";
-import { getAllMedicalRecordByIdUser } from "_api/medicalRecordApi";
-import { patientSomeRecord } from "_slices/patientSlice";
+import { patient } from "_slices";
+import { appointmentAPI, patientAPI, medicalRecordAPI } from "_api";
 const MySwal = withReactContent(Swal);
 
-export const datatablePatient = (payload) => (dispatch) => {
-  dispatch(startCall({ callType: callTypes.list }));
-  return getAllPatientDatatable(payload)
+const { actions } = patient.slice;
+const callTypes = patient.callTypes;
+
+export const datatableAction = (payload) => (dispatch) => {
+  dispatch(actions.startCall({ callType: callTypes.list }));
+  return patientAPI
+    .getDatatable(payload)
     .then((response) => {
       const data = response.data.data;
-      dispatch(patientDatatable({ entities: data.entities, totalCount: data.totalCount }));
+      dispatch(actions.saveList({ entities: data.entities, totalCount: data.totalCount }));
     })
-    .catch((err) => {
-      err.clientMessage = "Something went wrong";
+    .catch((error) => {
+      console.log(error);
+      error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show patient",
         icon: "error",
       });
-      dispatch(catchError({ err, callType: callTypes.list }));
+      dispatch(actions.catchError({ error, callType: callTypes.list }));
     });
 };
 
-export const detailPatient = (patientId) => (dispatch) => {
-  if (!patientId) {
-    return dispatch(patientDetail({ patient: undefined }));
+export const getOneAction = (id) => (dispatch) => {
+  if (!id) {
+    return dispatch(actions.saveObject({ data: undefined }));
   }
-  dispatch(startCall({ callType: callTypes.action }));
-  return getOnePatient(patientId)
+  dispatch(actions.startCall({ callType: callTypes.action }));
+  return patientAPI
+    .getOneById(id)
     .then((response) => {
       const data = response.data.data;
-      dispatch(patientDetail({ patient: data }));
+      dispatch(actions.saveObject({ data: data }));
       return data;
     })
-    .catch((err) => {
-      err.clientMessage = "Something went wrong";
+    .catch((error) => {
+      error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show detail patient",
         icon: "error",
       });
-      dispatch(catchError({ err, callType: callTypes.action }));
+      dispatch(actions.catchError({ error, callType: callTypes.action }));
     });
 };
 
-export const deletePatientAction = (patientId) => (dispatch) => {
-  dispatch(startCall({ callType: callTypes.action }));
-  return deletePatient(patientId)
+export const deleteAction = (id) => (dispatch) => {
+  dispatch(actions.startCall({ callType: callTypes.action }));
+  return patientAPI
+    .deleteOne(id)
     .then((response) => {
       const data = response.data.data;
       MySwal.fire({
@@ -66,52 +60,55 @@ export const deletePatientAction = (patientId) => (dispatch) => {
         icon: "success",
       });
     })
-    .catch((err) => {
-      err.clientMessage = "Something went wrong";
+    .catch((error) => {
+      error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show detail patient",
         icon: "error",
       });
-      dispatch(catchError({ err, callType: callTypes.action }));
+      dispatch(actions.catchError({ error, callType: callTypes.action }));
     });
 };
 
 export const getAllAppointmentByIdUserAction = (idUser) => (dispatch) => {
-  dispatch(startCall({ callType: callTypes.action }));
-  return getAllAppointmentByIdUser(idUser)
+  dispatch(actions.startCall({ callType: callTypes.action }));
+  return appointmentAPI
+    .getAllAppointmentByIdUser(idUser)
     .then((response) => {
       const data = response.data.data;
-      dispatch(patientSomeAppointment({ appointments: data }));
+      dispatch(actions.addSomeAppointment({ appointments: data }));
     })
-    .catch((err) => {
-      err.clientMessage = "Something went wrong";
+    .catch((error) => {
+      error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show detail Appointment patient",
         icon: "error",
       });
-      dispatch(catchError({ err, callType: callTypes.action }));
+      dispatch(actions.catchError({ error, callType: callTypes.action }));
     });
 };
 
 export const getAllMedicalRecordByIdUserAction = (idUser) => (dispatch) => {
-  dispatch(startCall({ callType: callTypes.action }));
-  return getAllMedicalRecordByIdUser(idUser)
+  dispatch(actions.startCall({ callType: callTypes.action }));
+  return medicalRecordAPI
+    .getAllMedicalRecordByIdUser(idUser)
     .then((response) => {
       const data = response.data.data;
-      dispatch(patientSomeRecord({ records: data }));
+      dispatch(actions.addSomeRecord({ records: data }));
     })
     .catch((error) => {
+      console.log(error);
       error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't show some medical record patient",
         icon: "error",
       });
-      dispatch(catchError({ error, callType: callTypes.action }));
+      dispatch(actions.catchError({ error, callType: callTypes.action }));
     });
 };
 
-export const createPatientAction = (props) => (dispatch) => {
-  dispatch(startCall({ callType: callTypes.action }));
+export const createAction = (props) => (dispatch) => {
+  dispatch(actions.startCall({ callType: callTypes.action }));
 
   const { name, phone_number, email, password, birth_date, address, gender } = props;
 
@@ -122,7 +119,8 @@ export const createPatientAction = (props) => (dispatch) => {
     email: email,
     password: password,
   };
-  const UserResponse = createUser(bodyUser)
+  const UserResponse = patientAPI
+    .createUser(bodyUser)
     .then((response) => {
       const data = response.data.data;
 
@@ -135,18 +133,18 @@ export const createPatientAction = (props) => (dispatch) => {
         address: address,
       };
 
-      const PatientResponse = createPatient(bodyPatient)
+      const PatientResponse = patientAPI
+        .create(bodyPatient)
         .then((response) => {
           return response.data.data;
         })
         .catch((error) => {
-          console.error(error);
           error.clientMessage = "Something went wrong";
           MySwal.fire({
             title: "Can't Create patient",
             icon: "error",
           });
-          dispatch(catchError({ error, callType: callTypes.action }));
+          dispatch(actions.catchError({ error, callType: callTypes.action }));
         });
 
       MySwal.fire({
@@ -157,20 +155,19 @@ export const createPatientAction = (props) => (dispatch) => {
       return PatientResponse;
     })
     .catch((error) => {
-      console.error(error);
       error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't Create patient",
         icon: "error",
       });
-      dispatch(catchError({ error, callType: callTypes.action }));
+      dispatch(actions.catchError({ error, callType: callTypes.action }));
     });
 
   return UserResponse;
 };
 
-export const updatePatientAction = (props) => (dispatch) => {
-  dispatch(startCall({ callType: callTypes.action }));
+export const updateAction = (props) => (dispatch) => {
+  dispatch(actions.startCall({ callType: callTypes.action }));
 
   const { name, phone_number, gender, email, userId, patientId, birth_date, address } = props;
 
@@ -198,7 +195,8 @@ export const updatePatientAction = (props) => (dispatch) => {
     bodyUser = { ...bodyUser, user_id: userId };
   }
 
-  const UserResponse = updatePatient(patientId, bodyUser)
+  const UserResponse = patientAPI
+    .update(patientId, bodyUser)
     .then((response) => {
       const data = response.data.data;
 
@@ -210,13 +208,12 @@ export const updatePatientAction = (props) => (dispatch) => {
       return data;
     })
     .catch((error) => {
-      console.error(error);
       error.clientMessage = "Something went wrong";
       MySwal.fire({
         title: "Can't Create patient",
         icon: "error",
       });
-      dispatch(catchError({ error, callType: callTypes.action }));
+      dispatch(actions.catchError({ error, callType: callTypes.action }));
     });
 
   return UserResponse;

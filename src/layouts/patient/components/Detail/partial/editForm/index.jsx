@@ -5,10 +5,15 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { updatePatientAction } from "layouts/patient/patientAction";
-import { RadioGroup, Radio, FormControlLabel } from "@mui/material";
+import * as actions from "layouts/patient/MainAction";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
 
 export default function EditForm({ patientData }) {
+  let navigate = useNavigate();
+
   // define react hook form
   const {
     register,
@@ -16,14 +21,14 @@ export default function EditForm({ patientData }) {
     setValue,
     formState: { errors },
   } = useForm();
+
   const dispatch = useDispatch();
 
   // handle submit for react hook form
   const onSubmit = (data) => {
     // dispatching to update patient action
-
     dispatch(
-      updatePatientAction({
+      actions.updateAction({
         patientId: patientData.id,
         userId: patientData.user_id,
         name: data.fullname,
@@ -33,7 +38,17 @@ export default function EditForm({ patientData }) {
         address: data.address,
         gender: data.gender,
       })
-    );
+    )
+      .then((result) => {
+        navigate(`/patient/${patientData.id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        MySwal.fire({
+          title: "Can't Update patient",
+          icon: "error",
+        });
+      });
   };
 
   // filling the form with current patient Data
@@ -49,36 +64,36 @@ export default function EditForm({ patientData }) {
   return (
     <div className="animation-popup flex flex-col gap-[20px] w-full bg-white p-[10px] rounded-lg">
       <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
+        <MDTypography variant="h6" color="dark">
           EDIT PATIENT
         </MDTypography>
       </MDBox>
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-[20px] flex-col">
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
+          <MDTypography variant="h6" color="dark">
             Input Fullname
           </MDTypography>
           <MDInput className=" z-8" fullWidth required {...register("fullname")} />
         </MDBox>
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
+          <MDTypography variant="h6" color="dark">
             Input Phone Number{" "}
-            {errors.phoneNumber?.type === "required" ? (
-              <span className="error-hint" role="alert">
-                Phone Number is required
-              </span>
-            ) : errors.phoneNumber?.type === "pattern" ? (
-              <span className="error-hint" role="alert">
-                Phone Number must be formatted by +62
-              </span>
-            ) : errors.phoneNumber?.type === "maxLength" ? (
-              <span className="error-hint" role="alert">
-                Phone Number Max 20 Digit
-              </span>
-            ) : (
-              ""
-            )}
           </MDTypography>
+          {errors.phoneNumber?.type === "required" ? (
+            <MDTypography display="block" color="error" variant="button" fontWeight="medium">
+              Phone Number is required
+            </MDTypography>
+          ) : errors.phoneNumber?.type === "pattern" ? (
+            <MDTypography display="block" color="error" variant="button" fontWeight="medium">
+              Phone Number must be formatted by +62
+            </MDTypography>
+          ) : errors.phoneNumber?.type === "maxLength" ? (
+            <MDTypography display="block" color="error" variant="button" fontWeight="medium">
+              Phone Number Max 20 Digit
+            </MDTypography>
+          ) : (
+            ""
+          )}
           <MDInput
             className=" z-8"
             fullWidth
@@ -92,16 +107,16 @@ export default function EditForm({ patientData }) {
           />
         </MDBox>
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
+          <MDTypography variant="h6" color="dark">
             Input Email{" "}
             {errors.email?.type === "required" ? (
-              <span className="error-hint" role="alert">
+              <MDTypography display="block" color="error" variant="button" fontWeight="medium">
                 Email is required
-              </span>
+              </MDTypography>
             ) : errors.email?.type === "pattern" ? (
-              <span className="error-hint" role="alert">
+              <MDTypography display="block" color="error" variant="button" fontWeight="medium">
                 Wrong Email Format
-              </span>
+              </MDTypography>
             ) : (
               ""
             )}
@@ -118,12 +133,12 @@ export default function EditForm({ patientData }) {
           />
         </MDBox>
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
+          <MDTypography variant="h6" color="dark">
             Input Gender{" "}
             {errors.gender?.type === "required" ? (
-              <span className="error-hint" role="alert">
+              <MDTypography display="block" color="error" variant="button" fontWeight="medium">
                 Gender is required
-              </span>
+              </MDTypography>
             ) : (
               ""
             )}
@@ -153,19 +168,19 @@ export default function EditForm({ patientData }) {
           </label>
         </MDBox>
         {/* <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
+          <MDTypography variant="h6" color="dark">
             Input Password
           </MDTypography>
           <MDInput className=" z-8" fullWidth required type="password" {...register("password")} />
         </MDBox> */}
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
+          <MDTypography variant="h6" color="dark">
             Input birthdate
           </MDTypography>
           <MDInput className=" z-8" fullWidth required type="date" {...register("birthdate")} />
         </MDBox>
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
+          <MDTypography variant="h6" color="dark">
             Input Address
           </MDTypography>
           <MDInput

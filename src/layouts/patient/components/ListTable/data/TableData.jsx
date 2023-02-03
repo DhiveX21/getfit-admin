@@ -31,14 +31,12 @@ export default function data(entities) {
   const dataMapping = entities.map((item, index) => {
     return {
       name: <NameColumnFormatter image={team2} name={item.name} email={item.user.email} />,
-      birthdate: <BirthDateColumnFormatter birth_date={item.birth_date} age={`${item.age} Years Old`} />,
+      birthdate: (
+        <BirthDateColumnFormatter birth_date={item.birth_date} age={`${item.age} Years Old`} />
+      ),
       status: (
         <StatusColumnFormatter
-          homeCare={1}
-          teleFisio={1}
-          inClinic={1}
-          tools={1}
-          webinars={1}
+          quotas={item.quotas}
           status={<MDBadge badgeContent="active" color="success" variant="gradient" size="sm" />}
         />
       ),

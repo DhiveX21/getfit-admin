@@ -4,8 +4,12 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import { useDispatch } from "react-redux";
-import { createPatientAction } from "layouts/patient/patientAction";
+import * as actions from "layouts/patient/MainAction";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
 
 export default function PatientForm() {
   const {
@@ -13,11 +17,13 @@ export default function PatientForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  
+  let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     dispatch(
-      createPatientAction({
+      actions.createAction({
         name: data.fullname,
         phone_number: data.phoneNumber,
         email: data.email,
@@ -26,7 +32,15 @@ export default function PatientForm() {
         address: data.address,
         gender: data.gender,
       })
-    );
+    ).then((result) => {
+      navigate("/patient/list-patient");
+    }).catch((err) => {
+      console.log(err);
+      MySwal.fire({
+        title: "Can't Create patient",
+        icon: "error",
+      });
+    });
   };
 
   return (

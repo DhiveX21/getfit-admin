@@ -8,7 +8,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { getAllPatient } from "_api/patientApi";
+import { patientAPI } from "../../../../../_api";
 import Swal from "sweetalert2";
 import makeAnimated from "react-select/animated";
 import withReactContent from "sweetalert2-react-content";
@@ -30,7 +30,7 @@ export default function WhatsappForm() {
 
   useEffect(() => {
     if (!patientData) {
-      getAllPatient()
+      patientAPI.getAllPatient()
         .then((response) => {
           setPatientData(response.data.data);
         })

@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialPatientState = {
+const initialState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  patient: undefined,
+  obj: undefined,
   appointment: {
     some: [],
     one: undefined,
@@ -22,9 +22,9 @@ export const callTypes = {
   action: "action",
 };
 
-export const patientSlice = createSlice({
+export const slice = createSlice({
   name: "Patient",
-  initialState: initialPatientState,
+  initialState: initialState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -34,27 +34,14 @@ export const patientSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    patientDatatable: (state, action) => {
-      const { entities, totalCount } = action.payload;
-      state.listLoading = false;
+    // Redux for stopping
+    stopCall: (state, action) => {
       state.error = null;
-      state.entities = entities;
-      state.totalCount = totalCount;
-    },
-    patientDetail: (state, action) => {
-      state.actionLoading = false;
-      state.error = null;
-      state.patient = action.payload.patient;
-    },
-    patientSomeAppointment: (state, action) => {
-      state.listLoading = false;
-      state.error = null;
-      state.appointment.some = action.payload.appointments;
-    },
-    patientSomeRecord: (state, action) => {
-      state.listLoading = false;
-      state.error = null;
-      state.record.some = action.payload.records;
+      if (action.payload.callType === callTypes.list) {
+        state.listLoading = false;
+      } else {
+        state.actionLoading = false;
+      }
     },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
@@ -64,17 +51,33 @@ export const patientSlice = createSlice({
         state.actionLoading = false;
       }
     },
+    saveList: (state, action) => {
+      const { entities, totalCount } = action.payload;
+      state.listLoading = false;
+      state.error = null;
+      state.entities = entities;
+      state.totalCount = totalCount;
+    },
+    saveObject: (state, action) => {
+      state.actionLoading = false;
+      state.error = null;
+      state.obj = action.payload.data;
+    },
+    addSomeAppointment: (state, action) => {
+      state.listLoading = false;
+      state.error = null;
+      state.appointment.some = action.payload.appointments;
+    },
+    addSomeRecord: (state, action) => {
+      state.listLoading = false;
+      state.error = null;
+      state.record.some = action.payload.records;
+    },
+    
   },
 });
 
-// Action creators are generated for each case reducer function
-export const {
-  startCall,
-  patientDatatable,
-  patientDetail,
-  patientSomeAppointment,
-  patientSomeRecord,
-  catchError,
-} = patientSlice.actions;
-
-export default patientSlice.reducer;
+export const patient = {
+  callTypes,
+  slice,
+};

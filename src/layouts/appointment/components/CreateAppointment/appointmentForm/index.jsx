@@ -4,7 +4,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { getAllPatient } from "_api/patientApi";
+import { patientAPI } from "../../../../../_api";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
@@ -30,7 +30,7 @@ export default function AppointmentForm() {
 
   useEffect(() => {
     if (!patientData) {
-      getAllPatient()
+      patientAPI.getAll()
         .then((response) => {
           setPatientData(response.data.data);
         })

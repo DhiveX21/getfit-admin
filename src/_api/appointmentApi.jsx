@@ -1,6 +1,21 @@
 import axios from "axios";
+import { createMock } from "helpers/ResponseMockTemplate";
+import mockApointment from "_mock/appointmentApi_mock";
 
-const APPOINTMENT_URL = process.env.REACT_APP_APPOINTMENT_SERVICE_URL;
+let APPOINTMENT_URL = process.env.REACT_APP_APPOINTMENT_SERVICE_URL;
+
+// env is null url can be redirect to url mock
+if (APPOINTMENT_URL === undefined) {
+  const mock = createMock();
+  mockApointment(mock);
+  APPOINTMENT_URL = "api";
+}
+
+export const appointmentAPI = {
+  getAllAppointmentByIdUser: (idUser) => {
+    return axios.get(`${APPOINTMENT_URL}/appointments/user/${idUser}`);
+  },
+};
 
 export function getAllAppointmentDatatable(params) {
   return axios.post(`${APPOINTMENT_URL}/appointments/datatable`, { ...params });
@@ -8,10 +23,6 @@ export function getAllAppointmentDatatable(params) {
 
 export function getAllAppointment() {
   return axios.get(`${APPOINTMENT_URL}/appointments`);
-}
-
-export function getAllAppointmentByIdUser(idUser) {
-  return axios.get(`${APPOINTMENT_URL}/appointments/user/${idUser}`);
 }
 
 export function getOneAppointment(appointment_Id) {

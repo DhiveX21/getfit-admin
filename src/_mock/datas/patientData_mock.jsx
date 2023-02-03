@@ -1,0 +1,98 @@
+export const datatablePatient = {
+  meta: {
+    message: "Success get patients",
+    status: "success",
+    code: 200,
+  },
+  data: {
+    entities: [
+      {
+        id: 81,
+        user_id: 84,
+        name: "Cristiano",
+        birth_date: "1997-06-12",
+        gender: "male",
+        age: 25,
+        address: "Link harum manis , Rt.04/02, Kel.Cirimekar, Kec.Cibinong , Kab,Bogor",
+        signature_url: "",
+        complaint: "",
+        user: {
+          id: 84,
+          name: "Cristiano",
+          role: "patient",
+          phone_number: "+62895619258715",
+          email: "cristiano@gmail.com",
+          verification_date: "2022-11-12",
+        },
+      },
+      {
+        id: 78,
+        user_id: 83,
+        name: "Jin Ye",
+        birth_date: "1997-06-12",
+        gender: "female",
+        age: 25,
+        address: "Link Harum manis, Rt.04/02, Kel.Cirimekar, Kec.Cibinong, Kab,Bogor, No.430",
+        signature_url: "",
+        complaint: "",
+        user: {
+          id: 83,
+          name: "Jin Ye",
+          role: "patient",
+          phone_number: "1234",
+          email: "jin.ye@gmail.com",
+          verification_date: "2022-11-12",
+        },
+      },
+      {
+        id: 75,
+        user_id: 77,
+        name: "Muhammad Ardhiansyah",
+        birth_date: "1997-06-12",
+        gender: "male",
+        age: 25,
+        address: "gg haji nawawi",
+        signature_url: "http://103.250.11.128:83/signatures/signature-77.png",
+        complaint: "",
+        user: {
+          id: 77,
+          name: "Ardhi Test",
+          role: "patient",
+          phone_number: "2",
+          email: "ardhi@mail.com",
+          verification_date: "2022-10-22",
+        },
+        quotas: [
+          {
+            id: 2,
+            name: "Home Care Update",
+            product_name: "Product 2 update",
+            quota: 2,
+          },
+        ],
+      },
+    ],
+    errorMessage: "",
+    totalCount: 79,
+  },
+};
+
+export const ListPatient = [
+  {
+    id: 75,
+    user_id: 77,
+    name: "Muhammad Ardhiansyah",
+    gender: "male",
+    age: 25,
+    address: "gg haji nawawi",
+    birth_date: "1997-06-12",
+    user: {
+      id: 77,
+      name: "Ardhi Test",
+      role: "patient",
+      phone_number: "2",
+      email: "ardhi@mail.com",
+      verification_date: "2022-10-22",
+    },
+  },
+];
