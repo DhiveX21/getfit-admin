@@ -1,7 +1,21 @@
 import axios from "axios";
+import { createMock } from "helpers/ResponseMockTemplate";
+import mockProduct from "_mock/productApi_mock";
 
-const PRODUCT_URL = process.env.REACT_APP_PRODUCT_SERVICE_URL;
+let PRODUCT_URL = process.env.REACT_APP_PRODUCT_SERVICE_URL;
 
+// env is null url can be redirect to url mock
+if (PRODUCT_URL === undefined) {
+  const mock = createMock();
+  mockProduct(mock);
+  PRODUCT_URL = "api";
+}
+
+export const productAPI = {
+  getAllBaseProduct: () => {
+    return axios.get(`${PRODUCT_URL}/base-products`);
+  },
+}
 export function getAllProductDatatable(params) {
   return axios.post(`${PRODUCT_URL}/products/datatable`, { ...params });
 }

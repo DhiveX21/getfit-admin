@@ -24,17 +24,17 @@ export default function CreateMedicalRecord() {
 
   useEffect(() => {
     if (appointmentData === null) {
-      getAllAppointment()
-        .then((response) => {
-          setAppointmentData(response.data.data);
-        })
-        .catch((err) => {
-          err.clientMessage = "Something went wrong";
-          MySwal.fire({
-            title: "Can't show Appointment",
-            icon: "error",
-          });
-        });
+      // getAllAppointment()
+      //   .then((response) => {
+      //     setAppointmentData(response.data.data);
+      //   })
+      //   .catch((err) => {
+      //     err.clientMessage = "Something went wrong";
+      //     MySwal.fire({
+      //       title: "Can't show Appointment",
+      //       icon: "error",
+      //     });
+      //   });
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

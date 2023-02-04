@@ -1,22 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialAppointmentState = {
+const initialState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  appointment: undefined,
+  obj: undefined,
   entities: [],
   totalCount: 0,
 };
 
-export const callTypes = {
+const callTypes = {
   list: "list",
   action: "action",
 };
 
-export const appointmentSlice = createSlice({
+const slice = createSlice({
   name: "Appointment",
-  initialState: initialAppointmentState,
+  initialState: initialState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -26,18 +26,6 @@ export const appointmentSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    appointmentDatatable: (state, action) => {
-      const { entities, totalCount } = action.payload;
-      state.listLoading = false;
-      state.error = null;
-      state.entities = entities;
-      state.totalCount = totalCount;
-    },
-    appointmentDetail: (state, action) => {
-      state.actionLoading = false;
-      state.error = null;
-      state.appointment = action.payload.appointment;
-    },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
       if (action.payload.callType === callTypes.list) {
@@ -46,11 +34,22 @@ export const appointmentSlice = createSlice({
         state.actionLoading = false;
       }
     },
+    saveList: (state, action) => {
+      const { entities, totalCount } = action.payload;
+      state.listLoading = false;
+      state.error = null;
+      state.entities = entities;
+      state.totalCount = totalCount;
+    },
+    saveObject: (state, action) => {
+      state.actionLoading = false;
+      state.error = null;
+      state.obj = action.payload.data;
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { startCall, appointmentDatatable, appointmentDetail, catchError } =
-  appointmentSlice.actions;
-
-export default appointmentSlice.reducer;
+export const appointment = {
+  callTypes,
+  slice,
+};

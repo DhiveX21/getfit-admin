@@ -19,3 +19,14 @@ export function SuccessResponse(message, status, code, data) {
     data,
   };
 }
+
+export function ValidationFailedResponse(data) {
+  return {
+    meta: {
+      message: "Bad request",
+      status: "error",
+      code: 400,
+    },
+    message: data,
+  };
+}

@@ -21,6 +21,7 @@ import {
   ActionColumnFormatter,
   AddressColumnFormatter,
   NameColumnFormatter,
+  NameTherapistColumnFormatter,
   StatusColumnFormatter,
   TimeColumnFormatter,
   TypeColumnFormatter,
@@ -36,6 +37,11 @@ export default function data(entities) {
           phoneNumber={item.patient_detail.phone_number}
         />
       ),
+      therapist: (
+        <NameTherapistColumnFormatter
+          name={item.therapist_detail.name}
+        />
+      ),
       address: <AddressColumnFormatter address={item.address} />,
       date: (
         <TimeColumnFormatter
@@ -44,7 +50,7 @@ export default function data(entities) {
           to={item.date_appointment}
         />
       ),
-      type: <TypeColumnFormatter />,
+      type: <TypeColumnFormatter title={item.appointment_type} />,
       status: <StatusColumnFormatter status={item.status} />,
       action: <ActionColumnFormatter id={item._id} />,
     };
@@ -52,6 +58,7 @@ export default function data(entities) {
   return {
     columns: [
       { Header: "Patient", accessor: "patient", width: "20%", align: "left" },
+      { Header: "Therapist", accessor: "therapist", width: "20%", align: "left" },
       { Header: "Address", accessor: "address", width: "20%", align: "left" },
       { Header: "Date", accessor: "date", width: "20%", align: "center" },
       { Header: "Type", accessor: "type", width: "10%", align: "center" },

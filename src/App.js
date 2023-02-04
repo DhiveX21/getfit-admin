@@ -39,6 +39,8 @@ import { useMaterialUIController, setMiniSidenav } from "context";
 import brandWhite from "assets/images/logo.png";
 import store from "redux/store";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import brandDark from "assets/images/logo.png";
 
 export default function App() {
@@ -127,6 +129,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <CssBaseline />
+        <ToastContainer />
         {layout === "dashboard" && (
           <>
             <Sidenav
