@@ -12,7 +12,7 @@ if (APPOINTMENT_URL === undefined) {
 }
 
 export const appointmentAPI = {
-  getAllAppointmentByIdUser: (idUser) => {
+  getAllByIdUser: (idUser) => {
     return axios.get(`${APPOINTMENT_URL}/appointments/user/${idUser}`);
   },
 

@@ -9,6 +9,10 @@ export default function mockApointment(mock) {
 
     return [200, SuccessResponse("Success get appointment", "success", 200, ListAppointment)];
   });
+  // getAll
+  mock.onGet("api/appointments").reply((config) => {
+    return [200, SuccessResponse("Success get all appointment", "success", 200, ListAppointment)];
+  });
   // cancelById
   mock.onPut(/api\/appointments\/\d+\/cancel/).reply((config) => {
     const id = config.url.match(/api\/appointments\/(\d+)\/cancel/)[1];

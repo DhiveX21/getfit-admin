@@ -45,7 +45,6 @@ export default function ListTable() {
               alignItems="center"
             >
               <MDBox display="flex" alignItems="center" gap="20px">
-                <BackButton to="/appointment/list-appointment" />
                 <MDTypography variant="h6" color="white">
                   List Appointment
                 </MDTypography>

@@ -73,7 +73,7 @@ export const deleteAction = (id) => (dispatch) => {
 export const getAllAppointmentByIdUserAction = (idUser) => (dispatch) => {
   dispatch(actions.startCall({ callType: callTypes.action }));
   return appointmentAPI
-    .getAllAppointmentByIdUser(idUser)
+    .getAllByIdUser(idUser)
     .then((response) => {
       const data = response.data.data;
       dispatch(actions.addSomeAppointment({ appointments: data }));
@@ -91,7 +91,7 @@ export const getAllAppointmentByIdUserAction = (idUser) => (dispatch) => {
 export const getAllMedicalRecordByIdUserAction = (idUser) => (dispatch) => {
   dispatch(actions.startCall({ callType: callTypes.action }));
   return medicalRecordAPI
-    .getAllMedicalRecordByIdUser(idUser)
+    .getAllByIdUser(idUser)
     .then((response) => {
       const data = response.data.data;
       dispatch(actions.addSomeRecord({ records: data }));

@@ -12,24 +12,28 @@ if (MEDICAL_RECORD_URL === undefined) {
 }
 
 export const medicalRecordAPI = {
-  getAllMedicalRecordByIdUser: (idUser) => {
+  getAllByIdUser: (idUser) => {
     return axios.get(`${MEDICAL_RECORD_URL}/records/user/${idUser}`);
   },
+  
+  getDatatable: (params) => {
+    return axios.post(`${MEDICAL_RECORD_URL}/records/datatable`, { ...params });
+  },
+
+  getOneById: (id) => {
+    return axios.get(`${MEDICAL_RECORD_URL}/records/${id}`);
+  },
+  
+  update: (id, body) => {
+    return axios.put(`${MEDICAL_RECORD_URL}/records/${id}`, { ...body });
+  },
+
+  create: (params) => {
+    return axios.post(`${MEDICAL_RECORD_URL}/records`, { ...params });
+  }, 
+
+  delete: (id) => {
+    return axios.delete(`${MEDICAL_RECORD_URL}/records/${id}`);
+  }
 };
 
-export function getAllMedicalRecordsDatatable(params) {
-  return axios.post(`${MEDICAL_RECORD_URL}/records/datatable`, { ...params });
-}
-export function getOneMedicalRecord(medicalRecordId) {
-  return axios.get(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`);
-}
-
-export function updateMedicalRecord(medicalRecordId, body) {
-  return axios.put(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`, { ...body });
-}
-export function createMedicalRecord(params) {
-  return axios.post(`${MEDICAL_RECORD_URL}/records`, { ...params });
-}
-export function deleteMedicalRecord(medicalRecordId) {
-  return axios.delete(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`);
-}
