@@ -1,19 +1,30 @@
 import axios from "axios";
+import { createMock } from "helpers/ResponseMockTemplate";
+import mockOrder from "_mock/orderApi_mock";
 
-const ORDER_URL = process.env.REACT_APP_ORDER_SERVICE_URL;
+let ORDER_URL = process.env.REACT_APP_ORDER_SERVICE_URL;
 
-export function getAllOrderDatatable(params) {
-  return axios.post(`${ORDER_URL}/orders/datatable`, { ...params });
+// env is null url can be redirect to url mock
+if (ORDER_URL === undefined) {
+  const mock = createMock();
+  mockOrder(mock);
+  ORDER_URL = "api";
 }
 
-export function getOneOrder(orderId) {
-  return axios.get(`${ORDER_URL}/orders/${orderId}`);
-}
+export const orderAPI = {
+  getDatatable: (params) => {
+    return axios.post(`${ORDER_URL}/orders/datatable`, { ...params });
+  },
 
-export function cancelOrder(orderId) {
-  return axios.put(`${ORDER_URL}/orders/cancel/${orderId}`);
-}
+  getOneById: (orderId) => {
+    return axios.get(`${ORDER_URL}/orders/${orderId}`);
+  },
 
-export function completeOrder(orderId) {
-  return axios.put(`${ORDER_URL}/orders/complete/${orderId}`);
-}
+  cancel: (orderId) => {
+    return axios.put(`${ORDER_URL}/orders/cancel/${orderId}`);
+  },
+
+  complete: (orderId) => {
+    return axios.put(`${ORDER_URL}/orders/complete/${orderId}`);
+  },
+};

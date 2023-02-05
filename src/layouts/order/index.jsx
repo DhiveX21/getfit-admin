@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
-import { OrderUIProvider } from "./orderUIContext";
+import { MainUIProvider } from "./MainUIContext";
 import { Routes, Route } from "react-router-dom";
 import ListTableOrder from "./components/ListTableOrder";
 import OrderDetail from "./components/DetailOrder";
@@ -25,12 +25,12 @@ function Order() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <OrderUIProvider>
+      <MainUIProvider>
         <Routes>
           <Route path="list-order" element={<ListTableOrder />}/>
           <Route path=":id" element={<OrderDetail />}/>
         </Routes>
-      </OrderUIProvider>
+      </MainUIProvider>
       <Footer />
     </DashboardLayout>
   );
