@@ -12,40 +12,27 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import MDBox from "components/MDBox";
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
 import ListTableVideo from "./components/ListTableVideo";
-import CreateVideo from "./components/CreateVideo";
-
 import { Routes, Route } from "react-router-dom";
-import { VideoUIProvider } from "./videoUIContext";
+import { MainUIProvider } from "./MainUIContext";
+import CreateVideo from "./components/CreateVideo";
 import DetailVideo from "./components/DetailVideo";
 
 function Video() {
   return (
     <DashboardLayout>
-      <VideoUIProvider>
+      <MainUIProvider>
         <DashboardNavbar />
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
-            <Grid item xs={12}>
-              <Card>
-                <Routes>
-                  <Route path="list-video" element={<ListTableVideo />} />
-                  <Route path="create" element={<CreateVideo />} />
-                  <Route path=":id" element={<DetailVideo />} />
-                </Routes>
-              </Card>
-            </Grid>
-          </Grid>
-        </MDBox>
+        <Routes>
+          <Route path="list-video" element={<ListTableVideo />} />
+          <Route path="create" element={<CreateVideo />} />
+          <Route path=":id" element={<DetailVideo />} />
+        </Routes>
         <Footer />
-      </VideoUIProvider>
+      </MainUIProvider>
     </DashboardLayout>
   );
 }

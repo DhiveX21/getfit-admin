@@ -1,25 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialExerciseState = {
+const initialState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  video: {
-    video: undefined,
-    entities: [],
-    category: [],
-    totalCount: 0,
-  },
+  obj: undefined,
+  entities: [],
+  category: [],
+  totalCount: 0,
 };
 
-export const callTypes = {
+const callTypes = {
   list: "list",
   action: "action",
 };
 
-export const exerciseSlice = createSlice({
+const slice = createSlice({
   name: "Exercise",
-  initialState: initialExerciseState,
+  initialState: initialState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -29,40 +27,6 @@ export const exerciseSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    exerciseVideoDataTable: (state, action) => {
-      const { entities, totalCount } = action.payload;
-      state.listLoading = false;
-      state.error = null;
-      state.video.entities = entities;
-      state.video.totalCount = totalCount;
-    },
-    exerciseVideoCategory: (state, action) => {
-      const { entities } = action.payload;
-      state.listLoading = false;
-      state.error = null;
-      state.video.category = entities;
-    },
-    videoDetail: (state, action) => {
-      state.actionLoading = false;
-      state.error = null;
-      state.video.video = action.payload.video;
-    },
-    exerciseVideoUpdated: (state, action) => {
-      state.error = null;
-      state.actionLoading = false;
-      state.video.video = action.payload.data;
-      state.video.entities = state.video.entities.map((entity) => {
-        if (entity.id === action.payload.data.id) {
-          return action.payload.data;
-        }
-        return entity;
-      });
-    },
-    exerciseVideoDeleted: (state, action) => {
-      state.error = null;
-      state.actionLoading = false;
-      state.entities = state.video.entities.filter(el => el.id !== action.payload.id);
-    },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
       if (action.payload.callType === callTypes.list) {
@@ -71,18 +35,44 @@ export const exerciseSlice = createSlice({
         state.actionLoading = false;
       }
     },
+    saveList: (state, action) => {
+      const { entities, totalCount } = action.payload;
+      state.listLoading = false;
+      state.error = null;
+      state.entities = entities;
+      state.totalCount = totalCount;
+    },
+    saveListCategory: (state, action) => {
+      const { entities } = action.payload;
+      state.listLoading = false;
+      state.error = null;
+      state.category = entities;
+    },
+    saveObject: (state, action) => {
+      state.actionLoading = false;
+      state.error = null;
+      state.obj = action.payload.data;
+    },
+    update: (state, action) => {
+      state.error = null;
+      state.actionLoading = false;
+      state.obj = action.payload.data;
+      state.entities = state.entities.map((entity) => {
+        if (entity.id === action.payload.data.id) {
+          return action.payload.data;
+        }
+        return entity;
+      });
+    },
+    delete: (state, action) => {
+      state.error = null;
+      state.actionLoading = false;
+      state.entities = state.entities.filter((el) => el.id !== action.payload.id);
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const {
-  startCall,
-  exerciseVideoDataTable,
-  exerciseVideoCategory,
-  exerciseVideoUpdated,
-  exerciseVideoDeleted,
-  videoDetail,
-  catchError,
-} = exerciseSlice.actions;
-
-export default exerciseSlice.reducer;
+export const exercise = {
+  slice,
+  callTypes,
+};

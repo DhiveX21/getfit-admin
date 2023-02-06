@@ -6,35 +6,36 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import Select from "react-select";
 import { useSelector, useDispatch } from "react-redux";
-import { categoryVideoAction } from "layouts/video/videoAction";
+import * as actions from "layouts/video/MainAction";
 import DefaultSwitch from "components/extend/Switch/DefaultSwitch";
-import { updateVideoAction } from "layouts/video/videoAction";
+import { Controller, useForm } from "react-hook-form";
+import { requestFormatUpdate } from "layouts/video/MainUIHelper";
+import { FormHelperText } from "@mui/material";
 
-export default function UpdateForm({ video }) {
+export default function UpdateForm({ obj }) {
+  // define react hook form
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
   // define Category  to select to field
   let defaultCategoryOption;
-  let defaultCategoryValue;
-
-  defaultCategoryOption = { value: video.category.id, label: video.category.title };
-  defaultCategoryValue = video.category.id;
+  defaultCategoryOption = { value: obj.category.id, label: obj.category.title };
 
   const dispatch = useDispatch();
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(defaultCategoryValue);
-  const [inputDescription, setInputDescription] = useState();
-  const [videoLink, setVideoLink] = useState();
-  const [inputTitle, setInputTitle] = useState();
-  const [inputStatus, setInputStatus] = useState(false);
-  const { category } = useSelector((state) => ({ category: state.exercise.video.category }));
+  const { category } = useSelector((state) => ({ category: state.exercise.category }));
 
   // if redux category is not define , re fetch from action
   useEffect(() => {
-    dispatch(categoryVideoAction());
-    setSelectedCategory(video?.category_id);
-    setInputDescription(video?.description);
-    setVideoLink(video?.video_url);
-    setInputTitle(video?.title);
-    setInputStatus(video?.is_active);
+    setValue("title", obj.title, { shouldDirty: true });
+    setValue("description", obj.description, { shouldDirty: true });
+    setValue("link_url", obj.video_url, { shouldDirty: true });
+    setValue("category_id", defaultCategoryOption, { shouldDirty: true });
+    setValue("status", obj.is_active, { shouldDirty: true });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   //filling the options for category
@@ -46,103 +47,149 @@ export default function UpdateForm({ video }) {
     setCategoryOptions(tempOptions);
   }, [category]);
 
-  function handleSubmit() {
+  function onSubmit(data) {
+    console.log(data);
     dispatch(
-      updateVideoAction(
-        video?.id,
-        selectedCategory,
-        inputTitle,
-        inputDescription,
-        videoLink,
-        inputStatus
+      actions.updateAction(
+        requestFormatUpdate(
+          data.category_id.value,
+          data.title,
+          data.description,
+          data.link_url,
+          data.status
+        ),
+        obj.id
       )
-    );
+    ).then(() => {
+      dispatch(actions.detailAction(obj.id));
+    });
   }
-  function handleChangeStatus(e) {
-    setInputStatus(e.target.checked);
-  }
-  console.log(defaultCategoryOption);
+  // function handleChangeStatus(e) {
+  //   setInputStatus(e.target.checked);
+  // }
+
   return (
     <div className="w-full flex flex-col justify-center items-center gap-[20px] px-[20px] my-[40px]">
       <div className="w-2/3  p-2 rounded-xl flex flex-col gap-[10px] relative ">
         <div className="animation-popup flex flex-col gap-[20px] mt-[20px]">
-          <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
-            <MDTypography variant="h6" color="text">
-              UPDATE VIDEO
-            </MDTypography>
-          </MDBox>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex gap-[20px] flex-col">
+            <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
+              <MDTypography variant="h6" color="text">
+                UPDATE VIDEO
+              </MDTypography>
+            </MDBox>
 
-          <MDBox display="flex-column" alignItems="center" className="z-10" gap="20px">
-            <MDTypography variant="h6" color="text">
-              Select Category
-            </MDTypography>
-            <Select
-              className="basic-single text-[14px]"
-              classNamePrefix="select"
-              isSearchable={true}
-              name="color"
-              defaultValue={defaultCategoryOption}
-              options={categoryOptions}
-              onChange={(e) => setSelectedCategory(e.value)}
-            />
-          </MDBox>
-          <MDBox display="flex-column" alignItems="center" gap="20px">
-            <MDTypography variant="h6" color="text">
-              Input Title
-            </MDTypography>
-            <MDInput
-              fullWidth
-              required
-              label="Title"
-              defaultValue={inputTitle}
-              onChange={(e) => setInputTitle(e.target.value)}
-              multiline
-              rows={1}
-            />
-          </MDBox>
-          <MDBox display="flex-column" alignItems="center" gap="20px">
-            <MDTypography variant="h6" color="text">
-              Input Description
-            </MDTypography>
-            <MDInput
-              fullWidth
-              required
-              defaultValue={inputDescription}
-              label="Description"
-              onChange={(e) => setInputDescription(e.target.value)}
-              multiline
-              rows={5}
-            />
-          </MDBox>
-          <MDBox display="flex-column" alignItems="center" gap="20px">
-            <MDTypography variant="h6" color="text">
-              Input Link Video
-            </MDTypography>
-            <MDInput
-              fullWidth
-              required
-              label="Link Video"
-              defaultValue={videoLink}
-              placeholder="Example: https://www.youtube.com/watch?v="
-              onChange={(e) => setVideoLink(e.target.value)}
-              multiline
-              rows={1}
-            />
-          </MDBox>
-          <MDBox display="flex-column" alignItems="center" gap="20px">
-            <MDTypography variant="h6" color="text">
-              Status Video
-            </MDTypography>
-            <DefaultSwitch
-              name="status"
-              label={inputStatus ? "Active" : "Non-Active"}
-              onchange={handleChangeStatus}
-              value={inputStatus}
-            />
-          </MDBox>
-          <MDButton variant="gradient" color="success" onClick={() => handleSubmit()}>
-            Send
-          </MDButton>
+            {/* Category Field */}
+            <MDBox display="flex-column" alignItems="center" className="z-10" gap="20px">
+              <MDTypography variant="h6" color="text">
+                Select Category
+              </MDTypography>
+              {errors.category_id && (
+                <FormHelperText>
+                  {errors.category_id.type === "required" && "Field is required"}
+                </FormHelperText>
+              )}
+
+              <Controller
+                name="category_id"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    className="basic-single text-[14px]"
+                    classNamePrefix="select"
+                    isSearchable={true}
+                    options={categoryOptions}
+                  />
+                )}
+              />
+            </MDBox>
+
+            {/* Title Field */}
+            <MDBox display="flex-column" alignItems="center" gap="20px">
+              <MDTypography variant="h6" color="text">
+                Input Title
+              </MDTypography>
+              {errors.title && (
+                <FormHelperText>
+                  {errors.title.type === "required" && "Field is required"}
+                </FormHelperText>
+              )}
+              <Controller
+                name="title"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <MDInput {...field} fullWidth required label="Title" multiline rows={1} />
+                )}
+              />
+            </MDBox>
+
+            {/* Description Field */}
+            <MDBox display="flex-column" alignItems="center" gap="20px">
+              <MDTypography variant="h6" color="text">
+                Input Description
+              </MDTypography>
+              {errors.description && (
+                <FormHelperText>
+                  {errors.description.type === "required" && "Field is required"}
+                </FormHelperText>
+              )}
+
+              <Controller
+                name="description"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <MDInput {...field} fullWidth required label="Description" multiline rows={5} />
+                )}
+              />
+            </MDBox>
+
+            {/* Link URL Field */}
+            <MDBox display="flex-column" alignItems="center" gap="20px">
+              <MDTypography variant="h6" color="text">
+                Input Link Video
+              </MDTypography>
+              {errors.link_url && (
+                <FormHelperText>
+                  {errors.link_url.type === "required" && "Field is required"}
+                </FormHelperText>
+              )}
+
+              <Controller
+                name="link_url"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <MDInput
+                    {...field}
+                    fullWidth
+                    required
+                    label="Link Video"
+                    placeholder="Example: https://www.youtube.com/watch?v="
+                    multiline
+                    rows={1}
+                  />
+                )}
+              />
+            </MDBox>
+            <MDBox display="flex-column" alignItems="center" gap="20px">
+              <MDTypography variant="h6" color="text">
+                Status Video
+              </MDTypography>
+
+              <Controller
+                name="status"
+                control={control}
+                render={({ field }) => <DefaultSwitch {...field} />}
+              />
+            </MDBox>
+            <MDButton variant="gradient" color="success" type="submit">
+              Send
+            </MDButton>
+          </form>
         </div>
       </div>
     </div>
