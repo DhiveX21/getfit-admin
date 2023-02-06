@@ -48,7 +48,6 @@ export default function UpdateForm({ obj }) {
   }, [category]);
 
   function onSubmit(data) {
-    console.log(data);
     dispatch(
       actions.updateAction(
         requestFormatUpdate(

@@ -1,26 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialProductState = {
+const initialState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  product: {
-    product: undefined,
-    entities: [],
-    master: [],
-    facilities: [],
-    totalCount: 0,
-  },
+  obj: undefined,
+  entities: [],
+  master: [],
+  facilities: [],
+  totalCount: 0,
 };
 
-export const callTypes = {
+const callTypes = {
   list: "list",
   action: "action",
 };
 
-export const ProductSlice = createSlice({
+const slice = createSlice({
   name: "Product",
-  initialState: initialProductState,
+  initialState: initialState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -30,46 +28,6 @@ export const ProductSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    productDataTable: (state, action) => {
-      const { entities, totalCount } = action.payload;
-      state.listLoading = false;
-      state.error = null;
-      state.product.entities = entities;
-      state.product.totalCount = totalCount;
-    },
-    masterProduct: (state, action) => {
-      const { entities } = action.payload;
-      state.listLoading = false;
-      state.error = null;
-      state.product.master = entities;
-    },
-    facilityProduct: (state, action) => {
-      const { entities } = action.payload;
-      state.listLoading = false;
-      state.error = null;
-      state.product.facilities = entities;
-    },
-    productDetail: (state, action) => {
-      state.actionLoading = false;
-      state.error = null;
-      state.product.product = action.payload.product;
-    },
-    productUpdated: (state, action) => {
-      state.error = null;
-      state.actionLoading = false;
-      state.product.product = action.payload.data;
-      state.product.entities = state.product.entities.map((entity) => {
-        if (entity.id === action.payload.data.id) {
-          return action.payload.data;
-        }
-        return entity;
-      });
-    },
-    productDeleted: (state, action) => {
-      state.error = null;
-      state.actionLoading = false;
-      state.entities = state.product.entities.filter(el => el.id !== action.payload.id);
-    },
     catchError: (state, action) => {
       state.error = `${action.type}:${action.payload.error}`;
       if (action.payload.callType === callTypes.list) {
@@ -78,19 +36,50 @@ export const ProductSlice = createSlice({
         state.actionLoading = false;
       }
     },
+    saveList: (state, action) => {
+      const { entities, totalCount } = action.payload;
+      state.listLoading = false;
+      state.error = null;
+      state.entities = entities;
+      state.totalCount = totalCount;
+    },
+    saveMaster: (state, action) => {
+      const { entities } = action.payload;
+      state.listLoading = false;
+      state.error = null;
+      state.master = entities;
+    },
+    saveFacility: (state, action) => {
+      const { entities } = action.payload;
+      state.listLoading = false;
+      state.error = null;
+      state.facilities = entities;
+    },
+    saveObject: (state, action) => {
+      state.actionLoading = false;
+      state.error = null;
+      state.obj = action.payload.data;
+    },
+    update: (state, action) => {
+      state.error = null;
+      state.actionLoading = false;
+      state.obj = action.payload.data;
+      state.entities = state.entities.map((entity) => {
+        if (entity.id === action.payload.data.id) {
+          return action.payload.data;
+        }
+        return entity;
+      });
+    },
+    delete: (state, action) => {
+      state.error = null;
+      state.actionLoading = false;
+      state.entities = state.entities.filter((el) => el.id !== action.payload.id);
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const {
-  startCall,
-  productDataTable,
-  masterProduct,
-  facilityProduct,
-  productUpdated,
-  productDeleted,
-  productDetail,
-  catchError,
-} = ProductSlice.actions;
-
-export default ProductSlice.reducer;
+export const product = {
+  slice,
+  callTypes,
+};

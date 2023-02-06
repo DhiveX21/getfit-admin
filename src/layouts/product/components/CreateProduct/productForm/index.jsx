@@ -1,40 +1,41 @@
 import React, { useEffect, useState } from "react";
-
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-// import Select from "react-select";
 import { useSelector, useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
-import { createProductAction } from "layouts/product/productAction";
-import { masterProductAction } from "layouts/product/productAction";
+import { Controller, useForm } from "react-hook-form";
+import * as actions from "layouts/product/MainAction";
 import DefaultSwitch from "components/extend/Switch/DefaultSwitch";
+import { FormHelperText } from "@mui/material";
 import SubProductForm from "../../SubProductForm";
-import { facilitiesProductAction } from "layouts/product/productAction";
+import { requestFormat } from "layouts/product/MainUIHelper";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductForm() {
   const {
+    control,
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm();
 
   const dispatch = useDispatch();
-  const [inputStatus, setInputStatus] = useState(false);
+  const navigate = useNavigate();
   const [masterOptions, setMasterOptions] = useState([]);
   const [fieldSubProduct, setFieldSubProduct] = useState([{ id: "", amount: 0, quota: 0 }]);
 
   const { master, facilities } = useSelector((state) => ({
-    master: state.product.product.master,
-    facilities: state.product.product.facilities,
+    master: state.product.master,
+    facilities: state.product.facilities,
   }));
 
   // if redux master is not define , re fetch from action
   useEffect(() => {
-    dispatch(masterProductAction());
-    dispatch(facilitiesProductAction());
+    dispatch(actions.masterAction());
+    dispatch(actions.facilitiesAction());
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   //filling the options for master
@@ -51,28 +52,20 @@ export default function ProductForm() {
   }, [fieldSubProduct]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = (data) => {
-    data.facilities = data.facilities.map((item, index) => +item);
-    dispatch(
-      createProductAction({
-        code: data.code,
-        name: data.name,
-        quota: +data.quota,
-        description: data.description,
-        amount: +data.amount,
-        cost_paid: +data.cost_paid,
-        status: data.status ?? "non-active",
-        sub_products: data.sub_products,
-        facilities: data.facilities,
-      })
-    );
+    if (Array.isArray(data.facilities)) {
+      data.facilities = data.facilities.map((item, index) => +item);
+    } else {
+      data.facilities = +data.facilities;
+    }
+    dispatch(actions.createAction(requestFormat(data))).then(() => {
+      navigate("/product/list-product");
+    });
   };
-  function handleChangeStatus(e) {
-    setValue("status", (e.target.checked ? "active" : "non-active"), { shouldDirty: true });
-    setInputStatus(e.target.checked);
-  }
+
   function addFieldHandle() {
     setFieldSubProduct([...fieldSubProduct, { id: "", amount: 0, quota: 0 }]);
   }
+
   function editMasterField(index, masterValue) {
     let tempField = [...fieldSubProduct];
     if (masterValue) {
@@ -85,6 +78,7 @@ export default function ProductForm() {
     }
     setFieldSubProduct(tempField);
   }
+
   function editQuotaField(index, quotaValue) {
     let tempField = [...fieldSubProduct];
     if (quotaValue) {
@@ -98,6 +92,7 @@ export default function ProductForm() {
 
     setFieldSubProduct(tempField);
   }
+
   function editAmountField(index, amountValue) {
     let tempField = [...fieldSubProduct];
     if (amountValue) {
@@ -110,126 +105,168 @@ export default function ProductForm() {
     }
     setFieldSubProduct(tempField);
   }
+
   return (
     <div className="animation-popup flex flex-col gap-[20px] mt-[20px]">
-      <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          CREATE PRODUCT
-        </MDTypography>
-      </MDBox>
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-[20px] flex-col">
+        <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            CREATE PRODUCT
+          </MDTypography>
+        </MDBox>
+        {/* Code Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
-            Input Code{" "}
-            {errors.code?.type === "required" ? (
-              <span className="error-hint" role="alert">
-                Code is required
-              </span>
-            ) : (
-              ""
-            )}
+            Input Code
           </MDTypography>
-          <MDInput
-            fullWidth
-            required
-            label="Code"
-            {...register("code", {
-              required: true,
-            })}
-            multiline
-            rows={1}
+          {errors.code && (
+            <FormHelperText>
+              {errors.code.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+
+          <Controller
+            name="code"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput {...field} fullWidth required label="Code" multiline rows={1} />
+            )}
           />
         </MDBox>
+        {/* Name Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
-            Input Name{" "}
-            {errors.name?.type === "required" ? (
-              <span className="error-hint" role="alert">
-                Name is required
-              </span>
-            ) : (
-              ""
-            )}
+            Input Name
           </MDTypography>
-          <MDInput
-            fullWidth
-            required
-            label="Name"
-            {...register("name", {
-              required: true,
-            })}
-            multiline
-            rows={1}
+          {errors.name && (
+            <FormHelperText>
+              {errors.name.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput {...field} fullWidth required label="Name" multiline rows={1} />
+            )}
           />
         </MDBox>
+        {/* Total Quota Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
-            Input Total Quota{" "}
-            {errors.quota?.type === "required" ? (
-              <span className="error-hint" role="alert">
-                Quota is required
-              </span>
-            ) : (
-              ""
-            )}
+            Input Total Quota
           </MDTypography>
-          <MDInput
-            type="number"
-            fullWidth
-            required
-            label="Quota"
-            {...register("quota", {
-              required: true,
-            })}
-            multiline
-            rows={1}
+          {errors.quota && (
+            <FormHelperText>
+              {errors.quota.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+
+          <Controller
+            name="quota"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput
+                {...field}
+                type="number"
+                fullWidth
+                required
+                label="Quota"
+                multiline
+                rows={1}
+              />
+            )}
           />
         </MDBox>
+        {/* Description Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
             Input Description
           </MDTypography>
-          <MDInput fullWidth label="Description" {...register("description")} multiline rows={5} />
+
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <MDInput {...field} fullWidth label="Description" multiline rows={5} />
+            )}
+          />
         </MDBox>
+        {/* Amount Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
             Input Total Amount
           </MDTypography>
-          <MDInput
-            type="number"
-            fullWidth
-            required
-            label="Amount"
-            {...register("amount")}
-            multiline
-            rows={1}
+          {errors.amount && (
+            <FormHelperText>
+              {errors.amount.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+
+          <Controller
+            name="amount"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput
+                {...field}
+                type="number"
+                fullWidth
+                required
+                label="Amount"
+                multiline
+                rows={1}
+              />
+            )}
           />
         </MDBox>
+        {/* Cost Paid Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
             Input Total Cost Paid
           </MDTypography>
-          <MDInput
-            type="number"
-            fullWidth
-            required
-            label="Cost Paid"
-            {...register("cost_paid")}
-            multiline
-            rows={1}
+          {errors.cost_paid && (
+            <FormHelperText>
+              {errors.cost_paid.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+
+          <Controller
+            name="cost_paid"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput
+                {...field}
+                type="number"
+                fullWidth
+                required
+                label="Cost Paid"
+                {...register("cost_paid")}
+                multiline
+                rows={1}
+              />
+            )}
           />
         </MDBox>
+        {/* Status Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
             Status Product
           </MDTypography>
-          <DefaultSwitch
+          <Controller
             name="status"
-            label={inputStatus ? "Active" : "Non-Active"}
-            onchange={handleChangeStatus}
-            value={inputStatus}
+            control={control}
+            render={({ field }) => (
+              <DefaultSwitch {...field} label={getValues("status") ? "Active" : "Non-Active"} />
+            )}
           />
         </MDBox>
+        {/* Facilities Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
           <MDTypography variant="h6" color="text">
             Input Facilities

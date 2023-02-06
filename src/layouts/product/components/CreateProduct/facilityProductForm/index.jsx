@@ -1,38 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import DefaultSwitch from "components/extend/Switch/DefaultSwitch";
 import slug from "slug";
-import { createFacilityProductAction } from "layouts/product/productAction";
+import * as actions from "layouts/product/MainAction";
+import { FormHelperText } from "@mui/material";
 
 export default function FacilityProductForm() {
   const {
-    register,
     handleSubmit,
+    getValues,
+    control,
     formState: { errors },
     setValue,
   } = useForm();
 
   const dispatch = useDispatch();
-  const [inputStatus, setInputStatus] = useState(false);
-  // useEffect(() => {
-  //   dispatch(categoryVideoAction());
-  // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function handleChangeStatus(e) {
-    setValue("status", e.target.checked ? "active" : "non-active", { shouldDirty: true });
-    setInputStatus(e.target.checked);
-  }
   function autoConvertSlug(val) {
     setValue("slug", slug(val), { shouldDirty: true });
   }
   const onSubmit = (data) => {
     dispatch(
-      createFacilityProductAction({
+      actions.createFacilityAction({
         name: data.name,
         slug: data.slug,
         description: data.description,
@@ -42,71 +36,85 @@ export default function FacilityProductForm() {
   };
   return (
     <div className="animation-popup flex flex-col gap-[20px] w-full bg-white p-[10px] rounded-lg">
-      <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          CREATE FACILITY PRODUCT
-        </MDTypography>
-      </MDBox>
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-[20px] flex-col">
+        <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            CREATE FACILITY PRODUCT
+          </MDTypography>
+        </MDBox>
+        {/* Name Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
-            Input Name{" "}
-            {errors.name?.type === "required" ? (
-              <span className="error-hint" role="alert">
-                Name is required
-              </span>
-            ) : (
-              ""
-            )}
+            Input Name
           </MDTypography>
-          <MDInput
-            fullWidth
-            required
-            label="Name"
-            {...register("name", {
-              required: true,
-            })}
-            onChange={(e) => autoConvertSlug(e.target.value)}
-            multiline
-            rows={1}
+          {errors.name && (
+            <FormHelperText>
+              {errors.name.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput
+                {...field}
+                fullWidth
+                required
+                label="Name"
+                onChange={(e) => {
+                  autoConvertSlug(e.target.value);
+                  setValue("name", e.target.value, { shouldDirty: true });
+                }}
+                multiline
+                rows={1}
+              />
+            )}
           />
         </MDBox>
+        {/* Slug Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
-            Input Slug{" "}
-            {errors.name?.type === "required" ? (
-              <span className="error-hint" role="alert">
-                Slug is required
-              </span>
-            ) : (
-              ""
-            )}
+            Input Slug
           </MDTypography>
-          <MDInput
-            fullWidth
-            required
-            {...register("slug", {
-              required: true,
-            })}
-            multiline
-            rows={1}
+          {errors.slug && (
+            <FormHelperText>
+              {errors.slug.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="slug"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => <MDInput {...field} fullWidth required multiline rows={1} />}
           />
         </MDBox>
+        {/* Description Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
             Input Description
           </MDTypography>
-          <MDInput fullWidth label="Description" {...register("description")} multiline rows={5} />
+
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <MDInput {...field} fullWidth label="Description" multiline rows={5} />
+            )}
+          />
         </MDBox>
+        {/* Status Field */}
         <MDBox display="flex-column" alignItems="center" gap="20px">
           <MDTypography variant="h6" color="text">
             Status
           </MDTypography>
-          <DefaultSwitch
+          <Controller
             name="status"
-            label={inputStatus ? "Active" : "Non-Active"}
-            onchange={handleChangeStatus}
-            value={inputStatus}
+            control={control}
+            render={({ field }) => (
+              <DefaultSwitch {...field} label={getValues("status") ? "Active" : "Non-Active"} />
+            )}
           />
         </MDBox>
 

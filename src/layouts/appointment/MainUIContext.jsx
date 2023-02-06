@@ -26,7 +26,7 @@ export function MainUIProvider({ children }) {
   useEffect(() => {
     dispatch(actions.datatableAction(queryParams));
     productAPI
-      .getAllBaseProduct()
+      .getAllMaster()
       .then((response) => {
         setBaseProductData(response.data.data);
       })

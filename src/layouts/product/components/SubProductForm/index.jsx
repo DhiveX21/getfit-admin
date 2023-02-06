@@ -3,6 +3,7 @@ import MDInput from "components/MDInput";
 import MDTypography from "components/MDTypography";
 import React from "react";
 import Select from "react-select";
+import PropTypes from "prop-types";
 
 export default function SubProductForm({
   masterData,
@@ -19,6 +20,7 @@ export default function SubProductForm({
           Select Master Product
         </MDTypography>
         <Select
+          placeholder="Select Base Product"
           className="basic-single text-[14px]"
           classNamePrefix="select"
           defaultValue={defaultMasterOption}
@@ -59,3 +61,16 @@ export default function SubProductForm({
     </>
   );
 }
+
+// Setting default props for the ProfileInfoCard
+SubProductForm.defaultProps = {
+  item: {
+    id: 0,
+    label: "",
+  },
+};
+
+// Typechecking props for the ProfileInfoCard
+SubProductForm.propTypes = {
+  item: PropTypes.object,
+};

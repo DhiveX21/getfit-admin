@@ -6,15 +6,12 @@ import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import { useNavigate, useParams } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import * as actions from "layouts/product/productAction";
+import * as actions from "layouts/product/MainAction";
 import ProductProfile from "./productProfile";
 import RelatedMenu from "./RelatedMenu";
 import UpdateForm from "./updateForm";
 import FacilityProductForm from "../CreateProduct/facilityProductForm";
 import MasterProductForm from "../CreateProduct/masterProductForm";
-// import Detail from "./detail";
-// import UpdateForm from "./updateForm";
-// import MasterProductForm from "../CreateProduct/masterProductForm";
 
 export default function DetailProduct() {
   const params = useParams();
@@ -24,25 +21,27 @@ export default function DetailProduct() {
   const dispatch = useDispatch();
   const { product } = useSelector(
     (state) => ({
-      product: state.product.product.product,
-      productActionLoading: state.product.actionLoading,
+      product: state.product.obj,
+      actionLoading: state.product.actionLoading,
     }),
     shallowEqual
   );
 
   useEffect(() => {
-    dispatch(actions.detailProduct(params.id));
+    dispatch(actions.detailAction(params.id));
 
     return () => {
-      dispatch(actions.detailProduct(undefined));
+      dispatch(actions.detailAction(undefined));
     };
   }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleDeleteProduct = () => {
     if (window.confirm("Are you sure Delete this product?")) {
-      dispatch(actions.deleteProductAction(params.id));
+      dispatch(actions.deleteAction(params.id));
       navigate("/product/list-product");
     }
   };
+
   return (
     <>
       <MDBox
