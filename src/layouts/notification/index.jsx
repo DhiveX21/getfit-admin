@@ -12,40 +12,27 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import MDBox from "components/MDBox";
-
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
 import ListTableNotification from "./components/ListTableNotification";
 import CreateNotification from "./components/CreateNotification";
 import { Routes, Route } from "react-router-dom";
-import { NotificationUIProvider } from "./notificationUIContext";
+import { MainUIProvider } from "./MainUIContext";
 import DetailNotification from "./components/DetailNotification";
 
 function Notification() {
   return (
     <DashboardLayout>
-      <NotificationUIProvider>
+      <MainUIProvider>
         <DashboardNavbar />
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
-            <Grid item xs={12}>
-              <Card>
-                <Routes>
-                  <Route path="list-notification" element={<ListTableNotification />} />
-                  <Route path="create" element={<CreateNotification />} />
-                  <Route path=":id" element={<DetailNotification />} />
-                </Routes>
-              </Card>
-            </Grid>
-          </Grid>
-        </MDBox>
+        <Routes>
+          <Route path="list-notification" element={<ListTableNotification />} />
+          <Route path="create" element={<CreateNotification />} />
+          <Route path=":id" element={<DetailNotification />} />
+        </Routes>
         <Footer />
-      </NotificationUIProvider>
+      </MainUIProvider>
     </DashboardLayout>
   );
 }

@@ -26,22 +26,13 @@ import { Link } from "react-router-dom";
 
 import { TitleColumnFormatter } from "./formatter/titleFormatter";
 import { dateFormater } from "helpers/DateHelpers";
+import { DescriptionColumnFormatter } from "./formatter/descriptionFormatter";
 
 export default function data(entities) {
   const data = entities.map((item) => {
     return {
       title: <TitleColumnFormatter title={item.title} />,
-      description: (
-        <MDTypography
-          display="block"
-          variant="caption"
-          className="max-w-[250px] overflow-hidden"
-          color="text"
-          fontWeight="bold"
-        >
-          <p>{item.description}</p>
-        </MDTypography>
-      ),
+      description: <DescriptionColumnFormatter description={item.description} />,
       date: (
         <MDTypography display="block" variant="caption" color="text" fontWeight="bold">
           {dateFormater(item.created_at)}
@@ -51,6 +42,14 @@ export default function data(entities) {
         <MDBadge
           badgeContent={item.is_important ? "Prioritas" : "Normal"}
           color={item.is_important ? "primary" : "info"}
+          variant="gradient"
+          size="sm"
+        />
+      ),
+      receive: (
+        <MDBadge
+          badgeContent={item.user_id === -1 ? "All User" : "Specific User"}
+          color={item.user_id === -1 ? "success" : "primary"}
           variant="gradient"
           size="sm"
         />
@@ -76,6 +75,7 @@ export default function data(entities) {
       { Header: "description", accessor: "description", align: "left" },
       { Header: "date", accessor: "date", align: "center" },
       { Header: "type", accessor: "type", width: "10%", align: "center" },
+      { Header: "receive", accessor: "receive", width: "10%", align: "center" },
       { Header: "category", accessor: "category", width: "10%", align: "center" },
       { Header: "action", accessor: "action", align: "center" },
     ],

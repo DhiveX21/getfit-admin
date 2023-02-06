@@ -1,23 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialNotificationState = {
+const initialState = {
   listLoading: false,
   actionLoading: false,
   error: null,
-  notification: undefined,
+  obj: undefined,
   entities: [],
   category: [],
   totalCount: 0,
 };
 
-export const callTypes = {
+const callTypes = {
   list: "list",
   action: "action",
 };
 
-export const notificationSlice = createSlice({
+const slice = createSlice({
   name: "Notification",
-  initialState: initialNotificationState,
+  initialState: initialState,
   reducers: {
     startCall: (state, action) => {
       state.error = null;
@@ -27,22 +27,30 @@ export const notificationSlice = createSlice({
         state.actionLoading = true;
       }
     },
-    notificationDataTable: (state, action) => {
+    catchError: (state, action) => {
+      state.error = `${action.type}:${action.payload.error}`;
+      if (action.payload.callType === callTypes.list) {
+        state.listLoading = false;
+      } else {
+        state.actionLoading = false;
+      }
+    },
+    saveList: (state, action) => {
       const { entities, totalCount } = action.payload;
       state.listLoading = false;
       state.error = null;
       state.entities = entities;
       state.totalCount = totalCount;
     },
-    notificationDetail: (state, action) => {
+    saveObject: (state, action) => {
       state.actionLoading = false;
       state.error = null;
-      state.notification = action.payload.notification;
+      state.obj = action.payload.data;
     },
-    notificationUpdated: (state, action) => {
+    updateSave: (state, action) => {
       state.error = null;
       state.actionLoading = false;
-      state.notification = action.payload.data;
+      state.obj = action.payload.data;
       let tempEntities = [];
       state.entities.map((entity) => {
         if (entity.id === action.payload.data.id) {
@@ -52,31 +60,16 @@ export const notificationSlice = createSlice({
       });
       state.entities = tempEntities;
     },
-    notificationCategory: (state, action) => {
+    saveCategory: (state, action) => {
       const { entities } = action.payload;
       state.listLoading = false;
       state.error = null;
       state.category = entities;
     },
-    catchError: (state, action) => {
-      state.error = `${action.type}:${action.payload.error}`;
-      if (action.payload.callType === callTypes.list) {
-        state.listLoading = false;
-      } else {
-        state.actionLoading = false;
-      }
-    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const {
-  startCall,
-  notificationDataTable,
-  notificationDetail,
-  notificationUpdated,
-  notificationCategory,
-  catchError,
-} = notificationSlice.actions;
-
-export default notificationSlice.reducer;
+export const notification = {
+  slice,
+  callTypes,
+}

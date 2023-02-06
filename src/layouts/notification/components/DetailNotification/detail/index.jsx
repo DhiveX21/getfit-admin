@@ -2,17 +2,18 @@ import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 import React from "react";
-import * as actions from "layouts/notification/notificationAction";
+import * as actions from "layouts/notification/MainAction";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import MDBadge from "components/MDBadge";
 
-export default function Detail({ notification }) {
+export default function Detail({ obj }) {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleNotificationDelete = () => {
     if (window.confirm("Are you sure to delete this notification?")) {
-      dispatch(actions.deleteNotificationAction(params.id)).then(() => {
+      dispatch(actions.deleteAction(params.id)).then(() => {
         navigate("/notification/list-notification");
       });
     }
@@ -34,7 +35,7 @@ export default function Detail({ notification }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.created_at}
+              {obj?.created_at}
             </MDTypography>
           </div>
 
@@ -46,7 +47,7 @@ export default function Detail({ notification }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.is_important ? "Prioritas" : "Normal"}
+              {obj?.is_important ? "Prioritas" : "Normal"}
             </MDTypography>
           </div>
           <div className=" flex gap-[10px] ">
@@ -57,7 +58,7 @@ export default function Detail({ notification }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.category?.title}
+              {obj?.category?.title}
             </MDTypography>
           </div>
         </div>
@@ -74,11 +75,11 @@ export default function Detail({ notification }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {notification?.user_id === -1 ? (
+              {obj?.user_id === -1 ? (
                 "All Patient"
               ) : (
                 <div className="flex flex-col overflow-y-scroll max-h-[200px] bg-slate-200 p-1 rounded-lg">
-                  {notification?.patient?.map((item) => {
+                  {obj?.patient?.map((item) => {
                     return (
                       <MDTypography width="50%" color="text" fontSize="14px" className="text-left">
                         <p className="break-keep">{item.name}</p>
@@ -93,7 +94,13 @@ export default function Detail({ notification }) {
       </div>
       <div className="w-full p-[20px] flex flex-col justify-center">
         <MDTypography color="dark" fontSize="20px" fontWeight="bold">
-          Notification
+          Notification{" "}
+          <MDBadge
+            badgeContent={obj?.is_important ? "Prioritas": "Reguler"}
+            color={obj?.is_important ? "Primary": "Warning"}
+            variant="gradient"
+            size="sm"
+          />
         </MDTypography>
         <MDBox
           display="flex"
@@ -105,10 +112,10 @@ export default function Detail({ notification }) {
           padding="20px"
         >
           <MDTypography color="primary" fontSize="16px" fontWeight="medium">
-            {notification?.title}
+            {obj?.title}
           </MDTypography>
           <MDTypography color="dark" fontSize="16px" fontWeight="medium">
-            {notification?.description}
+            {obj?.description}
           </MDTypography>
         </MDBox>
       </div>
