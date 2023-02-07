@@ -1,46 +1,39 @@
-import axios from "axios";
-import { createMock } from "helpers/ResponseMockTemplate";
+import { configAPIFacade } from "helpers/UtilHelpers";
 import mockTherapist from "_mock/therapistApi_mock";
 
-let THERAPIST_URL = process.env.REACT_APP_USER_SERVICE_URL;
+const [ axiosInstance, THERAPIST_URL ] = configAPIFacade(process.env.REACT_APP_USER_SERVICE_URL, mockTherapist);
 
-// env is null url can be redirect to url mock
-if (THERAPIST_URL === undefined) {
-  const mock = createMock();
-  mockTherapist(mock);
-  THERAPIST_URL = "api";
-}
 
 export const therapistAPI = {
   getAll: () => {
-    return axios.get(`${THERAPIST_URL}/teams`);
+    return axiosInstance.get(`${THERAPIST_URL}/teams`);
   },
 
   getAllEvaluationByUserId: (userId) => {
-    return axios.get(`${THERAPIST_URL}/evaluations/${userId}`);
+    return axiosInstance.get(`${THERAPIST_URL}/evaluations/${userId}`);
   },
 
   getDatatable: (params) => {
-    return axios.post(`${THERAPIST_URL}/teams/datatable`, { ...params });
+    return axiosInstance.post(`${THERAPIST_URL}/teams/datatable`, { ...params });
   },
 
   create: (body) => {
-    return axios.post(`${THERAPIST_URL}/teams`, { ...body });
+    return axiosInstance.post(`${THERAPIST_URL}/teams`, { ...body });
   },
 
   update: (id, body) => {
-    return axios.put(`${THERAPIST_URL}/teams/${id}`, { ...body });
+    return axiosInstance.put(`${THERAPIST_URL}/teams/${id}`, { ...body });
   },
 
   createUser: (body) => {
-    return axios.post(`${THERAPIST_URL}/users`, { ...body });
+    return axiosInstance.post(`${THERAPIST_URL}/users`, { ...body });
   },
 
   deleteOne: (id) => {
-    return axios.delete(`${THERAPIST_URL}/teams/${id}`);
+    return axiosInstance.delete(`${THERAPIST_URL}/teams/${id}`);
   },
 
   getOneById: (id) => {
-    return axios.get(`${THERAPIST_URL}/teams/${id}`);
+    return axiosInstance.get(`${THERAPIST_URL}/teams/${id}`);
   },
 };

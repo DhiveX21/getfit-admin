@@ -1,45 +1,37 @@
-import axios from "axios";
-import { createMock } from "helpers/ResponseMockTemplate";
+import { configAPIFacade } from "helpers/UtilHelpers";
 import mockNotification from "_mock/notificationApi_mock";
 
-let NOTIFICATION_URL = process.env.REACT_APP_NOTIFICATION_SERVICE_URL;
-
-// env is null url can be redirect to url mock
-if (NOTIFICATION_URL === undefined) {
-  const mock = createMock();
-  mockNotification(mock);
-  NOTIFICATION_URL = "api";
-}
+const [ axiosInstance, NOTIFICATION_URL ] = configAPIFacade(process.env.REACT_APP_NOTIFICATION_SERVICE_URL, mockNotification);
 
 export const notificationAPI = {
   getDatatable: (params) => {
-    return axios.post(`${NOTIFICATION_URL}/notifications/datatable`, { ...params });
+    return axiosInstance.post(`${NOTIFICATION_URL}/notifications/datatable`, { ...params });
   },
 
   getAllCategory: () => {
-    return axios.get(`${NOTIFICATION_URL}/notification-categories`, {
+    return axiosInstance.get(`${NOTIFICATION_URL}/notification-categories`, {
       params: { status: "active" },
     });
   },
 
   getOneById: (notificationId) => {
-    return axios.get(`${NOTIFICATION_URL}/notifications/${notificationId}`);
+    return axiosInstance.get(`${NOTIFICATION_URL}/notifications/${notificationId}`);
   },
 
   create: (body) => {
-    return axios.post(`${NOTIFICATION_URL}/notifications`, { ...body });
+    return axiosInstance.post(`${NOTIFICATION_URL}/notifications`, { ...body });
   },
 
   update: (body, id) => {
-    return axios.put(`${NOTIFICATION_URL}/notifications/${id}`, { ...body });
+    return axiosInstance.put(`${NOTIFICATION_URL}/notifications/${id}`, { ...body });
   },
 
   createCategory: (body) => {
-    return axios.post(`${NOTIFICATION_URL}/notification-categories`, { ...body });
+    return axiosInstance.post(`${NOTIFICATION_URL}/notification-categories`, { ...body });
   },
 
   delete: (notificationId) => {
-    return axios.delete(`${NOTIFICATION_URL}/notifications/${notificationId}`);
+    return axiosInstance.delete(`${NOTIFICATION_URL}/notifications/${notificationId}`);
   },
 
   createToWA: (body) => {
@@ -49,7 +41,7 @@ export const notificationAPI = {
         "Content-Type": "application/json",
       },
     };
-    return axios.post(
+    return axiosInstance.post(
       `https://sendtalk-api.taptalk.io/api/v1/message/send_whatsapp`,
       { ...body },
       config

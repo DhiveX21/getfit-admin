@@ -1,9 +1,8 @@
-import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 // function Singleton
 let mock = undefined;
-export function createMock() {
+export function createMock(axios) {
   if (mock === undefined) {
     mock = new MockAdapter(axios, { delayResponse: 300 });
   }
