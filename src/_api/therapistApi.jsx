@@ -2,7 +2,7 @@ import axios from "axios";
 import { createMock } from "helpers/ResponseMockTemplate";
 import mockTherapist from "_mock/therapistApi_mock";
 
-let THERAPIST_URL = process.env.REACT_APP_USER_SERVICE_URL
+let THERAPIST_URL = process.env.REACT_APP_USER_SERVICE_URL;
 
 // env is null url can be redirect to url mock
 if (THERAPIST_URL === undefined) {
@@ -11,9 +11,36 @@ if (THERAPIST_URL === undefined) {
   THERAPIST_URL = "api";
 }
 
-
 export const therapistAPI = {
   getAll: () => {
     return axios.get(`${THERAPIST_URL}/teams`);
   },
-}
+
+  getAllEvaluationByUserId: (userId) => {
+    return axios.get(`${THERAPIST_URL}/evaluations/${userId}`);
+  },
+
+  getDatatable: (params) => {
+    return axios.post(`${THERAPIST_URL}/teams/datatable`, { ...params });
+  },
+
+  create: (body) => {
+    return axios.post(`${THERAPIST_URL}/teams`, { ...body });
+  },
+
+  update: (id, body) => {
+    return axios.put(`${THERAPIST_URL}/teams/${id}`, { ...body });
+  },
+
+  createUser: (body) => {
+    return axios.post(`${THERAPIST_URL}/users`, { ...body });
+  },
+
+  deleteOne: (id) => {
+    return axios.delete(`${THERAPIST_URL}/teams/${id}`);
+  },
+
+  getOneById: (id) => {
+    return axios.get(`${THERAPIST_URL}/teams/${id}`);
+  },
+};

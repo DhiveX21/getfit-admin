@@ -17,7 +17,7 @@ export default function PatientForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  
+
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,20 +27,22 @@ export default function PatientForm() {
         name: data.fullname,
         phone_number: data.phoneNumber,
         email: data.email,
-        password: data.password,
         birth_date: data.birthdate,
         address: data.address,
+        password: "Getfit2023",
         gender: data.gender,
       })
-    ).then((result) => {
-      navigate("/patient/list-patient");
-    }).catch((err) => {
-      console.log(err);
-      MySwal.fire({
-        title: "Can't Create patient",
-        icon: "error",
+    )
+      .then((result) => {
+        navigate("/patient/list-patient");
+      })
+      .catch((err) => {
+        console.log(err);
+        MySwal.fire({
+          title: "Can't Create patient",
+          icon: "error",
+        });
       });
-    });
   };
 
   return (
@@ -149,19 +151,6 @@ export default function PatientForm() {
               required: true,
               pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
             })}
-          />
-        </MDBox>
-        <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-          <MDTypography variant="h6" color="text">
-            Input Password
-          </MDTypography>
-          <MDInput
-            className=" z-8"
-            fullWidth
-            required
-            label="Password"
-            type="password"
-            {...register("password")}
           />
         </MDBox>
         <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">

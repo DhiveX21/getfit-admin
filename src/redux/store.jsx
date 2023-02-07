@@ -7,6 +7,7 @@ import {
   notification,
   exercise,
   product,
+  therapist,
 } from "_slices";
 import userSlice from "_slices/userSlice";
 
@@ -20,6 +21,7 @@ export default configureStore({
     notification: notification.slice.reducer,
     exercise: exercise.slice.reducer,
     product: product.slice.reducer,
+    therapist: therapist.slice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -63,6 +63,7 @@ export default function mockProduct(mock) {
   // deleteOne
   mock.onDelete(/api\/products\/\d+/).reply((config) => {
     const id = config.url.match(/api\/products\/(\d+)/)[1];
+    console.log(id);
 
     return [200, SuccessResponse("Success delete product", "success", 200, {message: "deleted"})];
   });

@@ -58,6 +58,7 @@ import Patient from "layouts/patient";
 import Notification from "layouts/notification";
 import Video from "layouts/video";
 import Product from "layouts/product";
+import Therapist from "layouts/therapist";
 
 const routes = [
   {
@@ -161,6 +162,19 @@ const routes = [
     component: (
       <RoutesValidation>
         <Product />
+      </RoutesValidation>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Therapist",
+    key: "therapist",
+    icon: <Icon fontSize="small">Therapist</Icon>,
+    route: "/therapist/*",
+    main_route: "/therapist/list-therapist",
+    component: (
+      <RoutesValidation>
+        <Therapist />
       </RoutesValidation>
     ),
   },
