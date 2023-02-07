@@ -17,7 +17,7 @@ import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
 import ListTableAppointment from "./components/ListTableAppointment";
 import { Route, Routes } from "react-router-dom";
-import { AppointmentUIProvider } from "./appointmentUIContext";
+import { MainUIProvider } from "./MainUIContext";
 import DetailAppointment from "./components/DetailAppointment";
 import CreateAppointment from "./components/CreateAppointment";
 
@@ -25,13 +25,13 @@ function Appointment() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <AppointmentUIProvider>
+      <MainUIProvider>
         <Routes>
           <Route path="list-appointment" element={<ListTableAppointment />} />
           <Route path=":id" element={<DetailAppointment />} />
           <Route path="create" element={<CreateAppointment />} />
         </Routes>
-      </AppointmentUIProvider>
+      </MainUIProvider>
       <Footer />
     </DashboardLayout>
   );

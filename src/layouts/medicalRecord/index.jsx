@@ -12,39 +12,27 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import MDBox from "components/MDBox";
 import DashboardLayout from "components/extend/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "components/extend/Navbars/DashboardNavbar";
 import Footer from "components/extend/Footer";
 import ListTableMedicalRecord from "./components/ListTableMedicalRecord";
-import DetailMedicalRecord from "./components/DetailMedicalRecord";
 import CreateMedicalRecord from "./components/CreateMedicalRecord";
 import { Routes, Route } from "react-router-dom";
-import { MedicalRecordUIProvider } from "./medicalRecordUIContext";
+import { MainUIProvider } from "./MainUIContext";
+import DetailMedicalRecord from "./components/DetailMedicalRecord";
 
 function MedicalRecord() {
   return (
     <DashboardLayout>
-      <MedicalRecordUIProvider>
+      <MainUIProvider>
         <DashboardNavbar />
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
-            <Grid item xs={12}>
-              <Card>
-                <Routes>
-                  <Route path="list-medical-record" element={<ListTableMedicalRecord />} />
-                  <Route path="create" element={<CreateMedicalRecord />} />
-                  <Route path=":id" element={<DetailMedicalRecord />} />
-                </Routes>
-              </Card>
-            </Grid>
-          </Grid>
-        </MDBox>
+        <Routes>
+          <Route path="list-medical-record" element={<ListTableMedicalRecord />} />
+          <Route path="create" element={<CreateMedicalRecord />} />
+          <Route path=":id" element={<DetailMedicalRecord />} />
+        </Routes>
         <Footer />
-      </MedicalRecordUIProvider>
+      </MainUIProvider>
     </DashboardLayout>
   );
 }

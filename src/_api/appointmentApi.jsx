@@ -1,39 +1,42 @@
-import axios from "axios";
+import { configAPIFacade } from "helpers/UtilHelpers";
+import mockApointment from "_mock/appointmentApi_mock";
 
-const APPOINTMENT_URL = process.env.REACT_APP_APPOINTMENT_SERVICE_URL;
+const [ axiosInstance, APPOINTMENT_URL ] = configAPIFacade(process.env.REACT_APP_APPOINTMENT_SERVICE_URL, mockApointment);
 
-export function getAllAppointmentDatatable(params) {
-  return axios.post(`${APPOINTMENT_URL}/appointments/datatable`, { ...params });
-}
+export const appointmentAPI = {
+  getAllByIdUser: (idUser) => {
+    return axiosInstance.get(`${APPOINTMENT_URL}/appointments/user/${idUser}`);
+  },
 
-export function getAllAppointment() {
-  return axios.get(`${APPOINTMENT_URL}/appointments`);
-}
+  getDatatable: (params) => {
+    return axiosInstance.post(`${APPOINTMENT_URL}/appointments/datatable`, { ...params });
+  },
 
-export function getAllAppointmentByIdUser(idUser) {
-  return axios.get(`${APPOINTMENT_URL}/appointments/user/${idUser}`);
-}
+  getAll: () => {
+    return axiosInstance.get(`${APPOINTMENT_URL}/appointments`);
+  },
 
-export function getOneAppointment(appointment_Id) {
-  return axios.get(`${APPOINTMENT_URL}/appointments/${appointment_Id}`);
-}
+  getOneById: (id) => {
+    return axiosInstance.get(`${APPOINTMENT_URL}/appointments/${id}`);
+  },
 
-export function cancelAppointment(appointment_Id) {
-  return axios.put(`${APPOINTMENT_URL}/appointments/${appointment_Id}/cancel`);
-}
+  cancel: (id) => {
+    return axiosInstance.put(`${APPOINTMENT_URL}/appointments/${id}/cancel`);
+  },
 
-export function updateStatusAppointment(appointment_Id, req) {
-  return axios.put(`${APPOINTMENT_URL}/appointments/${appointment_Id}/status`, req);
-}
+  updateStatus: (id, req) => {
+    return axiosInstance.put(`${APPOINTMENT_URL}/appointments/${id}/status`, req);
+  },
 
-export function addMeetingLinkAppointment(appointment_Id, req) {
-  return axios.put(`${APPOINTMENT_URL}/appointments/${appointment_Id}/link-meeting`, req);
-}
+  addMeetingLink: (id, req) => {
+    return axiosInstance.put(`${APPOINTMENT_URL}/appointments/${id}/link-meeting`, req);
+  },
 
-export function deleteAppointment(appointment_Id) {
-  return axios.delete(`${APPOINTMENT_URL}/appointments/${appointment_Id}`);
-}
+  delete: (id) => {
+    return axiosInstance.delete(`${APPOINTMENT_URL}/appointments/${id}`);
+  },
 
-export function createAppointment(body) {
-  return axios.post(`${APPOINTMENT_URL}/appointments`, { ...body });
-}
+  create: (body) => {
+    return axiosInstance.post(`${APPOINTMENT_URL}/appointments`, { ...body });
+  },
+};

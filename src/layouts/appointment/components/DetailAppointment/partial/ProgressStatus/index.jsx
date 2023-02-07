@@ -1,9 +1,10 @@
 import MDTypography from "components/MDTypography";
 import React, { useRef } from "react";
 import { appointmentStatusStep } from "_shareVar";
-import * as actions from "../../../../appointmentAction";
+import * as actions from "../../../../MainAction";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import MDBadge from "components/MDBadge";
 
 export default function ProgressStatus({ type, linkMeeting, status }) {
   const params = useParams();
@@ -12,11 +13,11 @@ export default function ProgressStatus({ type, linkMeeting, status }) {
   let flagCurrent = false;
 
   const addLinkMeetingHandle = () => {
-    dispatch(
-      actions.addMeetingLinkAppointmentAction(params?.id, linkMeetingInput.current.value)
-    ).then((response) => {
-      dispatch(actions.detailAppointment(params?.id));
-    });
+    dispatch(actions.addMeetingLinkAction(params?.id, linkMeetingInput.current.value)).then(
+      (response) => {
+        dispatch(actions.detailAction(params?.id));
+      }
+    );
   };
 
   if (status === "cancel") {
@@ -61,18 +62,23 @@ export default function ProgressStatus({ type, linkMeeting, status }) {
               Input Meeting Link
             </MDTypography>
             <div className="flex">
-              <input
-                type="text"
-                ref={linkMeetingInput}
-                className="rounded-lg text-[14px] px-[10px] py-[5px]"
-                defaultValue={linkMeeting}
-              />
-              <button
-                onClick={() => addLinkMeetingHandle()}
-                className="bg-green-500 px-[5px] py-[3px] text-white text-[12px] rounded-lg ml-[5px]"
-              >
-                Lock
-              </button>
+              {status === appointmentStatusStep[2].key ||
+                (status === appointmentStatusStep[3].key && (
+                  <>
+                    <input
+                      type="text"
+                      ref={linkMeetingInput}
+                      className="rounded-lg text-[14px] px-[10px] py-[5px]"
+                      defaultValue={linkMeeting}
+                    />
+                    <button
+                      onClick={() => addLinkMeetingHandle()}
+                      className="bg-green-500 px-[5px] py-[3px] text-white text-[12px] rounded-lg ml-[5px]"
+                    >
+                      Lock
+                    </button>
+                  </>
+                ))}
             </div>
           </>
         ) : null}
@@ -82,7 +88,7 @@ export default function ProgressStatus({ type, linkMeeting, status }) {
   return (
     <div className="w-full p-[20px] flex flex-col justify-center">
       <MDTypography fontSize="20px" fontWeight="bold">
-        Progress Status
+        Progress Status <MDBadge badgeContent={type} color="info" variant="gradient" size="sm" />
       </MDTypography>
       <div className="w-full flex gap-[10px]">{steps}</div>
     </div>

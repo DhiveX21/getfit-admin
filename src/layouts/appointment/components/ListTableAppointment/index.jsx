@@ -1,37 +1,31 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import DataTable from "components/extend/Tables/DataTable";
 import appointmentTableData from "./data/appointmentTableData";
 import MDBox from "components/MDBox";
 import { Card, Grid } from "@mui/material";
 import MDTypography from "components/MDTypography";
-import { useAppointmentUIContext } from "layouts/appointment/appointmentUIContext";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../appointmentAction";
+import { useMainUIContext } from "layouts/appointment/MainUIContext";
+import { useSelector } from "react-redux";
 import BackButton from "components/extend/Button/BackButton";
 import MDButton from "components/MDButton";
 import { Link } from "react-router-dom";
 
-export default function ListTableAppointment() {
-  // Appointment UI Context
-  const appointmentUIContext = useAppointmentUIContext();
-  const appointmentUIProps = useMemo(() => {
+export default function ListTable() {
+  // Main UI Context
+  const mainUIContext = useMainUIContext();
+  const mainUIProps = useMemo(() => {
     return {
-      queryParams: appointmentUIContext.queryParams,
-      setQueryParams: appointmentUIContext.setQueryParams,
+      queryParams: mainUIContext.queryParams,
+      setQueryParams: mainUIContext.setQueryParams,
     };
-  }, [appointmentUIContext]);
+  }, [mainUIContext]);
 
   // Get Redux
   const { currentState } = useSelector((state) => ({ currentState: state.appointment }));
   const { totalCount, entities } = currentState;
-  // Dispatch
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(actions.datatable(appointmentUIProps.queryParams));
-  }, [appointmentUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { columns, rows } = appointmentTableData(entities);
+
   return (
     <MDBox pt={6} pb={3}>
       <Grid container spacing={6}>
@@ -51,7 +45,6 @@ export default function ListTableAppointment() {
               alignItems="center"
             >
               <MDBox display="flex" alignItems="center" gap="20px">
-                <BackButton to="/appointment/list-appointment" />
                 <MDTypography variant="h6" color="white">
                   List Appointment
                 </MDTypography>
@@ -69,8 +62,8 @@ export default function ListTableAppointment() {
               <DataTable
                 table={{ columns, rows }}
                 totalCount={totalCount}
-                params={appointmentUIProps.queryParams}
-                setParams={appointmentUIProps.setQueryParams}
+                params={mainUIProps.queryParams}
+                setParams={mainUIProps.setQueryParams}
               />
             </MDBox>
           </Card>

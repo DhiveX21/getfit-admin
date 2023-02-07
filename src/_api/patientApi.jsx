@@ -1,31 +1,35 @@
-import axios from "axios";
+import { configAPIFacade } from "helpers/UtilHelpers";
+import mockPatient from "_mock/patientApi_mock";
 
-const PATIENT_URL = process.env.REACT_APP_USER_SERVICE_URL;
+const [ axiosInstance, PATIENT_URL ] = configAPIFacade(process.env.REACT_APP_USER_SERVICE_URL, mockPatient);
 
-export function getAllPatientDatatable(params) {
-  return axios.post(`${PATIENT_URL}/patients/datatable`, { ...params });
-}
 
-export function getOnePatient(patientId) {
-  return axios.get(`${PATIENT_URL}/patients/${patientId}`);
-}
-
-export function getAllPatient() {
-  return axios.get(`${PATIENT_URL}/patients`);
-}
-
-export function deletePatient(patientId) {
-  return axios.delete(`${PATIENT_URL}/patients/${patientId}`);
-}
-
-export function createUser(body) {
-  return axios.post(`${PATIENT_URL}/users`, { ...body });
-}
-
-export function createPatient(body) {
-  return axios.post(`${PATIENT_URL}/patients`, { ...body });
-}
-
-export function updatePatient(patientId, body) {
-  return axios.put(`${PATIENT_URL}/patients/${patientId}`, { ...body });
+export const patientAPI = {
+  getDatatable: (params) => {
+    return axiosInstance.post(`${PATIENT_URL}/patients/datatable`, { ...params });
+  },
+  
+  getOneById: (id) => {
+    return axiosInstance.get(`${PATIENT_URL}/patients/${id}`);
+  },
+  
+  getAll: () => {
+    return axiosInstance.get(`${PATIENT_URL}/patients`);
+  },
+  
+  deleteOne: (id) => {
+    return axiosInstance.delete(`${PATIENT_URL}/patients/${id}`);
+  },
+  
+  createUser: (body) => {
+    return axiosInstance.post(`${PATIENT_URL}/users`, { ...body });
+  },
+  
+  create: (body) => {
+    return axiosInstance.post(`${PATIENT_URL}/patients`, { ...body });
+  },
+  
+  update: (id, body) => {
+    return axiosInstance.put(`${PATIENT_URL}/patients/${id}`, { ...body });
+  }
 }

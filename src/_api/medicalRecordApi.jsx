@@ -1,22 +1,30 @@
-import axios from "axios";
+import { configAPIFacade } from "helpers/UtilHelpers";
+import mockMedicalRecord from "_mock/medicalRecordApi_mock";
 
-const MEDICAL_RECORD_URL = process.env.REACT_APP_APPOINTMENT_SERVICE_URL;
+const [ axiosInstance, MEDICAL_RECORD_URL ] = configAPIFacade(process.env.REACT_APP_APPOINTMENT_SERVICE_URL, mockMedicalRecord);
 
-export function getAllMedicalRecordsDatatable(params) {
-  return axios.post(`${MEDICAL_RECORD_URL}/records/datatable`, { ...params });
-}
-export function getOneMedicalRecord(medicalRecordId) {
-  return axios.get(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`);
-}
-export function getAllMedicalRecordByIdUser(idUser) {
-  return axios.get(`${MEDICAL_RECORD_URL}/records/user/${idUser}`);
-}
-export function updateMedicalRecord(medicalRecordId, body) {
-  return axios.put(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`, { ...body });
-}
-export function createMedicalRecord(params) {
-  return axios.post(`${MEDICAL_RECORD_URL}/records`, { ...params });
-}
-export function deleteMedicalRecord(medicalRecordId) {
-  return axios.delete(`${MEDICAL_RECORD_URL}/records/${medicalRecordId}`);
-}
+export const medicalRecordAPI = {
+  getAllByIdUser: (idUser) => {
+    return axiosInstance.get(`${MEDICAL_RECORD_URL}/records/user/${idUser}`);
+  },
+
+  getDatatable: (params) => {
+    return axiosInstance.post(`${MEDICAL_RECORD_URL}/records/datatable`, { ...params });
+  },
+
+  getOneById: (id) => {
+    return axiosInstance.get(`${MEDICAL_RECORD_URL}/records/${id}`);
+  },
+
+  update: (id, body) => {
+    return axiosInstance.put(`${MEDICAL_RECORD_URL}/records/${id}`, { ...body });
+  },
+
+  create: (params) => {
+    return axiosInstance.post(`${MEDICAL_RECORD_URL}/records`, { ...params });
+  },
+
+  delete: (id) => {
+    return axiosInstance.delete(`${MEDICAL_RECORD_URL}/records/${id}`);
+  },
+};

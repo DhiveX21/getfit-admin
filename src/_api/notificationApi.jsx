@@ -1,47 +1,50 @@
-import axios from "axios";
+import { configAPIFacade } from "helpers/UtilHelpers";
+import mockNotification from "_mock/notificationApi_mock";
 
-const NOTIFICATION_URL = process.env.REACT_APP_NOTIFICATION_SERVICE_URL;
+const [ axiosInstance, NOTIFICATION_URL ] = configAPIFacade(process.env.REACT_APP_NOTIFICATION_SERVICE_URL, mockNotification);
 
-export function getAllNotificationDatatable(params) {
-  return axios.post(`${NOTIFICATION_URL}/notifications/datatable`, { ...params });
-}
+export const notificationAPI = {
+  getDatatable: (params) => {
+    return axiosInstance.post(`${NOTIFICATION_URL}/notifications/datatable`, { ...params });
+  },
 
-export function getAllNotificationCategory() {
-  return axios.get(`${NOTIFICATION_URL}/notification-categories`, {
-    params: { status: "active" },
-  });
-}
+  getAllCategory: () => {
+    return axiosInstance.get(`${NOTIFICATION_URL}/notification-categories`, {
+      params: { status: "active" },
+    });
+  },
 
-export function getOneNotification(notificationId) {
-  return axios.get(`${NOTIFICATION_URL}/notifications/${notificationId}`);
-}
+  getOneById: (notificationId) => {
+    return axiosInstance.get(`${NOTIFICATION_URL}/notifications/${notificationId}`);
+  },
 
-export function createNotification(body) {
-  return axios.post(`${NOTIFICATION_URL}/notifications`, { ...body });
-}
+  create: (body) => {
+    return axiosInstance.post(`${NOTIFICATION_URL}/notifications`, { ...body });
+  },
 
-export function updateNotification(body, id) {
-  return axios.put(`${NOTIFICATION_URL}/notifications/${id}`, { ...body });
-}
+  update: (body, id) => {
+    return axiosInstance.put(`${NOTIFICATION_URL}/notifications/${id}`, { ...body });
+  },
 
-export function createNotificationCategory(body) {
-  return axios.post(`${NOTIFICATION_URL}/notification-categories`, { ...body });
-}
+  createCategory: (body) => {
+    return axiosInstance.post(`${NOTIFICATION_URL}/notification-categories`, { ...body });
+  },
 
-export function deleteNotification(notificationId) {
-  return axios.delete(`${NOTIFICATION_URL}/notifications/${notificationId}`);
-}
+  delete: (notificationId) => {
+    return axiosInstance.delete(`${NOTIFICATION_URL}/notifications/${notificationId}`);
+  },
 
-export function createNotificationWhatsapp(body) {
-  const config = {
-    headers: {
-      "API-Key": process.env.REACT_APP_TAPTALK_API_KEY,
-      "Content-Type": "application/json",
-    },
-  };
-  return axios.post(
-    `https://sendtalk-api.taptalk.io/api/v1/message/send_whatsapp`,
-    { ...body },
-    config
-  );
-}
+  createToWA: (body) => {
+    const config = {
+      headers: {
+        "API-Key": process.env.REACT_APP_TAPTALK_API_KEY,
+        "Content-Type": "application/json",
+      },
+    };
+    return axiosInstance.post(
+      `https://sendtalk-api.taptalk.io/api/v1/message/send_whatsapp`,
+      { ...body },
+      config
+    );
+  },
+};

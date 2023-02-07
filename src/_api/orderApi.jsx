@@ -1,19 +1,22 @@
-import axios from "axios";
+import { configAPIFacade } from "helpers/UtilHelpers";
+import mockOrder from "_mock/orderApi_mock";
 
-const ORDER_URL = process.env.REACT_APP_ORDER_SERVICE_URL;
+const [ axiosInstance, ORDER_URL ] = configAPIFacade(process.env.REACT_APP_ORDER_SERVICE_URL, mockOrder);
 
-export function getAllOrderDatatable(params) {
-  return axios.post(`${ORDER_URL}/orders/datatable`, { ...params });
-}
+export const orderAPI = {
+  getDatatable: (params) => {
+    return axiosInstance.post(`${ORDER_URL}/orders/datatable`, { ...params });
+  },
 
-export function getOneOrder(orderId) {
-  return axios.get(`${ORDER_URL}/orders/${orderId}`);
-}
+  getOneById: (orderId) => {
+    return axiosInstance.get(`${ORDER_URL}/orders/${orderId}`);
+  },
 
-export function cancelOrder(orderId) {
-  return axios.put(`${ORDER_URL}/orders/cancel/${orderId}`);
-}
+  cancel: (orderId) => {
+    return axiosInstance.put(`${ORDER_URL}/orders/cancel/${orderId}`);
+  },
 
-export function completeOrder(orderId) {
-  return axios.put(`${ORDER_URL}/orders/complete/${orderId}`);
-}
+  complete: (orderId) => {
+    return axiosInstance.put(`${ORDER_URL}/orders/complete/${orderId}`);
+  },
+};

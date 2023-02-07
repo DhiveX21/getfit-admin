@@ -1,96 +1,46 @@
-import { updateNotificationAction } from "layouts/notification/notificationAction";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import makeAnimated from "react-select/animated";
-import { getAllPatient } from "_api/patientApi";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { categoryNotificationAction } from "layouts/notification/notificationAction";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Select from "react-select";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { detailNotification } from "layouts/notification/notificationAction";
+import { Controller, useForm } from "react-hook-form";
+import { FormHelperText } from "@mui/material";
+import { RequestFormatUpdate } from "layouts/notification/MainUIHelper";
+import * as actions from "layouts/notification/MainAction";
 
-export default function UpdateForm({ notification }) {
-  // define patient  to select to field
-  let defaultPatientOption = [];
-  let defaultPatientValue = [];
-  if (notification.user_id === -2) {
-    notification?.patient.map((item) => {
-      let tempObjectPatient = { label: item.name, value: item.user_id };
-      defaultPatientOption = [...defaultPatientOption, tempObjectPatient];
-      defaultPatientValue = [...defaultPatientValue, item.user_id];
-    });
-  }
-  // if (notification.user_id === -1) {
-  //   defaultPatientOption = [];
-  //   defaultPatientValue = [];
-  // }
+export default function UpdateForm({ obj }) {
+  // define react hook form
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   // define Priority  to select to field
   let defaultPriorityOption;
-  let defaultPriorityValue;
-  if (notification?.is_important) {
+  if (obj.is_important) {
     defaultPriorityOption = { value: true, label: "Important" };
-    defaultPriorityValue = true;
   } else {
     defaultPriorityOption = { value: false, label: "Regular" };
-    defaultPriorityValue = false;
   }
 
   // define Category  to select to field
   let defaultCategoryOption;
-  let defaultCategoryValue;
-
-  defaultCategoryOption = { value: notification.category.id, label: notification.category.title };
-  defaultCategoryValue = notification.category.id;
+  defaultCategoryOption = { value: obj.category.id, label: obj.category.title };
 
   const dispatch = useDispatch();
-  const [patientData, setPatientData] = useState();
-  const [patientOptions, setPatientOptions] = useState([]);
+
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState(defaultPatientValue);
-  const [selectedPriority, setSelectedPriority] = useState(defaultPriorityValue);
-  const [selectedCategory, setSelectedCategory] = useState(defaultCategoryValue);
-  const [inputMessage, setInputMessage] = useState();
-  const [inputTitle, setInputTitle] = useState();
-  const animatedComponents = makeAnimated();
-  const MySwal = withReactContent(Swal);
+
   const priorityOptions = [
     { value: true, label: "Important" },
     { value: false, label: "Regular" },
   ];
+
   const { category } = useSelector((state) => ({ category: state.notification.category }));
-
-  useEffect(() => {
-    if (!patientData) {
-      getAllPatient()
-        .then((response) => {
-          setPatientData(response.data.data);
-        })
-        .catch((error) => {
-          MySwal.fire({
-            title: "Error Get Patient Data",
-            icon: "error",
-          });
-        });
-    } else {
-      let tempOptions = [];
-      patientData.forEach((item, index) => {
-        tempOptions = [...tempOptions, { value: item.user_id, label: item.user.name }];
-      });
-      setPatientOptions(tempOptions);
-    }
-  }, [patientData]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // if redux category is not define , re fetch from action
-  useEffect(() => {
-    dispatch(categoryNotificationAction());
-    setInputTitle(notification?.title);
-    setInputMessage(notification?.description);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   //filling the options for category
   useEffect(() => {
@@ -101,125 +51,136 @@ export default function UpdateForm({ notification }) {
     setCategoryOptions(tempOptions);
   }, [category]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function handleSubmit() {
-    if (selectedPatient?.length > 0) {
-      dispatch(
-        updateNotificationAction(
-          selectedPatient,
-          selectedPriority,
-          selectedCategory,
-          inputTitle,
-          inputMessage,
-          notification.id
-        )
-      ).then(() => {
-        dispatch(detailNotification(notification.id));
-      });
-    } else {
-      dispatch(
-        updateNotificationAction(
-          null,
-          selectedPriority,
-          selectedCategory,
-          inputTitle,
-          inputMessage,
-          notification.id
-        )
-      ).then(() => {
-        dispatch(detailNotification(notification.id));
-      });
-    }
-  }
-  function handleSelectedPatient(e) {
-    let tempPatient = [];
-    e.forEach((item) => {
-      tempPatient = [...tempPatient, item.value];
+  // filling the form with current patient Data
+  useEffect(() => {
+    setValue("title", obj.title, { shouldDirty: true });
+    setValue("message", obj.description, { shouldDirty: true });
+    setValue("priority", defaultPriorityOption, { shouldDirty: true });
+    setValue("category_id", defaultCategoryOption, { shouldDirty: true });
+  }, []);
+
+  function onSubmit(data) {
+    dispatch(
+      actions.updateAction(
+        RequestFormatUpdate(data.priority.value, data.category_id.value, data.title, data.message),
+        obj.id
+      )
+    ).then(() => {
+      dispatch(actions.detailAction(obj.id));
     });
-    setSelectedPatient(tempPatient);
   }
 
   return (
     <div className="animation-popup flex flex-col gap-[20px] mt-[20px]">
-      <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          UPDATE NOTIFICATION
-        </MDTypography>
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          Select Patient
-        </MDTypography>
-        <Select
-          className="basic-single text-[14px] z-12"
-          closeMenuOnSelect={false}
-          components={animatedComponents}
-          defaultValue={defaultPatientOption || "Select"}
-          onChange={(e) => handleSelectedPatient(e)}
-          isMulti
-          options={patientOptions}
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          Select Level
-        </MDTypography>
-        <Select
-          className="basic-single text-[14px] z-11"
-          classNamePrefix="select"
-          isSearchable={true}
-          name="color"
-          defaultValue={defaultPriorityOption}
-          options={priorityOptions}
-          onChange={(e) => setSelectedPriority(e.value)}
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          Select Category
-        </MDTypography>
-        <Select
-          className="basic-single text-[14px] z-9"
-          classNamePrefix="select"
-          isSearchable={true}
-          name="color"
-          options={categoryOptions}
-          defaultValue={defaultCategoryOption}
-          onChange={(e) => setSelectedCategory(e.value)}
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-        <MDTypography variant="h6" color="text">
-          Input Title
-        </MDTypography>
-        <MDInput
-          className=" z-8"
-          fullWidth
-          required
-          defaultValue={inputTitle}
-          label="Title"
-          onChange={(e) => setInputTitle(e.target.value)}
-          multiline
-          rows={1}
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          Input Message
-        </MDTypography>
-        <MDInput
-          fullWidth
-          required
-          defaultValue={inputMessage}
-          label="Message"
-          onChange={(e) => setInputMessage(e.target.value)}
-          multiline
-          rows={5}
-        />
-      </MDBox>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex gap-[20px] flex-col">
+        <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            UPDATE NOTIFICATION
+          </MDTypography>
+        </MDBox>
+        {/* Level Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            Select Level
+          </MDTypography>
+          {errors.priority && (
+            <FormHelperText>
+              {errors.priority.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
 
-      <MDButton variant="gradient" color="success" onClick={() => handleSubmit()}>
-        Send
-      </MDButton>
+          <Controller
+            name="priority"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                className="basic-single text-[14px] z-11"
+                classNamePrefix="select"
+                // defaultValue={defaultPriorityOption}
+                options={priorityOptions}
+              />
+            )}
+          />
+        </MDBox>
+        {/* Category Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            Select Category
+          </MDTypography>
+          {errors.category_id && (
+            <FormHelperText>
+              {errors.category_id.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="category_id"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                className="basic-single text-[14px] z-9"
+                classNamePrefix="select"
+                isSearchable={true}
+                options={categoryOptions}
+                // defaultValue={defaultCategoryOption}
+              />
+            )}
+          />
+        </MDBox>
+        {/* Title Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
+          <MDTypography variant="h6" color="text">
+            Input Title
+          </MDTypography>
+          {errors.title && (
+            <FormHelperText>
+              {errors.title.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="title"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput
+                {...field}
+                className=" z-8"
+                fullWidth
+                required
+                label="Title"
+                multiline
+                rows={1}
+              />
+            )}
+          />
+        </MDBox>
+        {/* Message Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            Input Message
+          </MDTypography>
+          {errors.message && (
+            <FormHelperText>
+              {errors.message.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="message"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <MDInput {...field} fullWidth required label="Message" multiline rows={5} />
+            )}
+          />
+        </MDBox>
+
+        <MDButton variant="gradient" color="success" type="submit">
+          Send
+        </MDButton>
+      </form>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Icon } from "@mui/material";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import PropTypes from "prop-types";
 
 export const NameColumnFormatter = ({ image, name, email }) => (
   <MDBox display="flex" alignItems="center" lineHeight={1}>
@@ -13,3 +14,16 @@ export const NameColumnFormatter = ({ image, name, email }) => (
     </MDBox>
   </MDBox>
 );
+
+// Setting default props for the ProfileInfoCard
+NameColumnFormatter.defaultProps = {
+  name: "User",
+  email: "user@mail.com",
+};
+
+// Typechecking props for the ProfileInfoCard
+NameColumnFormatter.propTypes = {
+  images: PropTypes.string,
+  name: PropTypes.string,
+  email: PropTypes.string,
+};

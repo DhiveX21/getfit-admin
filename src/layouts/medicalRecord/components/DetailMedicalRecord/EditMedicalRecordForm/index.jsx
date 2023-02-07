@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import MDTypography from "components/MDTypography";
 import { useState } from "react";
 import DynamicForm from "./DynamicForm";
-import { updateMedicalRecordAction } from "layouts/medicalRecord/medicalRecordAction";
+import * as actions from "layouts/medicalRecord/MainAction";
 import { useDispatch } from "react-redux";
+import { requestFormatUpdate } from "layouts/medicalRecord/MainUIHelper";
 
 export default function EditMedicalRecordForm({ medicalRecord, editMode, setEditMode }) {
   const [fieldMedicalRecord, setFieldMedicalRecord] = useState(medicalRecord.records);
@@ -33,7 +34,12 @@ export default function EditMedicalRecordForm({ medicalRecord, editMode, setEdit
   }
 
   function submitFieldHandle() {
-    dispatch(updateMedicalRecordAction(medicalRecord, fieldMedicalRecord));
+    dispatch(
+      actions.updateAction(
+        medicalRecord._id,
+        requestFormatUpdate(medicalRecord, fieldMedicalRecord)
+      )
+    );
   }
 
   useEffect(() => {

@@ -4,173 +4,256 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { getAllPatient } from "_api/patientApi";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useSelector, useDispatch } from "react-redux";
-import { createAppointmentAction } from "layouts/appointment/appointmentAction";
+import { useDispatch } from "react-redux";
+import * as actions from "layouts/appointment/MainAction";
 import { useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+import { FormHelperText } from "@mui/material";
+import { useMainUIContext } from "layouts/appointment/MainUIContext";
+import { useMemo } from "react";
+import { createReqFormat } from "layouts/appointment/MainUIHelper";
 
 export default function AppointmentForm() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [patientData, setPatientData] = useState();
+
+  // Main UI Context
+  const mainUIContext = useMainUIContext();
+  const { patientData, baseProductData, therapistData } = useMemo(() => {
+    return {
+      patientData: mainUIContext.patientData,
+      baseProductData: mainUIContext.baseProductData,
+      therapistData: mainUIContext.therapistData,
+    };
+  }, [mainUIContext]);
+
   const [patientOptions, setPatientOptions] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState();
-  const [inputDate, setInputDate] = useState();
-  const [inputTime, setInputTime] = useState();
-  const [inputAppointmentType, setInputAppointmentType] = useState();
-  const [inputAddress, setInputAddress] = useState();
-  const [inputComplaint, setInputComplaint] = useState();
+  const [appointmentTypeOptions, setAppointmentTypeOptions] = useState([]);
+  const [therapistOptions, setTherapistOptions] = useState([]);
   const animatedComponents = makeAnimated();
-  const MySwal = withReactContent(Swal);
-  const appointmentTypeOptions = [{ value: "tele_physio", label: "Tele Physio" }];
 
   useEffect(() => {
-    if (!patientData) {
-      getAllPatient()
-        .then((response) => {
-          setPatientData(response.data.data);
-        })
-        .catch((error) => {
-          MySwal.fire({
-            title: "Error Get Patient Data",
-            icon: "error",
-          });
-        });
-    } else {
-      let tempOptions = [];
-      patientData.forEach((item, index) => {
-        tempOptions = [...tempOptions, { value: item.id, label: item.user.name }];
-      });
-      setPatientOptions(tempOptions);
-    }
+    let tempOptions = [];
+    patientData?.forEach((item, index) => {
+      tempOptions = [...tempOptions, { value: item.id, label: item.user.name }];
+    });
+    setPatientOptions(tempOptions);
   }, [patientData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function handleSubmit() {
-    if (selectedPatient.length > 0) {
-      selectedPatient.map((patientId) => {
-        dispatch(
-          createAppointmentAction(
-            patientId,
-            1,
-            inputDate,
-            inputTime,
-            inputAppointmentType,
-            inputAddress,
-            inputComplaint
-          )
-        ).then(() => {
-          navigate("/appointment/list-appointment");
-        });
-      });
-    } else {
-      MySwal.fire({
-        title: "Patient Not Found",
-        icon: "error",
-      });
-    }
-  }
-
-  function handleSelectedPatient(e) {
-    let tempPatient = [];
-    e.forEach((item) => {
-      tempPatient = [...tempPatient, item.value];
+  useEffect(() => {
+    let tempOptions = [];
+    baseProductData?.forEach((item, index) => {
+      tempOptions = [...tempOptions, { value: item.id, label: item.name }];
     });
-    setSelectedPatient(tempPatient);
-  }
+    setAppointmentTypeOptions(tempOptions);
+  }, [baseProductData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    let tempOptions = [];
+    therapistData?.forEach((item, index) => {
+      tempOptions = [...tempOptions, { value: item.id, label: item.name }];
+    });
+    setTherapistOptions(tempOptions);
+  }, [therapistData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onSubmit = (data) => {
+    dispatch(actions.createAction(createReqFormat(data)))
+      .then((res) => {
+        navigate("/appointment/list-appointment");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
-    <div className="animation-popup flex flex-col gap-[20px] mt-[20px]">
-      <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          CREATE Appointment
-        </MDTypography>
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          Select Patient
-        </MDTypography>
-        <Select
-          className="basic-single text-[14px] z-12"
-          closeMenuOnSelect={false}
-          components={animatedComponents}
-          onChange={(e) => handleSelectedPatient(e)}
-          isMulti
-          options={patientOptions}
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-        <MDTypography variant="h6" color="text">
-          Input Date
-        </MDTypography>
-        <MDInput
-          className=" z-8"
-          fullWidth
-          required
-          onChange={(e) => setInputDate(e.target.value)}
-          type="date"
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-        <MDTypography variant="h6" color="text">
-          Input Time
-        </MDTypography>
-        <MDInput
-          className=" z-8"
-          fullWidth
-          required
-          onChange={(e) => setInputTime(e.target.value)}
-          type="time"
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px">
-        <MDTypography variant="h6" color="text">
-          Select Type Appointment
-        </MDTypography>
-        <Select
-          className="basic-single text-[14px] z-11"
-          classNamePrefix="select"
-          isSearchable={true}
-          name="appointmentType"
-          options={appointmentTypeOptions}
-          onChange={(e) => setInputAppointmentType(e.value)}
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-        <MDTypography variant="h6" color="text">
-          Input Address
-        </MDTypography>
-        <MDInput
-          className=" z-8"
-          fullWidth
-          required
-          label="Title"
-          onChange={(e) => setInputAddress(e.target.value)}
-          multiline
-          rows={4}
-        />
-      </MDBox>
-      <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
-        <MDTypography variant="h6" color="text">
-          Input Medical Complaints
-        </MDTypography>
-        <MDInput
-          className=" z-8"
-          fullWidth
-          required
-          label="Medical Complaints"
-          onChange={(e) => setInputComplaint(e.target.value)}
-          multiline
-          rows={4}
-        />
-      </MDBox>
+    <div className="animation-popup flex flex-col gap-[20px] w-full bg-white p-[10px] rounded-lg">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex gap-[20px] flex-col">
+        <MDBox display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            Create Appointment
+          </MDTypography>
+        </MDBox>
+        {/* Patient Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            Select Patient
+          </MDTypography>
+          {errors.patient && (
+            <FormHelperText>
+              {errors.patient.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="patient"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder="Select Patient"
+                className="basic-single text-[14px] z-12"
+                components={animatedComponents}
+                options={patientOptions}
+              />
+            )}
+          />
+        </MDBox>
+        {/* Therapist Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            Select Therapist
+          </MDTypography>
+          {errors.therapist && (
+            <FormHelperText>
+              {errors.therapist.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="therapist"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder="Select Therapist"
+                className="basic-single text-[14px] z-12"
+                components={animatedComponents}
+                options={therapistOptions}
+              />
+            )}
+          />
+        </MDBox>
+        {/* Date Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
+          <MDTypography variant="h6" color="text">
+            Input Date
+          </MDTypography>
+          {errors.date && (
+            <FormHelperText>
+              {errors.date.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="date"
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <MDInput {...field} className=" z-8" fullWidth required type="date" />
+            )}
+          />
+        </MDBox>
+        {/* Time Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
+          <MDTypography variant="h6" color="text">
+            Input Time
+          </MDTypography>
+          {errors.time && (
+            <FormHelperText>
+              {errors.time.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="time"
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <MDInput {...field} className=" z-8" fullWidth required type="time" />
+            )}
+          />
+        </MDBox>
+        {/* Type Appointment Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px">
+          <MDTypography variant="h6" color="text">
+            Select Type Appointment
+          </MDTypography>
+          {errors.appointmentType && (
+            <FormHelperText>
+              {errors.appointmentType.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="appointmentType"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                className="basic-single text-[14px] z-11"
+                placeholder="Select Appointment Type"
+                classNamePrefix="select"
+                isSearchable={true}
+                options={appointmentTypeOptions}
+              />
+            )}
+          />
+        </MDBox>
+        {/* Address Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
+          <MDTypography variant="h6" color="text">
+            Input Address
+          </MDTypography>
+          {errors.address && (
+            <FormHelperText>
+              {errors.address.type === "required" && "Field is required"}
+            </FormHelperText>
+          )}
+          <Controller
+            name="address"
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <MDInput
+                {...field}
+                className=" z-8"
+                fullWidth
+                required
+                label="Address"
+                multiline
+                rows={4}
+              />
+            )}
+          />
+        </MDBox>
+        {/* Medical Complaint Field */}
+        <MDBox display="flex-column" alignItems="center" gap="20px" className="z-8">
+          <MDTypography variant="h6" color="text">
+            Input Medical Complaints
+          </MDTypography>
+          <Controller
+            name="complaint"
+            control={control}
+            render={({ field }) => (
+              <MDInput
+                {...field}
+                className=" z-8"
+                fullWidth
+                required
+                label="Medical Complaints"
+                multiline
+                rows={4}
+              />
+            )}
+          />
+        </MDBox>
 
-      <MDButton variant="gradient" color="success" onClick={() => handleSubmit()}>
-        Send
-      </MDButton>
+        <MDButton type="submit" variant="gradient" color="success">
+          Send
+        </MDButton>
+      </form>
     </div>
   );
 }

@@ -2,6 +2,12 @@ import axios from "axios";
 
 const USER_URL = process.env.REACT_APP_USER_SERVICE_URL;
 
+export const userAPI = {
+  create: (body) => {
+    return axios.post(`${USER_URL}/users`, { ...body });
+  },
+};
+
 export function getAllUser() {
   return axios.get(`${USER_URL}/users`);
 }

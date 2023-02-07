@@ -1,21 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
-import appointmentSlice from "_slices/appointmentSlice";
-import medicalRecordSlice from "_slices/medicalRecordSlice";
-import notificationSlice from "_slices/notificationSlice";
-import orderSlice from "_slices/orderSlice";
-import patientSlice from "_slices/patientSlice";
+import {
+  patient,
+  appointment,
+  medicalRecord,
+  order,
+  notification,
+  exercise,
+  product,
+  therapist,
+} from "_slices";
 import userSlice from "_slices/userSlice";
-import exerciseSlice from "_slices/exerciseSlice";
 
 export default configureStore({
   reducer: {
     signIn: userSlice,
-    patient: patientSlice,
-    order: orderSlice,
-    appointment: appointmentSlice,
-    medicalRecord: medicalRecordSlice,
-    notification: notificationSlice,
-    exercise: exerciseSlice,
+    patient: patient.slice.reducer,
+    order: order.slice.reducer,
+    appointment: appointment.slice.reducer,
+    medicalRecord: medicalRecord.slice.reducer,
+    notification: notification.slice.reducer,
+    exercise: exercise.slice.reducer,
+    product: product.slice.reducer,
+    therapist: therapist.slice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

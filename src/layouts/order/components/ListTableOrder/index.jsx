@@ -1,16 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import DataTable from "components/extend/Tables/DataTable";
-import orderTableData from "./data/orderTableData";
+import MainTableData from "./data/MainTableData";
 import MDBox from "components/MDBox";
 import { Card, Grid } from "@mui/material";
 import MDTypography from "components/MDTypography";
-import { useOrderUIContext } from "layouts/order/orderUIContext";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../orderAction";
+import { useMainUIContext } from "layouts/order/MainUIContext";
+import { useSelector } from "react-redux";
 
 export default function ListTableOrder() {
-  // Order UI Context
-  const orderUIContext = useOrderUIContext();
+  // Main UI Context
+  const orderUIContext = useMainUIContext();
   const orderUIProps = useMemo(() => {
     return {
       queryParams: orderUIContext.queryParams,
@@ -21,13 +20,7 @@ export default function ListTableOrder() {
   // Get Redux
   const { currentState } = useSelector((state) => ({ currentState: state.order }));
   const { totalCount, entities } = currentState;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(actions.datatable(orderUIProps.queryParams));
-  }, [orderUIProps.queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const { columns, rows } = orderTableData(entities);
+  const { columns, rows } = MainTableData(entities);
   
   return (
     <MDBox pt={6} pb={3}>

@@ -5,15 +5,15 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getIdYoutubeUrl } from "helpers/YoutubeHelpers";
 import { useDispatch } from "react-redux";
-import * as actions from "layouts/video/videoAction";
+import * as actions from "layouts/video/MainAction";
 
-export default function Detail({ video }) {
+export default function Detail({ obj }) {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleVideoDelete = () => {
-    if (window.confirm("Are you sure to delete this video?")) {
-      dispatch(actions.deleteVideoAction(params.id));
+  const handleDelete = () => {
+    if (window.confirm("Are you sure to delete this video ?")) {
+      dispatch(actions.deleteAction(params.id));
       navigate("/video/list-video");
     }
   };
@@ -33,7 +33,7 @@ export default function Detail({ video }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {video?.title}
+              {obj.title}
             </MDTypography>
           </div>
 
@@ -45,7 +45,7 @@ export default function Detail({ video }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {video?.description}
+              {obj.description}
             </MDTypography>
           </div>
 
@@ -57,7 +57,7 @@ export default function Detail({ video }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {video?.is_active ? "Active" : "Non-Active"}
+              {obj.is_active ? "Active" : "Non-Active"}
             </MDTypography>
           </div>
 
@@ -69,7 +69,7 @@ export default function Detail({ video }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {video?.video_url}
+              {obj.video_url}
             </MDTypography>
           </div>
           <div className=" flex gap-[10px] ">
@@ -80,7 +80,7 @@ export default function Detail({ video }) {
               :
             </MDTypography>
             <MDTypography width="50%" color="text" fontSize="14px">
-              {video?.category?.title}
+              {obj.category?.title}
             </MDTypography>
           </div>
         </div>
@@ -96,9 +96,9 @@ export default function Detail({ video }) {
             <MDTypography width="10%" color="text" fontSize="14px">
               :
             </MDTypography>
-            {video?.video_watches?.length > 0 ? (
-              <div className="flex flex-col overflow-y-scroll max-h-[200px] bg-slate-200 p-1 rounded-lg">
-                {video?.video_watches?.map((item) => {
+            {obj.video_watches?.length > 0 ? (
+              <div className="ml-auto w-full flex flex-col overflow-y-scroll max-h-[200px] bg-slate-200 p-1 rounded-lg">
+                {obj.video_watches?.map((item) => {
                   return (
                     <MDTypography width="50%" color="text" fontSize="14px" className="text-left">
                       <p className="break-keep">{item.user.name}</p>
@@ -128,17 +128,17 @@ export default function Detail({ video }) {
           padding="20px"
         >
           <MDTypography color="primary" fontSize="16px" fontWeight="medium">
-            {video?.title}
+            {obj.title}
           </MDTypography>
           <MDTypography color="dark" fontSize="16px" fontWeight="medium">
-            {video?.description}
+            {obj.description}
           </MDTypography>
 
-          {video?.video_url ? (
+          {obj.video_url ? (
             <iframe
               width="853"
               height="480"
-              src={`https://www.youtube.com/embed/${getIdYoutubeUrl(video.video_url)}`}
+              src={`https://www.youtube.com/embed/${getIdYoutubeUrl(obj.video_url)}`}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -153,7 +153,7 @@ export default function Detail({ video }) {
           Action
         </MDTypography>
         <div className="w-full flex gap-[10px]">
-          <MDButton variant="outlined" color="primary" onClick={() => handleVideoDelete()}>
+          <MDButton variant="outlined" color="primary" onClick={() => handleDelete()}>
             DELETE
           </MDButton>
         </div>

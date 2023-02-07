@@ -46,7 +46,7 @@ export default function data(entities) {
         item.is_active ? (
           <MDBadge badgeContent="active" color="success" variant="gradient" size="sm" />
         ) : (
-          <MDBadge badgeContent="inactive" color="danger" variant="gradient" size="sm" />
+          <MDBadge badgeContent="inactive" color="error" variant="gradient" size="sm" />
         )
       ),
       category: (

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import MDBox from "components/MDBox";
 import BackButton from "components/extend/Button/BackButton";
 import MDTypography from "components/MDTypography";
 import PatientForm from "./patientForm";
-
-import MDButton from "components/MDButton";
 
 export default function CreatePatient() {
   return (
