@@ -18,7 +18,7 @@ export function MainUIProvider({ children }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(actions.datatableAction(queryParams));
-  }, [queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [queryParams]);
 
   const value = {
     queryParams,

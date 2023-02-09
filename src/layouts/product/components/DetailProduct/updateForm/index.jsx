@@ -36,7 +36,7 @@ export default function UpdateForm({ product }) {
   useEffect(() => {
     dispatch(actions.masterAction());
     dispatch(actions.facilitiesAction());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // handle submit for react hook form
   const onSubmit = (data) => {
@@ -100,7 +100,7 @@ export default function UpdateForm({ product }) {
 
   useEffect(() => {
     setValue("sub_products", fieldSubProduct, { shouldDirty: true });
-  }, [fieldSubProduct]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fieldSubProduct]);
 
   function addFieldHandle() {
     setFieldSubProduct([...fieldSubProduct, { id: 0, amount: 0, quota: 0 }]);

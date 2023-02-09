@@ -1,5 +1,5 @@
 import { initialParamsTable } from "./videoShareVar";
-import * as actions from 'layouts/video/MainAction'
+import * as actions from "layouts/video/MainAction";
 import { useDispatch } from "react-redux";
 
 const { createContext, useContext, useState, useEffect } = require("react");
@@ -14,16 +14,16 @@ export const MainUIConsumer = MainUIContext.Consumer;
 
 export function MainUIProvider({ children }) {
   const [queryParams, setQueryParams] = useState(initialParamsTable);
-  
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(actions.datatableAction(queryParams));
-  }, [queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [queryParams]);
 
   // if redux category is not define , re fetch from action
   useEffect(() => {
     dispatch(actions.getAllCategoryAction());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = {
     queryParams,

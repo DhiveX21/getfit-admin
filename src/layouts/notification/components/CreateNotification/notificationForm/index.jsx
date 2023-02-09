@@ -52,7 +52,7 @@ export default function NotificationForm() {
       tempOptions = [...tempOptions, { value: item.user_id, label: item.user.name }];
     });
     setPatientOptions(tempOptions);
-  }, [patientData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [patientData]);
 
   //filling the options for category
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function NotificationForm() {
       tempOptions = [...tempOptions, { value: item.id, label: item.title }];
     });
     setCategoryOptions(tempOptions);
-  }, [category]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [category]);
 
   function onSubmit(data) {
     if (

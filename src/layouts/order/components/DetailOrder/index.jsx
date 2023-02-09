@@ -45,7 +45,7 @@ function OrderDetail() {
     return () => {
       dispatch(actions.detailAction(undefined));
     };
-  }, [params.id, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [params.id, dispatch]);
 
   const cancelOrder = () => {
     if (window.confirm("Are you sure to cancel order this data ?")) {

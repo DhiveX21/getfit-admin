@@ -33,7 +33,7 @@ function PageLayout({ background, children }) {
 
   useEffect(() => {
     setLayout(dispatch, "page");
-  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   return (
     <MDBox

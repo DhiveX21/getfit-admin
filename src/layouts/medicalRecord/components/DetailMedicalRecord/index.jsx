@@ -41,7 +41,7 @@ export default function DetailMedicalRecord() {
     return () => {
       dispatch(actions.detailAction(undefined));
     };
-  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   return (
     <>

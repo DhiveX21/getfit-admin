@@ -54,7 +54,7 @@ function ReportsBarChart({ color, title, description, date, chart }) {
               <Bar data={data} options={options} />
             </MDBox>
           ),
-          [chart, color] // eslint-disable-line react-hooks/exhaustive-deps
+          [chart, color]
         )}
         <MDBox pt={3} pb={1} px={1}>
           <MDTypography variant="h6" textTransform="capitalize">

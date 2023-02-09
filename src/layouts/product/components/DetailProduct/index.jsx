@@ -33,7 +33,7 @@ export default function DetailProduct() {
     return () => {
       dispatch(actions.detailAction(undefined));
     };
-  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   const handleDeleteProduct = () => {
     if (window.confirm("Are you sure Delete this product?")) {

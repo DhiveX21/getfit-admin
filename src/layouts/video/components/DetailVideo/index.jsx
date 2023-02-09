@@ -33,7 +33,7 @@ export default function DetailVideo() {
     return () => {
       dispatch(actions.detailAction(undefined));
     };
-  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   return (
     <MDBox pt={6} pb={3}>

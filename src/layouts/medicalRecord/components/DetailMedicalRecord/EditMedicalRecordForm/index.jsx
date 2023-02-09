@@ -48,7 +48,7 @@ export default function EditMedicalRecordForm({ medicalRecord, editMode, setEdit
 
   useEffect(() => {
     setEditMode(false);
-  }, [medicalRecord.records]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [medicalRecord.records]);
 
   return (
     <>

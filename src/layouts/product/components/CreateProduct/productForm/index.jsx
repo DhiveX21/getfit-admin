@@ -36,7 +36,7 @@ export default function ProductForm() {
   useEffect(() => {
     dispatch(actions.masterAction());
     dispatch(actions.facilitiesAction());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   //filling the options for master
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function ProductForm() {
 
   useEffect(() => {
     setValue("sub_products", fieldSubProduct, { shouldDirty: true });
-  }, [fieldSubProduct]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fieldSubProduct]);
 
   const onSubmit = (data) => {
     if (Array.isArray(data.facilities)) {

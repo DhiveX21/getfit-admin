@@ -49,7 +49,7 @@ export default function UpdateForm({ obj }) {
       tempOptions = [...tempOptions, { value: item.id, label: item.title }];
     });
     setCategoryOptions(tempOptions);
-  }, [category]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [category]);
 
   // filling the form with current patient Data
   useEffect(() => {

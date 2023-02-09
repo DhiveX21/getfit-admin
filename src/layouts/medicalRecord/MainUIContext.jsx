@@ -30,11 +30,11 @@ export function MainUIProvider({ children }) {
         alertError("Can't show appointments");
         throw new Error(err.response.status);
       });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     dispatch(actions.datatableAction(queryParams));
-  }, [queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [queryParams]);
 
   const value = {
     queryParams,

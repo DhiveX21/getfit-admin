@@ -45,7 +45,7 @@ export default function AppointmentForm() {
       tempOptions = [...tempOptions, { value: item.id, label: item.user.name }];
     });
     setPatientOptions(tempOptions);
-  }, [patientData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [patientData]);
 
   useEffect(() => {
     let tempOptions = [];
@@ -53,7 +53,7 @@ export default function AppointmentForm() {
       tempOptions = [...tempOptions, { value: item.id, label: item.name }];
     });
     setAppointmentTypeOptions(tempOptions);
-  }, [baseProductData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [baseProductData]);
 
   useEffect(() => {
     let tempOptions = [];
@@ -61,7 +61,7 @@ export default function AppointmentForm() {
       tempOptions = [...tempOptions, { value: item.id, label: item.name }];
     });
     setTherapistOptions(tempOptions);
-  }, [therapistData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [therapistData]);
 
   const onSubmit = (data) => {
     dispatch(actions.createAction(createReqFormat(data)))

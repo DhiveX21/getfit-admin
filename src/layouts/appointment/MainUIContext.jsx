@@ -4,7 +4,6 @@ import * as actions from "layouts/appointment/MainAction";
 import { patientAPI, productAPI, therapistAPI } from "_api";
 import { alertError } from "helpers/UtilHelpers";
 
-
 const { createContext, useContext, useState, useEffect } = require("react");
 
 const MainUIContext = createContext();
@@ -49,7 +48,7 @@ export function MainUIProvider({ children }) {
       .catch((error) => {
         alertError("Error Get Patient Data");
       });
-  }, [queryParams]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [queryParams]);
 
   const value = {
     queryParams,

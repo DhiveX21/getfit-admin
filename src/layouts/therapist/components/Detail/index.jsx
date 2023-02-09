@@ -50,7 +50,7 @@ export default function MainDetail() {
     return () => {
       dispatch(actions.detailAction(undefined));
     };
-  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   return (
     <>
@@ -91,7 +91,7 @@ export default function MainDetail() {
                 {editMode && obj && (
                   <div className="w-full flex flex-col justify-center items-center gap-[20px] px-[20px] my-[40px]">
                     <div className="w-2/3  p-2 rounded-xl flex flex-col gap-[10px] relative ">
-                      <EditSection obj={obj} setEditMode={setEditMode} editMode={editMode}/>
+                      <EditSection obj={obj} setEditMode={setEditMode} editMode={editMode} />
                     </div>
                   </div>
                 )}

@@ -56,7 +56,7 @@ function Basic() {
     if (user) {
       navigate("/");
     }
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const login = (values) => {
     dispatch(actions.loginUser({ email: values.email, password: values.password }));

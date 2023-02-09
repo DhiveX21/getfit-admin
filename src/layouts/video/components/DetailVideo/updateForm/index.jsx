@@ -36,7 +36,7 @@ export default function UpdateForm({ obj }) {
     setValue("link_url", obj.video_url, { shouldDirty: true });
     setValue("category_id", defaultCategoryOption, { shouldDirty: true });
     setValue("status", obj.is_active, { shouldDirty: true });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   //filling the options for category
   useEffect(() => {
